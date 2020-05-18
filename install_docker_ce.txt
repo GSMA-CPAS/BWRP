@@ -1,0 +1,18 @@
+#Ubuntu Instructions
+#Original instructions from 
+#https://docs.docker.com/engine/install/ubuntu/
+
+#add the keys from repo.
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+#add "repo url"
+add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
+#install required package.
+apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io
+
+
+#you should be able to run "docker info" to see the status

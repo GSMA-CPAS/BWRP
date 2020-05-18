@@ -1,0 +1,28 @@
+#Ubuntu Instructions
+#add the keys from repo.
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+#add "repo url"
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+#install required package.
+apt-get update && apt-get install -y kubelet kubeadm kubectl
+
+#initialize Kubernetes
+#make sure docker is pre-installed.
+#change your node name and prefered local network range.
+kubeadm init --node-name my-first-node --pod-network-cidr=10.244.0.0/16
+
+#install kube-flannel
+wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+kubectl apply -f kube-flannel.yml
+
+#set your setup to be single node
+kubectl taint nodes --all node-role.kubernetes.io/master-
+
+#kubectl get nodes should give you 
+kubectl get nodes
+NAME             STATUS   ROLES    AGE   VERSION
+my-first-node    Ready    master   40m   v1.18.2
