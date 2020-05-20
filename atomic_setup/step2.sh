@@ -101,7 +101,7 @@ else
     mkdir ./tmp
     echo "$(generateFromTemplate ca-config $ORG $HOSTNAME $DOMAIN $PORT $PEER_BASE)" > ./tmp/configtx.yaml
     export FABRIC_CFG_PATH=$PWD/tmp
-    CONF=${PEER_BASE}${ORG}.json
+    CONF=${PV_PATH}${MYHOST}-pv-volume/peer/${ORG}.json
     ./bin/configtxgen -printOrg ${ORG}MSP > ./tmp/${ORG}.json
     EXEC="jq '.values += {\"AnchorPeers\":{\"mod_policy\": \"Admins\",\"value\":{\"anchor_peers\": [{\"host\": \"peer0.$HOSTNAME.$DOMAIN\",\"port\": $PORT}]},\"version\": \"0\"}}' ./tmp/$ORG.json > $CONF"
     eval "${EXEC}"

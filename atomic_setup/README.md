@@ -14,7 +14,7 @@
 
 -Join Network
 -->Configure "setup.sh"
- - **KUBENS**="default" #Namespace used in Kubernetes. Defaults to "default"
+ - **KUBENS**="default" #Namespace used in Kubernetes. Defaults to "default" if you are using custom namespace, you will first need to create it via "kubectl create namespace XXXX"
  - **HOSTNAME**="org1" #The "xxxx.< hostname >.xxx.xxx part
  - **DOMAIN**="example.com" #The "xxx.xxxx.yourdomain.com part
  - **CA_ADMINPW**=$(uname -a | md5sum |awk '{print $1}') #The first "Admin" user's password to your "CA". This is auto generated, or can be preset.
