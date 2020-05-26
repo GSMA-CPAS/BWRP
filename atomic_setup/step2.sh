@@ -18,7 +18,7 @@ function generateFromTemplate {
         -e "s/\${DOMAIN}/$3/g" \
         -e "s/\${PORT}/$4/g" \
         -e "s/\${PEER_BASE}/$base/g" \
-        ./template/template-configtx.yaml
+        template/template-configtx.yaml
   elif [[ "$TYPE" == "org" ]]; then
     sed -e "s/\${MYHOST}/$1/g" \
         -e "s/\${HOSTNAME}/$2/g" \
@@ -30,6 +30,9 @@ function generateFromTemplate {
         -e "s/\s*#.*$//" \
         -e "/^\s*$/d" \
         template/template-org-pod.yaml
+  elif [[ "$TYPE" == "peer_start" ]]; then
+    sed -e "s/\${PORT}/$1/g" \
+        template/peer_start.sh
   fi
 
 }
@@ -142,7 +145,11 @@ echo
 echo
 echo "Step 4 [Deploy Peer0]"
 echo "$(generateFromTemplate org $MYHOST $HOSTNAME $DOMAIN $PORT $KUBENS peer0 $(hostname -i))" > ${MYHOST}-peer0.yaml
-cp template/peer_start.sh ${PV_PATH}${MYHOST}-pv-volume/peer/home/ 
+
+mkdir -p ${PV_PATH}${MYHOST}-pv-volume/peer/home/
+echo "$(generateFromTemplate peer_start $PORT)" > ${PV_PATH}${MYHOST}-pv-volume/peer/home/peer_start.sh
+chmod a+x ${PV_PATH}${MYHOST}-pv-volume/peer/home/peer_start.sh
+
 echo "  Kubernetes Pod file [${MYHOST}-peer0.yaml] created."
 echo "  Apply generated deployment files to your cluster"
 echo "  'kubectl apply -f ${MYHOST}-peer0.yaml'"
