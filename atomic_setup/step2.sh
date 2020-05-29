@@ -24,9 +24,10 @@ function generateFromTemplate {
         -e "s/\${HOSTNAME}/$2/g" \
         -e "s/\${DOMAIN}/$3/g" \
         -e "s/\${PORT}/$4/g" \
-        -e "s/\${KUBENS}/$5/g" \
-        -e "s/\${MYPEER}/$6/g" \
-        -e "s/\${MYHOSTIP}/$7/g" \
+        -e "s/\${ORG}/$5/g" \
+        -e "s/\${KUBENS}/$6/g" \
+        -e "s/\${MYPEER}/$7/g" \
+        -e "s/\${MYHOSTIP}/$8/g" \
         -e "s/\s*#.*$//" \
         -e "/^\s*$/d" \
         template/template-org-pod.yaml
@@ -144,7 +145,7 @@ fi
 echo
 echo
 echo "Step 4 [Deploy Peer0]"
-echo "$(generateFromTemplate org $MYHOST $HOSTNAME $DOMAIN $PORT $KUBENS peer0 $(hostname -i))" > ${MYHOST}-peer0.yaml
+echo "$(generateFromTemplate org $MYHOST $HOSTNAME $DOMAIN $PORT $ORG $KUBENS peer0 $(hostname -i))" > ${MYHOST}-peer0.yaml
 
 mkdir -p ${PV_PATH}${MYHOST}-pv-volume/peer/home/
 echo "$(generateFromTemplate peer_start $PORT)" > ${PV_PATH}${MYHOST}-pv-volume/peer/home/peer_start.sh
