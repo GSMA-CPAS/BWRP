@@ -64,6 +64,14 @@ spec:
       value: "true"
     - name: CORE_PEER_TLS_KEY_FILE
       value: /etc/hyperledger/fabric/tls/server.key
+    - name: CORE_PEER_TLS_CLIENTAUTHREQUIRED
+      value: "true"
+    - name: CORE_PEER_TLS_CLIENTROOTCAS_FILES
+      value: /etc/hyperledger/fabric/tls/ca.crt
+    - name: CORE_PEER_TLS_CLIENTCERT_FILE
+      value: /etc/hyperledger/fabric/tls/server.crt
+    - name: CORE_PEER_TLS_CLIENTKEY_FILE
+      value: /etc/hyperledger/fabric/tls/server.key
     - name: CORE_PEER_TLS_ROOTCERT_FILE
       value: /etc/hyperledger/fabric/tls/ca.crt
     - name: CORE_PEER_ADDRESSAUTODETECT
