@@ -41,7 +41,7 @@ function generateFromTemplate {
 HOSTFILE="$(cat /etc/hosts |grep ca-${MYHOST}.local | awk '{print $1}')"
 SVCHOST=$(kubectl get svc --selector=io.kompose.service=ca-${MYHOST} -o=jsonpath={.items[*].spec.clusterIP} -n $KUBENS)
 
-if [ "$HOSTFILE" != "$SVCHOST" ] && [ "$HOSTFILE" != "" ]; then
+if [ "$HOSTFILE" != "$SVCHOST" ] || [ "${#HOSTFILE}" == 0 ]; then
    echo "WARN> Host config [/etc/hosts] for 'ca-${MYHOST}.local' or mismatch"
    echo "      Please fix and try again."
    echo

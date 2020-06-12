@@ -12,12 +12,12 @@ if [[ "$sel" == "y" ]] || [[ "$sel" == "Y" ]]; then
     rm -rf ${PV_PATH}${MYHOST}-pv-volume/peer/users/Admin@${HOSTNAME}.${DOMAIN}/
     echo "- removing [${PV_PATH}${MYHOST}-pv-volume/CA/*]"
     rm -rf ${PV_PATH}${MYHOST}-pv-volume/CA/*
-    kubectl delete -f org5-hldid-org-ca.yaml
-    rm org5-hldid-org-ca.yaml
-    kubectl delete -f org5-hldid-org-peer0.yaml
-    rm org5-hldid-org-peer0.yaml
-    kubectl delete -f org5-hldid-org-pv.yaml
-    rm org5-hldid-org-pv.yaml
+    kubectl delete -f ${MYHOST}-ca.yaml
+    rm ${MYHOST}-ca.yaml
+    kubectl delete -f ${MYHOST}-peer0.yaml
+    rm ${MYHOST}-peer0.yaml
+    kubectl delete -f ${MYHOST}-pv.yaml
+    rm ${MYHOST}-pv.yaml
     rm -rf fabric-ca-client
 fi
 echo
