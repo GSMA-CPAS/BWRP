@@ -88,11 +88,11 @@ ca:
   # Name of this CA
   name: ca.${HOSTNAME}.${DOMAIN}
   # Key file (is only used to import a private key into BCCSP)
-  keyfile:
+  keyfile: /etc/hyperledger/fabric-ca-server/priv_key.pem 
   # Certificate file (default: ca-cert.pem)
-  certfile:
+  certfile: /etc/hyperledger/fabric-ca-server/ca-cert.pem
   # Chain file
-  chainfile:
+  chainfile: /etc/hyperledger/fabric-ca-server/ca-chain.pem
 
 #############################################################################
 #  The gencrl REST endpoint is used to generate a CRL that contains revoked

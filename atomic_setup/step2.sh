@@ -38,11 +38,43 @@ function generateFromTemplate {
 
 }
 
-HOSTFILE="$(cat /etc/hosts |grep ca-${MYHOST}.local | awk '{print $1}')"
+function process_pem {
+    path=$1
+    shift
+    mkdir tmp
+    mv ${path}* ./tmp/processing.pem
+    while read line
+    do
+        if [ "${line//END}" != "$line" ]; then
+            txt="$txt$line\n"
+            subject=`printf -- "$txt" | openssl x509 -subject -noout |awk '//{gsub("subject=", "");  print}'`
+#            printf -- "$subject"
+#            printf -- "$txt"
+            IFS=',' read -r -a dn <<< $subject
+            for element in "${dn[@]}"
+            do
+                IFS='=' read -r -a item <<< $element
+                key=`echo ${item[0]} |awk '//{gsub(/^[ \t]+|[ \t]+$/, "", $2);  print}'`
+                if [ "$key" == "CN" ]; then
+                    val=`echo ${item[1]} |awk '//{gsub(/^[ \t]+|[ \t]+$/, "", $2); gsub(" ", "_");  print}'`
+                    break
+                fi
+            done
+            printf -- "$txt" > "${path}${val}-cert.pem"
+            txt=""
+        else
+            txt="$txt$line\n"
+        fi
+    done < ./tmp/processing.pem
+    rm -rf tmp
+
+}
+
+HOSTFILE="$(cat /etc/hosts |grep ca-${MYHOST}.${KUBENS} | awk '{print $1}')"
 SVCHOST=$(kubectl get svc --selector=io.kompose.service=ca-${MYHOST} -o=jsonpath={.items[*].spec.clusterIP} -n $KUBENS)
 
 if [ "$HOSTFILE" != "$SVCHOST" ] || [ "${#HOSTFILE}" == 0 ]; then
-   echo "WARN> Host config [/etc/hosts] for 'ca-${MYHOST}.local' or mismatch"
+   echo "WARN> Host config [/etc/hosts] for 'ca-${MYHOST}.${KUBENS}' or mismatch"
    echo "      Please fix and try again."
    echo
    cat /etc/hosts
@@ -78,13 +110,18 @@ if [ -d "${PV_PATH}${MYHOST}-pv-volume/peer/peers/peer0.${HOSTNAME}.${DOMAIN}/" 
           exit 0
     fi
 else 
-    ./bin/fabric-ca-client enroll -u https://admin:${CA_ADMINPW}@ca-${MYHOST}.local:${CA_PORT} --caname ca.${HOSTNAME}.${DOMAIN} -H ${FABRIC_CA_HOME} --tls.certfiles ${FABRIC_CA_TLS}
+    ./bin/fabric-ca-client enroll -u https://admin:${CA_ADMINPW}@ca-${MYHOST}.${KUBENS}:${CA_PORT} --caname ca.${HOSTNAME}.${DOMAIN} -H ${FABRIC_CA_HOME} --tls.certfiles ${FABRIC_CA_TLS}
     ./bin/fabric-ca-client register --caname ca.${HOSTNAME}.${DOMAIN} --id.name peer0 --id.secret peer0${CA_ADMINPW} --id.type peer -H ${FABRIC_CA_HOME} --tls.certfiles ${FABRIC_CA_TLS}
 
     mkdir -p ${PEER_BASE}
-    ./bin/fabric-ca-client enroll -u https://peer0:peer0${CA_ADMINPW}@ca-${MYHOST}.local:${CA_PORT} --caname ca.${HOSTNAME}.${DOMAIN} -H ${FABRIC_CA_HOME} -M ${PEER_BASE}msp --csr.hosts peer0.${HOSTNAME}.${DOMAIN} --tls.certfiles ${FABRIC_CA_TLS}
+    ./bin/fabric-ca-client enroll -u https://peer0:peer0${CA_ADMINPW}@ca-${MYHOST}.${KUBENS}:${CA_PORT} --caname ca.${HOSTNAME}.${DOMAIN} -H ${FABRIC_CA_HOME} -M ${PEER_BASE}msp --csr.hosts peer0.${HOSTNAME}.${DOMAIN} --tls.certfiles ${FABRIC_CA_TLS}
 
-    mv ${PEER_BASE}msp/cacerts/* ${PEER_BASE}msp/cacerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem
+    process_pem "${PEER_BASE}msp/cacerts/"
+    process_pem "${PEER_BASE}msp/intermediatecerts/"
+    mkdir ${PEER_BASE}msp/chaincerts/
+    mv ${PEER_BASE}msp/cacerts/* ${PEER_BASE}msp/chaincerts/
+    mv ${PEER_BASE}msp/intermediatecerts/* ${PEER_BASE}msp/chaincerts/
+    cp ${PEER_BASE}msp/chaincerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem ${PEER_BASE}msp/cacerts/
     mv ${PEER_BASE}msp/keystore/* ${PEER_BASE}msp/keystore/priv_sk
     mv ${PEER_BASE}msp/signcerts/* ${PEER_BASE}msp/signcerts/peer0.${HOSTNAME}.${DOMAIN}-cert.pem
 
@@ -92,8 +129,10 @@ else
     echo "$(generateFromTemplate config $HOSTNAME $DOMAIN)" > "${PEER_BASE}msp/config.yaml"
 
 
-    ./bin/fabric-ca-client enroll -u https://peer0:peer0${CA_ADMINPW}@ca-${MYHOST}.local:${CA_PORT} --enrollment.profile tls --caname ca.${HOSTNAME}.${DOMAIN} -H ${FABRIC_CA_HOME} -M ${PEER_BASE}tls --csr.hosts peer0.${HOSTNAME}.${DOMAIN} --tls.certfiles ${FABRIC_CA_TLS}
-    mv ${PEER_BASE}tls/tlscacerts/* ${PEER_BASE}tls/ca.crt
+    ./bin/fabric-ca-client enroll -u https://peer0:peer0${CA_ADMINPW}@ca-${MYHOST}.${KUBENS}:${CA_PORT} --enrollment.profile tls --caname ca.${HOSTNAME}.${DOMAIN} -H ${FABRIC_CA_HOME} -M ${PEER_BASE}tls --csr.hosts peer0.${HOSTNAME}.${DOMAIN} --tls.certfiles ${FABRIC_CA_TLS}
+    process_pem "${PEER_BASE}tls/tlscacerts/"
+    process_pem "${PEER_BASE}tls/tlsintermediatecerts/"
+    cp ${PEER_BASE}tls/tlsintermediatecerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem ${PEER_BASE}tls/ca.crt
     mv ${PEER_BASE}tls/signcerts/* ${PEER_BASE}tls/server.crt
     mv ${PEER_BASE}tls/keystore/* ${PEER_BASE}tls/server.key
 
@@ -119,18 +158,24 @@ else
 
     mkdir -p ${ADMIN_BASE}
 
-    ./bin/fabric-ca-client enroll -u https://${HOSTNAME}admin:${HOSTNAME}${CA_ADMINPW}@ca-${MYHOST}.local:${CA_PORT} --caname ca.${HOSTNAME}.${DOMAIN} -H ${FABRIC_CA_HOME} -M ${ADMIN_BASE}msp --tls.certfiles ${FABRIC_CA_TLS}
+    ./bin/fabric-ca-client enroll -u https://${HOSTNAME}admin:${HOSTNAME}${CA_ADMINPW}@ca-${MYHOST}.${KUBENS}:${CA_PORT} --caname ca.${HOSTNAME}.${DOMAIN} -H ${FABRIC_CA_HOME} -M ${ADMIN_BASE}msp --tls.certfiles ${FABRIC_CA_TLS}
 
-    mv ${ADMIN_BASE}msp/cacerts/* ${ADMIN_BASE}msp/cacerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem
+    process_pem "${ADMIN_BASE}msp/cacerts/"
+    process_pem "${ADMIN_BASE}msp/intermediatecerts/"
+    mkdir ${ADMIN_BASE}msp/chaincerts/
+    mv ${ADMIN_BASE}msp/cacerts/* ${ADMIN_BASE}msp/chaincerts/
+    mv ${ADMIN_BASE}msp/intermediatecerts/* ${ADMIN_BASE}msp/chaincerts/
+    cp ${ADMIN_BASE}msp/chaincerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem ${ADMIN_BASE}msp/cacerts/
     mv ${ADMIN_BASE}msp/keystore/* ${ADMIN_BASE}msp/keystore/priv_sk
     mv ${ADMIN_BASE}msp/signcerts/* ${ADMIN_BASE}msp/signcerts/Admin@${HOSTNAME}.${DOMAIN}-cert.pem
 
     #config.yaml links to cacerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem
     echo "$(generateFromTemplate config $HOSTNAME $DOMAIN)" > "${ADMIN_BASE}msp/config.yaml"
 
-    ./bin/fabric-ca-client enroll -u https://${HOSTNAME}admin:${HOSTNAME}${CA_ADMINPW}@ca-${MYHOST}.local:${CA_PORT} --enrollment.profile tls --caname ca.${HOSTNAME}.${DOMAIN} -H ${FABRIC_CA_HOME} -M ${ADMIN_BASE}tls --tls.certfiles ${FABRIC_CA_TLS}
-
-    mv ${ADMIN_BASE}tls/tlscacerts/* ${ADMIN_BASE}tls/ca.crt
+    ./bin/fabric-ca-client enroll -u https://${HOSTNAME}admin:${HOSTNAME}${CA_ADMINPW}@ca-${MYHOST}.${KUBENS}:${CA_PORT} --enrollment.profile tls --caname ca.${HOSTNAME}.${DOMAIN} -H ${FABRIC_CA_HOME} -M ${ADMIN_BASE}tls --tls.certfiles ${FABRIC_CA_TLS}
+    process_pem "${ADMIN_BASE}tls/tlscacerts/"
+    process_pem "${ADMIN_BASE}tls/tlsintermediatecerts/"
+    cp ${ADMIN_BASE}tls/tlsintermediatecerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem ${ADMIN_BASE}tls/ca.crt
     mv ${ADMIN_BASE}tls/signcerts/* ${ADMIN_BASE}tls/server.crt
     mv ${ADMIN_BASE}tls/keystore/* ${ADMIN_BASE}tls/server.key
 
