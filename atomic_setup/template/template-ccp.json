@@ -19,26 +19,32 @@
             ],
             "certificateAuthorities": [
                 "ca.${HOSTNAME}.${DOMAIN}"
-            ]
+            ],
+            "adminPrivateKey": {
+                "pem": "${ADMINKEYPEM}"
+            },
+            "signedCert":{
+                "pem": "${ADMINCRTPEM}"
+            }
         }
     },
     "orderers": {
         "orderer.hldid.org": {
             "url": "grpcs://orderer.hldid.org:7050",
             "tlsCACerts": {
-                "pem": "-----BEGIN CERTIFICATE-----\nMIICOzCCAeGgAwIBAgIQRM8I5IMibNkF40PQhbjulzAKBggqhkjOPQQDAjBoMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzESMBAGA1UEChMJaGxkaWQub3JnMRgwFgYDVQQDEw90bHNjYS5obGRp\nZC5vcmcwHhcNMjAwNTEzMTIxNjAwWhcNMzAwNTExMTIxNjAwWjBoMQswCQYDVQQG\nEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNj\nbzESMBAGA1UEChMJaGxkaWQub3JnMRgwFgYDVQQDEw90bHNjYS5obGRpZC5vcmcw\nWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAATD1Dw9NNKH/spmBo33Hmmrggznw2VR\nGVIWQ3Luj3Qa26t38AA2f4oV3L6zLCTsGiOhjtlwWdG8gyRAjqm8uFE2o20wazAO\nBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8G\nA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIEm0E6MwlxJuxnNakXxpQpLsUpKuFDlT\nOiY3/boKIG4oMAoGCCqGSM49BAMCA0gAMEUCIQCZidcFGAxbhfxqbwX/KXGE8F8U\nrjmgB8DymKnis8xLmQIgCzAD2emFlG72sfm5i8MqB8D44633o9qpbiWG8KamDF0=\n-----END CERTIFICATE-----\n"
+                "pem": "-----BEGIN CERTIFICATE-----\nMIIByzCCAXKgAwIBAgIULljoHv2F7u5BiQpraZwJ/yoxPegwCgYIKoZIzj0EAwIw\nOzELMAkGA1UEBhMCR0IxDTALBgNVBAoMBEdTTUExHTAbBgNVBAMMFEdTTUEgSW50\nZXJtZWRpYXRlIENBMB4XDTIwMDYyNDExMDIzOVoXDTQ1MDYxMTE1MDAyOVowLjEL\nMAkGA1UEBhMCR0IxDTALBgNVBAoMBEdTTUExEDAOBgNVBAMMB0hMRiBUTFMwWTAT\nBgcqhkjOPQIBBggqhkjOPQMBBwNCAAScoWz7W6I6dIPPnL4g3E2MtT0cSWdt2VUd\nTh57xpnR9fpir9TMCBx8S6eXEXOpfQj6HLrKkzsw7jVDhmhLCixRo2EwXzAPBgNV\nHRMBAf8EBTADAQH/MB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAdBgNV\nHQ4EFgQU89B3Z4gCUZ9JgAr5ecUm8hyp9OUwDgYDVR0PAQH/BAQDAgGmMAoGCCqG\nSM49BAMCA0cAMEQCIHTvMdUUsDmF1zPQBeSC2GATsTwgiVo52gO053dmN6ehAiBz\nvkYbIGcXTLD39oqas3/hCSP1p33ET1CdSzh53fzKPQ==\n-----END CERTIFICATE-----\n\n"
             }
         },
         "orderer2.hldid.org": {
             "url": "grpcs://orderer2.hldid.org:7050",
             "tlsCACerts": {
-                "pem": "-----BEGIN CERTIFICATE-----\nMIICOzCCAeGgAwIBAgIQRM8I5IMibNkF40PQhbjulzAKBggqhkjOPQQDAjBoMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzESMBAGA1UEChMJaGxkaWQub3JnMRgwFgYDVQQDEw90bHNjYS5obGRp\nZC5vcmcwHhcNMjAwNTEzMTIxNjAwWhcNMzAwNTExMTIxNjAwWjBoMQswCQYDVQQG\nEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNj\nbzESMBAGA1UEChMJaGxkaWQub3JnMRgwFgYDVQQDEw90bHNjYS5obGRpZC5vcmcw\nWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAATD1Dw9NNKH/spmBo33Hmmrggznw2VR\nGVIWQ3Luj3Qa26t38AA2f4oV3L6zLCTsGiOhjtlwWdG8gyRAjqm8uFE2o20wazAO\nBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8G\nA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIEm0E6MwlxJuxnNakXxpQpLsUpKuFDlT\nOiY3/boKIG4oMAoGCCqGSM49BAMCA0gAMEUCIQCZidcFGAxbhfxqbwX/KXGE8F8U\nrjmgB8DymKnis8xLmQIgCzAD2emFlG72sfm5i8MqB8D44633o9qpbiWG8KamDF0=\n-----END CERTIFICATE-----\n"
+                "pem": "-----BEGIN CERTIFICATE-----\nMIIByzCCAXKgAwIBAgIULljoHv2F7u5BiQpraZwJ/yoxPegwCgYIKoZIzj0EAwIw\nOzELMAkGA1UEBhMCR0IxDTALBgNVBAoMBEdTTUExHTAbBgNVBAMMFEdTTUEgSW50\nZXJtZWRpYXRlIENBMB4XDTIwMDYyNDExMDIzOVoXDTQ1MDYxMTE1MDAyOVowLjEL\nMAkGA1UEBhMCR0IxDTALBgNVBAoMBEdTTUExEDAOBgNVBAMMB0hMRiBUTFMwWTAT\nBgcqhkjOPQIBBggqhkjOPQMBBwNCAAScoWz7W6I6dIPPnL4g3E2MtT0cSWdt2VUd\nTh57xpnR9fpir9TMCBx8S6eXEXOpfQj6HLrKkzsw7jVDhmhLCixRo2EwXzAPBgNV\nHRMBAf8EBTADAQH/MB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAdBgNV\nHQ4EFgQU89B3Z4gCUZ9JgAr5ecUm8hyp9OUwDgYDVR0PAQH/BAQDAgGmMAoGCCqG\nSM49BAMCA0cAMEQCIHTvMdUUsDmF1zPQBeSC2GATsTwgiVo52gO053dmN6ehAiBz\nvkYbIGcXTLD39oqas3/hCSP1p33ET1CdSzh53fzKPQ==\n-----END CERTIFICATE-----\n\n"
             }
         }
     },
     "peers": {
         "peer0.${HOSTNAME}.${DOMAIN}:${PORT}": {
-            "url": "grpcs://localhost:${PORT}",
+            "url": "grpcs://peer0.${HOSTNAME}.${DOMAIN}:${PORT}",
             "tlsCACerts": {
                 "pem": "${PEERPEM}"
             },
@@ -50,7 +56,7 @@
     },
     "certificateAuthorities": {
         "ca.${HOSTNAME}.${DOMAIN}": {
-            "url": "https://localhost:${CAPORT}",
+            "url": "https://ca-${MYHOST}.${KUBENS}:${CAPORT}",
             "caName": "ca.${HOSTNAME}.${DOMAIN}",
             "tlsCACerts": {
                 "pem": "${CAPEM}"

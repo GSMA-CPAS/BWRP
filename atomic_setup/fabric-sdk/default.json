@@ -1,0 +1,5 @@
+{
+"initialize-with-discovery": true,
+"discovery-cache-life": 300000
+}
+

@@ -8,6 +8,10 @@ function one_line_pem {
 function json_ccp {
     local PP=$(one_line_pem ${PV_PATH}${MYHOST}-pv-volume/peer/peers/peer0.${HOSTNAME}.${DOMAIN}/msp/tlscacerts/tlsca.${HOSTNAME}.${DOMAIN}-cert.pem)
     local CP=$(one_line_pem ${PV_PATH}${MYHOST}-pv-volume/CA/tls-cert.pem)
+    local AKP=$(one_line_pem ${PV_PATH}${MYHOST}-pv-volume/peer/users/Admin@${HOSTNAME}.${DOMAIN}/msp/keystore/priv_sk)
+    local ACP=$(one_line_pem ${PV_PATH}${MYHOST}-pv-volume/peer/users/Admin@${HOSTNAME}.${DOMAIN}/msp/signcerts/Admin@${HOSTNAME}.${DOMAIN}-cert.pem)
+    local kubens=${KUBENS}
+    local myhost=${MYHOST}
 
     sed -e "s/\${MSPID}/$1MSP/g" \
         -e "s/\${ORG}/$1/g" \
@@ -15,8 +19,12 @@ function json_ccp {
         -e "s/\${DOMAIN}/$3/g" \
         -e "s/\${PORT}/$4/g" \
         -e "s/\${CAPORT}/$5/g" \
+        -e "s#\${KUBENS}#$kubens#" \
+        -e "s#\${MYHOST}#$myhost#" \
         -e "s#\${PEERPEM}#$PP#" \
         -e "s#\${CAPEM}#$CP#" \
+        -e "s#\${ADMINKEYPEM}#$AKP#" \
+        -e "s#\${ADMINCRTPEM}#$ACP#" \
         template/template-ccp.json
 }
 

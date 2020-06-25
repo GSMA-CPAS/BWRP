@@ -1,14 +1,14 @@
 NodeOUs:
   Enable: true
   ClientOUIdentifier:
-    Certificate: cacerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem
+    Certificate: intermediatecerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem
     OrganizationalUnitIdentifier: client
   PeerOUIdentifier:
-    Certificate: cacerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem
+    Certificate: intermediatecerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem
     OrganizationalUnitIdentifier: peer
   AdminOUIdentifier:
-    Certificate: cacerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem
+    Certificate: intermediatecerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem
     OrganizationalUnitIdentifier: admin
   OrdererOUIdentifier:
-    Certificate: cacerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem
+    Certificate: intermediatecerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem
     OrganizationalUnitIdentifier: orderer

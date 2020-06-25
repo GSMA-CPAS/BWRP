@@ -58,10 +58,12 @@ spec:
       value: ${ORG}MSP
     - name: CORE_PEER_PROFILE_ENABLED
       value: "true"
-    - name: CORE_PEER_TLS_CERT_FILE
-      value: /etc/hyperledger/fabric/tls/server.crt
     - name: CORE_PEER_TLS_ENABLED
       value: "true"
+    - name: CORE_PEER_TLS_ROOTCERT_FILE
+      value: /etc/hyperledger/fabric/tls/ca.crt
+    - name: CORE_PEER_TLS_CERT_FILE
+      value: /etc/hyperledger/fabric/tls/server.crt
     - name: CORE_PEER_TLS_KEY_FILE
       value: /etc/hyperledger/fabric/tls/server.key
     - name: CORE_PEER_TLS_CLIENTAUTHREQUIRED
@@ -72,8 +74,6 @@ spec:
       value: /etc/hyperledger/fabric/tls/server.crt
     - name: CORE_PEER_TLS_CLIENTKEY_FILE
       value: /etc/hyperledger/fabric/tls/server.key
-    - name: CORE_PEER_TLS_ROOTCERT_FILE
-      value: /etc/hyperledger/fabric/tls/ca.crt
     - name: CORE_PEER_ADDRESSAUTODETECT
       value: "true"
     - name: CORE_VM_ENDPOINT

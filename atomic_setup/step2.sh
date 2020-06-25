@@ -118,10 +118,10 @@ else
 
     process_pem "${PEER_BASE}msp/cacerts/"
     process_pem "${PEER_BASE}msp/intermediatecerts/"
-    mkdir ${PEER_BASE}msp/chaincerts/
-    mv ${PEER_BASE}msp/cacerts/* ${PEER_BASE}msp/chaincerts/
-    mv ${PEER_BASE}msp/intermediatecerts/* ${PEER_BASE}msp/chaincerts/
-    cp ${PEER_BASE}msp/chaincerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem ${PEER_BASE}msp/cacerts/
+#    mkdir ${PEER_BASE}msp/chaincerts/
+#    mv ${PEER_BASE}msp/cacerts/* ${PEER_BASE}msp/chaincerts/
+#    mv ${PEER_BASE}msp/intermediatecerts/* ${PEER_BASE}msp/chaincerts/
+#    cp ${PEER_BASE}msp/chaincerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem ${PEER_BASE}msp/cacerts/
     mv ${PEER_BASE}msp/keystore/* ${PEER_BASE}msp/keystore/priv_sk
     mv ${PEER_BASE}msp/signcerts/* ${PEER_BASE}msp/signcerts/peer0.${HOSTNAME}.${DOMAIN}-cert.pem
 
@@ -162,10 +162,10 @@ else
 
     process_pem "${ADMIN_BASE}msp/cacerts/"
     process_pem "${ADMIN_BASE}msp/intermediatecerts/"
-    mkdir ${ADMIN_BASE}msp/chaincerts/
-    mv ${ADMIN_BASE}msp/cacerts/* ${ADMIN_BASE}msp/chaincerts/
-    mv ${ADMIN_BASE}msp/intermediatecerts/* ${ADMIN_BASE}msp/chaincerts/
-    cp ${ADMIN_BASE}msp/chaincerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem ${ADMIN_BASE}msp/cacerts/
+#    mkdir ${ADMIN_BASE}msp/chaincerts/
+#    mv ${ADMIN_BASE}msp/cacerts/* ${ADMIN_BASE}msp/chaincerts/
+#    mv ${ADMIN_BASE}msp/intermediatecerts/* ${ADMIN_BASE}msp/chaincerts/
+#    cp ${ADMIN_BASE}msp/chaincerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem ${ADMIN_BASE}msp/cacerts/
     mv ${ADMIN_BASE}msp/keystore/* ${ADMIN_BASE}msp/keystore/priv_sk
     mv ${ADMIN_BASE}msp/signcerts/* ${ADMIN_BASE}msp/signcerts/Admin@${HOSTNAME}.${DOMAIN}-cert.pem
 
