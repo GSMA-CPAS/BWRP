@@ -45,7 +45,7 @@ if [ -f "${MYHOST}-pv.yaml" ]; then
     echo "WARN> To generate, please remove the exiting file."
     echo
 else
-    echo "$(generateFromTemplate pv $MYHOST $PV_SIZE $PV_PATH $KUBENS)" > ${MYHOST}-pv.yaml
+    generateFromTemplate pv $MYHOST $PV_SIZE $PV_PATH $KUBENS > ${MYHOST}-pv.yaml
     echo "[${MYHOST}-pv.yaml] generated."
     echo
 fi
@@ -68,7 +68,7 @@ if [ -f "${MYHOST}-ca.yaml" ]; then
     echo
 else
 
-    echo "$(generateFromTemplate ca $MYHOST $HOSTNAME $DOMAIN $CA_PORT $KUBENS $CA_ADMINPW)" > ${MYHOST}-ca.yaml
+    generateFromTemplate ca $MYHOST $HOSTNAME $DOMAIN $CA_PORT $KUBENS $CA_ADMINPW > ${MYHOST}-ca.yaml
     echo "[${MYHOST}-ca.yaml] generated."
     echo
 fi
@@ -127,7 +127,7 @@ else
 fi
 
 
-echo "$(generateFromTemplate ca-config $HOSTNAME $DOMAIN $CA_ADMINPW $CA_C $CA_ST $CA_L $CA_O ${CA_OU})" > ${PV_PATH}${MYHOST}-pv-volume/CA/fabric-ca-server-config.yaml
+generateFromTemplate ca-config $HOSTNAME $DOMAIN $CA_ADMINPW $CA_C $CA_ST $CA_L $CA_O ${CA_OU} > ${PV_PATH}${MYHOST}-pv-volume/CA/fabric-ca-server-config.yaml
 echo "  Kubernetes Deployment file [${MYHOST}-ca.yaml] created."
 echo "  Apply generated deployment files to your cluster "
 echo "  'kubectl apply -f ${MYHOST}-ca.yaml'"

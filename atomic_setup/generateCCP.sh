@@ -44,8 +44,8 @@ function yaml_ccp {
 }
 
 
-echo "$(json_ccp $ORG $HOSTNAME $DOMAIN $PORT $CA_PORT $ORD_DOMAIN $ORD_HOSTNAME1 $ORD_PORT1 $ORD_HOSTNAME2 $ORD_PORT2 $PEERPEM $CAPEM)" > ${PV_PATH}${MYHOST}-pv-volume/peer/connection-${DOMAIN}.json
-echo "$(yaml_ccp $ORG $HOSTNAME $DOMAIN $PORT $CA_PORT $ORD_DOMAIN $ORD_HOSTNAME1 $ORD_PORT1 $ORD_HOSTNAME2 $ORD_PORT2 $PEERPEM $CAPEM)" > ${PV_PATH}${MYHOST}-pv-volume/peer/connection-${DOMAIN}.yaml
+json_ccp $ORG $HOSTNAME $DOMAIN $PORT $CA_PORT $ORD_DOMAIN $ORD_HOSTNAME1 $ORD_PORT1 $ORD_HOSTNAME2 $ORD_PORT2 $PEERPEM $CAPEM > ${PV_PATH}${MYHOST}-pv-volume/peer/connection-${DOMAIN}.json
+yaml_ccp $ORG $HOSTNAME $DOMAIN $PORT $CA_PORT $ORD_DOMAIN $ORD_HOSTNAME1 $ORD_PORT1 $ORD_HOSTNAME2 $ORD_PORT2 $PEERPEM $CAPEM > ${PV_PATH}${MYHOST}-pv-volume/peer/connection-${DOMAIN}.yaml
 
 echo "Common Connection Profiles created at "
 echo "[${PV_PATH}${MYHOST}-pv-volume/peer/connection-${DOMAIN}.json]"

@@ -126,7 +126,7 @@ else
     mv ${PEER_BASE}msp/signcerts/* ${PEER_BASE}msp/signcerts/peer0.${HOSTNAME}.${DOMAIN}-cert.pem
 
     #config.yaml links to cacerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem
-    echo "$(generateFromTemplate config $HOSTNAME $DOMAIN)" > "${PEER_BASE}msp/config.yaml"
+    generateFromTemplate config $HOSTNAME $DOMAIN > "${PEER_BASE}msp/config.yaml"
 
 
     ./bin/fabric-ca-client enroll -u https://peer0:peer0${CA_ADMINPW}@ca-${MYHOST}.${KUBENS}:${CA_PORT} --enrollment.profile tls --caname ca.${HOSTNAME}.${DOMAIN} -H ${FABRIC_CA_HOME} -M ${PEER_BASE}tls --csr.hosts peer0.${HOSTNAME}.${DOMAIN} --tls.certfiles ${FABRIC_CA_TLS}
@@ -142,7 +142,7 @@ else
 
 
     mkdir ./tmp
-    echo "$(generateFromTemplate ca-config $ORG $HOSTNAME $DOMAIN $PORT $PEER_BASE)" > ./tmp/configtx.yaml
+    generateFromTemplate ca-config $ORG $HOSTNAME $DOMAIN $PORT $PEER_BASE > ./tmp/configtx.yaml
     export FABRIC_CFG_PATH=$PWD/tmp
     CONF=${PV_PATH}${MYHOST}-pv-volume/peer/${ORG}.json
     ./bin/configtxgen -printOrg ${ORG}MSP > ./tmp/${ORG}.json
@@ -170,7 +170,7 @@ else
     mv ${ADMIN_BASE}msp/signcerts/* ${ADMIN_BASE}msp/signcerts/Admin@${HOSTNAME}.${DOMAIN}-cert.pem
 
     #config.yaml links to cacerts/ca.${HOSTNAME}.${DOMAIN}-cert.pem
-    echo "$(generateFromTemplate config $HOSTNAME $DOMAIN)" > "${ADMIN_BASE}msp/config.yaml"
+    generateFromTemplate config $HOSTNAME $DOMAIN > "${ADMIN_BASE}msp/config.yaml"
 
     ./bin/fabric-ca-client enroll -u https://${HOSTNAME}admin:${HOSTNAME}${CA_ADMINPW}@ca-${MYHOST}.${KUBENS}:${CA_PORT} --enrollment.profile tls --caname ca.${HOSTNAME}.${DOMAIN} -H ${FABRIC_CA_HOME} -M ${ADMIN_BASE}tls --tls.certfiles ${FABRIC_CA_TLS}
     process_pem "${ADMIN_BASE}tls/tlscacerts/"
@@ -190,10 +190,10 @@ fi
 echo
 echo
 echo "Step 4 [Deploy Peer0]"
-echo "$(generateFromTemplate org $MYHOST $HOSTNAME $DOMAIN $PORT $ORG $KUBENS peer0 $(hostname -i))" > ${MYHOST}-peer0.yaml
+generateFromTemplate org $MYHOST $HOSTNAME $DOMAIN $PORT $ORG $KUBENS peer0 $(hostname -i) > ${MYHOST}-peer0.yaml
 
 mkdir -p ${PV_PATH}${MYHOST}-pv-volume/peer/home/
-echo "$(generateFromTemplate peer_start $PORT)" > ${PV_PATH}${MYHOST}-pv-volume/peer/home/peer_start.sh
+generateFromTemplate peer_start $PORT > ${PV_PATH}${MYHOST}-pv-volume/peer/home/peer_start.sh
 chmod a+x ${PV_PATH}${MYHOST}-pv-volume/peer/home/peer_start.sh
 
 echo "  Kubernetes Pod file [${MYHOST}-peer0.yaml] created."
@@ -201,8 +201,7 @@ echo "  Apply generated deployment files to your cluster"
 echo "  'kubectl apply -f ${MYHOST}-peer0.yaml'"
 echo
 echo "  wait for 5 seconds, and exec './cli.sh peer channel list'"
-echo "  you should see ' Endorser and orderer connections initialized
-Channels peers has joined:'"
+echo "  you should see ' Endorser and orderer connections initialized Channels peers has joined:'"
 echo
 echo "  Wait for further instruction from DLT Administrator after they have processed your subscription. (you need to send the JSON file)"
 echo
