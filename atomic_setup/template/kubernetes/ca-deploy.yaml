@@ -5,7 +5,7 @@ metadata:
   labels:
     k8s-app: ca-${MYHOST}
     io.kompose.service: ca-${MYHOST}
-  name: ca-${MYHOST}
+  name: ca
   namespace: ${KUBENS}
 spec:
   replicas: 1
@@ -45,7 +45,7 @@ spec:
         resources: {}
         volumeMounts:
         - mountPath: /etc/hyperledger/fabric-ca-server
-          name: ca-${MYHOST}-pvc
+          name: data-pvc
           subPath: CA
 #      hostAliases:
 #      - ip: 127.0.0.1
@@ -56,6 +56,6 @@ spec:
       restartPolicy: Always
 #      serviceAccountName: "ca-${MYHOST}"
       volumes:
-      - name: ca-${MYHOST}-pvc
+      - name: data-pvc
         persistentVolumeClaim:
-          claimName: ${MYHOST}-pv-claim
+          claimName: data-claim

@@ -17,6 +17,9 @@ SUBJECT="/C=${CA_C}/ST=${CA_ST}/L=${CA_L}/O=${CA_O}/OU=${CA_OU}/CN=ca.${HOSTNAME
 
 CA_CHAIN_INPUT=template/cert/ca-chain.pem
 
+# make sure the output path exist
+mkdir -p $CFG_CONFIG_PATH_CA
+
 echo "> generating private key $FILENAME_PK"
 openssl ecparam -name prime256v1 -genkey -noout -out $FILENAME_PK || exit 1
 
