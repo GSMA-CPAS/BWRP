@@ -9,7 +9,7 @@ HOSTNAME="org1"
 DOMAIN="example.com"
 
 #CA config
-CA_ADMINPW=$(uname -a | md5sum |awk '{print $1}')
+CA_ADMINPW=$(openssl rand -base64 32)
 CA_PORT="7054"
 #CSR Details. C=Country, ST=State, L=Locale, O=Organizational, OU=Organizational Unit
 #cannot leave empty, or else will break file generation
