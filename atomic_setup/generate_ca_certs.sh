@@ -15,7 +15,7 @@ FILENAME_CERT="$CONFIG_PATH_CA/ca-cert.pem"
 
 SUBJECT="/C=${CA_C}/ST=${CA_ST}/L=${CA_L}/O=${CA_O}/OU=${CA_OU}/CN=ca.${HOSTNAME}.${DOMAIN}/2.5.4.41=${ORG}MSP"
 
-CA_CHAIN_INPUT=template/certs/ca-chain.pem
+CA_CHAIN_INPUT=template/cert/ca-chain.pem
 
 echo "> generating private key $FILENAME_PK"
 openssl ecparam -name prime256v1 -genkey -noout -out $FILENAME_PK || exit 1

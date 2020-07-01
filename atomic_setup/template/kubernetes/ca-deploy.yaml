@@ -59,26 +59,3 @@ spec:
       - name: ca-${MYHOST}-pvc
         persistentVolumeClaim:
           claimName: ${MYHOST}-pv-claim
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-  labels:
-    io.kompose.service: ca-${MYHOST}
-  name: ca-${MYHOST}
-  namespace: ${KUBENS}
-spec:
-# enable external access
-#  externalTrafficPolicy: Cluster
-#  externalIPs:
-#  - ${MYHOSTIP}
-#  type: NodePort
-  ports:
-  - name: "ca-${MYHOST}"
-    port: ${CA_PORT}
-    targetPort: ${CA_PORT}
-#    nodePort: 30754
-  selector:
-    io.kompose.service: ca-${MYHOST}
-

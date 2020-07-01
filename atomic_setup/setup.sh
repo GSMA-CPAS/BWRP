@@ -27,11 +27,12 @@ PORT="7050"
 PV_SIZE="10Gi"
 #Local Persistance Volume Path. Will autho generate SUB DIR of <HOSTNAME>-<DOMAIN>
 PV_PATH="/mnt/data/"
+PV_STORAGE_CLASS="gp2" #"local-storage"
 
 #FIXME: make this shorter, typing in the full name all the time when using kubectl is no fun...
 MYHOST=${HOSTNAME}-$(echo $DOMAIN |awk '{gsub(/\./, "-");  print}')
 
-CONFIG_PATH=./config
+CONFIG_PATH=./generated_config
 CONFIG_PATH_CA=$CONFIG_PATH/ca
 
 CERT_SIGNER_URL=https://hldid.org/ejbca/certreq

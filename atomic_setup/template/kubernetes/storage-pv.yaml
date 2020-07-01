@@ -6,7 +6,7 @@ metadata:
   labels:
     type: local
 spec:
-  storageClassName: local-storage
+  storageClassName: ${PV_STORAGE_CLASS}
   capacity:
     storage: ${PV_SIZE}
   accessModes:
@@ -20,7 +20,7 @@ metadata:
   name: ${MYHOST}-pv-claim
   namespace: ${KUBENS}
 spec:
-  storageClassName: local-storage
+  storageClassName: ${PV_STORAGE_CLASS}
   accessModes:
     - ReadWriteOnce
   resources:

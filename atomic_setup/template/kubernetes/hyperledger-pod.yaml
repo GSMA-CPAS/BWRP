@@ -126,28 +126,3 @@ spec:
   - name: ${MYHOST}-pvc
     persistentVolumeClaim:
       claimName: ${MYHOST}-pv-claim
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-  labels:
-    io.kompose.service: ${MYPEER}-${MYHOST}
-  name: ${MYPEER}-${MYHOST}
-  namespace: ${KUBENS}
-spec:
-  externalTrafficPolicy: Cluster
-  externalIPs:
-  - ${MYHOSTIP}
-  type: NodePort
-  ports:
-  - name: "default"
-    port: ${PORT}
-    protocol: TCP
-    targetPort: ${PORT}
-    nodePort: 30758
-  selector:
-    io.kompose.service: ${MYPEER}-${MYHOST}
-  sessionAffinity: None
-

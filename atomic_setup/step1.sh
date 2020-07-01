@@ -1,80 +1,23 @@
 #!/bin/bash
 . setup.sh
 
-mkdir output
-cd template
-for filename in `ls`; do
-  echo "> processing template $filename"
-  envsubst < $filename > ../output/$filename
+# process all template files
+for dir in $(ls template); do
+  output_dir=$CONFIG_PATH/$dir
+  mkdir -p $output_dir
+  for input in $(ls template/$dir); do
+    output=$output_dir/$input
+    echo "> processing template/$dir/$input -> $output"
+    envsubst < template/$dir/$input > $output
+  done
 done
+exit
+echo "> deploying persistant volume"
+kubectl -n $KUBENS apply -f generated_config/kubernetes/storage-pv.yaml
+PVC=$(kubectl get pods | grep xxx | awk '{print $1}')
+kubectl -n $KUBENS wait --timeout=5m --for=condition=ready pv/$PVC
+exit
 
-
-/config/
-/config/kubernetes <-- yaml based on templates
-/config/certs      <-- ca-cert.pem, ...
-
-
-function generateFromTemplate {
-  TYPE=$1
-  shift
-
-  if [[ "$TYPE" == "pv" ]]; then
-    path=`echo "${3}" | awk '{gsub(/\//, "\\\/");  print}'`
-
-    PV_PATH=PV_PATH
-    sed -e "s/\${MYHOST}/$1/g" \
-        -e "s/\${PV_SIZE}/$2/g" \
-        -e "s/\${PV_PATH}/$path/g" \
-        -e "s/\${KUBENS}/$4/g" \
-        -e "s/\s*#.*$//" \
-        -e "/^\s*$/d" \
-        template/template-pv.yaml
-  elif [[ "$TYPE" == "ca" ]]; then
-    sed -e "s/\${MYHOST}/$1/g" \
-        -e "s/\${HOSTNAME}/$2/g" \
-        -e "s/\${DOMAIN}/$3/g" \
-        -e "s/\${CA_PORT}/$4/g" \
-        -e "s/\${KUBENS}/$5/g" \
-        -e "s/\${CA_ADMINPW}/$6/g" \
-        -e "s/\s*#.*$//" \
-        -e "/^\s*$/d" \
-        template/template-ca.yaml
-  elif [[ "$TYPE" == "ca-config" ]]; then
-    sed -e "s/\${HOSTNAME}/$1/g" \
-        -e "s/\${DOMAIN}/$2/g" \
-        -e "s/\${CA_ADMINPW}/$3/g" \
-        -e "s/\${CA_C}/$4/g" \
-        -e "s/\${CA_ST}/$5/g" \
-        -e "s/\${CA_L}/$6/g" \
-        -e "s/\${CA_O}/$7/g" \
-        -e "s/\${CA_OU}/$8/g" \
-        -e "s/\${BASE}/$base/g" \
-        ${BASE}template/fabric-ca-server-config.yaml
-  fi
-}
-
-
-echo "Step 1 [Deploy Persistant Volume]"
-if [ -f "${MYHOST}-pv.yaml" ]; then
-    echo "WARN> Existing deployment file [${MYHOST}-pv.yaml] exist. Not creating new one."
-    echo "WARN> To generate, please remove the exiting file."
-    echo
-else
-    generateFromTemplate pv $MYHOST $PV_SIZE $PV_PATH $KUBENS > ${MYHOST}-pv.yaml
-    echo "[${MYHOST}-pv.yaml] generated."
-    echo
-fi
-
-echo "  We need to create a 'shared' Persistant Volume that will be used by Both CA and Peer."
-echo "  CA files will be located under [${PV_PATH}${MYHOST}-pv-volume/CA/]"
-echo "  Peer files will be located under [${PV_PATH}${MYHOST}-pv-volume/peer/]"
-echo 
-echo "  Apply generated deployment files to your cluster "
-echo "  'kubectl apply -f ${MYHOST}-pv.yaml'"
-echo
-echo
-
-sleep 5
 
 echo "Step 2 [Deploy Certificate Authority]"
 if [ -f "${MYHOST}-ca.yaml" ]; then
