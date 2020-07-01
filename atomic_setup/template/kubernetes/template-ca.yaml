@@ -25,7 +25,7 @@ spec:
       - args:
         - sh
         - -c
-        - fabric-ca-server start -b admin:${ADMINPW} -d
+        - fabric-ca-server start -b admin:${CA_ADMINPW} -d
         env:
         - name: FABRIC_CA_SERVER_CSR_HOSTS
           value: localhost,ca.${HOSTNAME}.${DOMAIN},ca-${MYHOST}.${KUBENS}

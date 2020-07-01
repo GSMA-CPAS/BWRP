@@ -1,12 +1,27 @@
 #!/bin/bash
 . setup.sh
 
+mkdir output
+cd template
+for filename in `ls`; do
+  echo "> processing template $filename"
+  envsubst < $filename > ../output/$filename
+done
+
+
+/config/
+/config/kubernetes <-- yaml based on templates
+/config/certs      <-- ca-cert.pem, ...
+
+
 function generateFromTemplate {
   TYPE=$1
   shift
 
   if [[ "$TYPE" == "pv" ]]; then
     path=`echo "${3}" | awk '{gsub(/\//, "\\\/");  print}'`
+
+    PV_PATH=PV_PATH
     sed -e "s/\${MYHOST}/$1/g" \
         -e "s/\${PV_SIZE}/$2/g" \
         -e "s/\${PV_PATH}/$path/g" \
@@ -20,14 +35,14 @@ function generateFromTemplate {
         -e "s/\${DOMAIN}/$3/g" \
         -e "s/\${CA_PORT}/$4/g" \
         -e "s/\${KUBENS}/$5/g" \
-        -e "s/\${ADMINPW}/$6/g" \
+        -e "s/\${CA_ADMINPW}/$6/g" \
         -e "s/\s*#.*$//" \
         -e "/^\s*$/d" \
         template/template-ca.yaml
   elif [[ "$TYPE" == "ca-config" ]]; then
     sed -e "s/\${HOSTNAME}/$1/g" \
         -e "s/\${DOMAIN}/$2/g" \
-        -e "s/\${ADMINPW}/$3/g" \
+        -e "s/\${CA_ADMINPW}/$3/g" \
         -e "s/\${CA_C}/$4/g" \
         -e "s/\${CA_ST}/$5/g" \
         -e "s/\${CA_L}/$6/g" \
