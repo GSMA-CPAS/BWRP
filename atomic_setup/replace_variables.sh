@@ -29,26 +29,3 @@ for file in $(find template/ -type f -printf "%P\n"); do
 	fi;
 done;
 
-
-#for varname in ${!CFG_*}; do
-	#KEY="[${varname:4}]"
-	#VAL="${!varname}"
-	#echo "> processing var $KEY"
-		#if grep -q '$KEY' "$file"; then
-  			#echo "MATCHED '$KEY' in $file";
-		#fi;
-	#done;
-#done;
-#
-#for filename in *.yaml; do
-    #modFile="mod$filename"
-    #while IFS='' read -r line || [[ -n "$line" ]]; do
-        #modified=${line//\[org\]/$ORG_NAME_LOWERCASE}
-#
-##for file in `find .`; do
-##
-#	echo "> setting variables in file $file";
-#for varname in ${!CFG_*}; do
-	#KEY="${varname:4}"
-	#echo "$KEY -> ${!varname}";
-#done;
