@@ -1,73 +1,72 @@
 #!/bin/bash
-. setup.sh
+# abort processing on the first error
+set -e -o pipefail
 
-CA_URL="ca-$MYHOST.$KUBENS:$CA_PORT"
-CA_ROOT_DIT="/mnt/data/CA"
+# load config
+. setup.cfg
+
+CA_URL="ca-$CFG_MYHOST.$CFG_KUBENS:$CFG_CA_PORT"
+CA_ROOT_DIR="/mnt/data/CA"
 CA_CLIENT_DIR="/mnt/data/ca-client"
-CA_CLIENT_OPTS="--caname ca.$HOSTNAME.$DOMAIN -H $CA_CLIENT_DIR --tls.certfiles $CA_ROOT_DIT/tls-cert.pem"
-PEER_DIR="/mnt/data/peer"
-PEER_BASE="$PEER_DIR/peers/peer0.$HOSTNAME.$DOMAIN/"
+CA_CLIENT_OPTS="--caname ca.$CFG_HOSTNAME.$CFG_DOMAIN -H $CA_CLIENT_DIR --tls.certfiles $CA_ROOT_DIR/tls-cert.pem"
 
 echo "> setting namespace"
-kubectl config set-context --current --namespace=$KUBENS
+kubectl config set-context --current --namespace=$CFG_KUBENS
+
+if false; then
 
 echo "> removing peer certificates [FIXME: REMOVE THIS, JUST FOR DEBUG]"
-kubectl exec fabric-ca-tools -- rm -rf $PEER_BASE
+kubectl exec fabric-ca-tools -- rm -rf $CFG_PEER_BASE
 
 echo "> deploying helper script"
-kubectl cp process_pem.sh fabric-tools:/root
+kubectl cp process_pem.sh fabric-ca-tools:/opt
 
 echo "> enrolling admin user"
-kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://admin:$CA_ADMINPW@$CA_URL $CA_CLIENT_OPTS
+kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://admin:$CFG_CA_ADMINPW@$CA_URL $CA_CLIENT_OPTS
 echo "> register peer0 user"
-kubectl exec fabric-ca-tools -- fabric-ca-client register --id.name peer0 --id.secret $CA_PEERPW --id.type peer $CA_CLIENT_OPTS | sed 's|Password: \(.*\)|Password: *** hidden ***\r|'
+#kubectl exec fabric-ca-tools -- fabric-ca-client register --id.name peer0 --id.secret $CFG_CA_PEERPW --id.type peer $CA_CLIENT_OPTS | sed 's|Password: \(.*\)|Password: *** hidden ***\r|'
 echo "> enrolling peer0 user"
 #kubectl exec fabric-ca-tools -- mkdir -p $PEER_BASE
-kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://peer0:$CA_PEERPW@$CA_URL -M $PEER_BASE/msp --csr.hosts peer0.$HOSTNAME.$DOMAIN $CA_CLIENT_OPTS
+kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://peer0:$CFG_CA_PEERPW@$CA_URL -M $CFG_PEER_BASE/msp --csr.hosts peer0.$CFG_HOSTNAME.$CFG_DOMAIN $CA_CLIENT_OPTS
 
 echo "> MSP: splitting certs"
-kubectl exec fabric-ca-tools -- ./process_pem.sh $PEER_BASE/msp/cacerts
-kubectl exec fabric-ca-tools -- ./process_pem.sh $PEER_BASE/msp/intermediatecerts
+kubectl exec fabric-ca-tools -- /opt/process_pem.sh $CFG_PEER_BASE/msp/cacerts
+kubectl exec fabric-ca-tools -- /opt/process_pem.sh $CFG_PEER_BASE/msp/intermediatecerts
 
 echo "> MSP: moving certs and keys"
-kubectl exec fabric-ca-tools -- mv $PEER_BASE/msp/keystore/* $PEER_BASE/msp/keystore/priv_sk
-kubectl exec fabric-ca-tools -- mv $PEER_BASE/msp/signcerts/* $PEER_BASE/msp/signcerts/peer0.$HOSTNAME.$DOMAIN-cert.pem
+kubectl exec fabric-ca-tools -- sh -c "mv $CFG_PEER_BASE/msp/keystore/* $CFG_PEER_BASE/msp/keystore/priv_sk"
+kubectl exec fabric-ca-tools -- sh -c "mv $CFG_PEER_BASE/msp/signcerts/* $CFG_PEER_BASE/msp/signcerts/peer0.$CFG_HOSTNAME.$CFG_DOMAIN-cert.pem"
 
 echo "> MSP: copy config yaml"
-kubectl cp generated_config/config/msp-config.yaml fabric-tools:$PEER_BASE/msp/config.yaml
+kubectl cp $CFG_CONFIG_PATH/config/msp-config.yaml fabric-tools:$CFG_PEER_BASE/msp/config.yaml
 
 echo "> enrolling tls"
-kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://peer0:$CA_PEERPW@$CA_URL --enrollment.profile tls -M ${PEER_BASE}/tls --csr.hosts peer0.$HOSTNAME.$DOMAIN $CA_CLIENT_OPTS
+kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://peer0:$CFG_CA_PEERPW@$CA_URL --enrollment.profile tls -M $CFG_PEER_BASE/tls --csr.hosts peer0.$CFG_HOSTNAME.$CFG_DOMAIN $CA_CLIENT_OPTS
 
 echo "> TLS: splitting certs"
-kubectl exec fabric-ca-tools -- ./process_pem.sh $PEER_BASE/tls/tlscacerts
-kubectl exec fabric-ca-tools -- ./process_pem.sh $PEER_BASE/tls/tlsintermediatecerts
+kubectl exec fabric-ca-tools -- /opt/process_pem.sh $CFG_PEER_BASE/tls/tlscacerts
+kubectl exec fabric-ca-tools -- /opt/process_pem.sh $CFG_PEER_BASE/tls/tlsintermediatecerts
 
 echo "> TLS: moving certs and keys"
-kubectl exec fabric-ca-tools -- cp $PEER_BASE/tls/tlsintermediatecerts/ca.$HOSTNAME.$DOMAIN-cert.pem $PEER_BASE/tls/ca.crt
-kubectl exec fabric-ca-tools -- mv $PEER_BASE/tls/signcerts/* $PEER_BASE/tls/server.crt
-kubectl exec fabric-ca-tools -- mv $PEER_BASE/tls/keystore/* $PEER_BASE/tls/server.key
+kubectl exec fabric-ca-tools -- cp $CFG_PEER_BASE/tls/tlsintermediatecerts/ca.$CFG_HOSTNAME.$CFG_DOMAIN-cert.pem $CFG_PEER_BASE/tls/ca.crt
+kubectl exec fabric-ca-tools -- sh -c "mv $CFG_PEER_BASE/tls/signcerts/* $CFG_PEER_BASE/tls/server.crt"
+kubectl exec fabric-ca-tools -- sh -c "mv $CFG_PEER_BASE/tls/keystore/* $CFG_PEER_BASE/tls/server.key"
 
 echo "> TLS: pushing cert to MSP"
-kubectl exec fabric-ca-tools -- mkdir -p $PEER_BASE/msp/tlscacerts
-kubectl exec fabric-ca-tools -- cp $PEER_BASE/tls/ca.crt $PEER_BASE/msp/tlscacerts/tlsca.$HOSTNAME.$DOMAIN-cert.pem
+kubectl exec fabric-ca-tools -- mkdir -p $CFG_PEER_BASE/msp/tlscacerts
+kubectl exec fabric-ca-tools -- cp $CFG_PEER_BASE/tls/ca.crt $CFG_PEER_BASE/msp/tlscacerts/tlsca.$CFG_HOSTNAME.$CFG_DOMAIN-cert.pem
 
-kubectl exec fabric-ca-tools -- mkdir -p $PEER_DIR/config
-kubectl cp generated_config/config/configtx.yaml fabric-ca-tools:/$PEER_DIR/config
-kubectl exec fabric-ca-tools -- FABRIC_CFG_PATH=$PEER_DIR/config; configtxgen -printOrg
+echo "> running configtxgen"
+kubectl exec fabric-tools -- mkdir -p $CFG_PEER_DIR
+kubectl cp $CFG_CONFIG_PATH/config/configtx.yaml fabric-ca-tools:/$CFG_PEER_DIR
+fi
+kubectl exec fabric-tools -- sh -c "echo \".values += {\\\"AnchorPeers\\\":{\\\"mod_policy\\\":\\\"Admins\\\",\\\"value\\\":{\\\"anchor_peers\\\":[{\\\"host\\\":\\\"peer0.$CFG_HOSTNAME.$CFG_DOMAIN\\\",\\\"port\\\":\\\"$CFG_PEER_PORT\\\"}]},\\\"version\\\":\\\"0\\\"}}\" > $CFG_PEER_DIR/.$CFG_ORG.jq"
+kubectl exec fabric-tools -- cat $CFG_PEER_DIR/.$CFG_ORG.jq 
+kubectl exec fabric-tools -- sh -c "FABRIC_CFG_PATH=$CFG_PEER_DIR; configtxgen -printOrg ${CFG_ORG}MSP | jq -f $CFG_PEER_DIR/.$CFG_ORG.jq > $CFG_PEER_DIR/$CFG_ORG.json"
 exit;
 
 
 
-    mkdir ./tmp
-    generateFromTemplate ca-config $ORG $HOSTNAME $DOMAIN $PORT $PEER_BASE > ./tmp/configtx.yaml
-    export FABRIC_CFG_PATH=$PWD/tmp
-    CONF=${PV_PATH}${MYHOST}-pv-volume/peer/${ORG}.json
-    ./bin/configtxgen -printOrg ${ORG}MSP > ./tmp/${ORG}.json
-    EXEC="jq '.values += {\"AnchorPeers\":{\"mod_policy\": \"Admins\",\"value\":{\"anchor_peers\": [{\"host\": \"peer0.$HOSTNAME.$DOMAIN\",\"port\": $PORT}]},\"version\": \"0\"}}' ./tmp/$ORG.json > $CONF"
-    eval "${EXEC}"
-    echo
-    rm -rf ./tmp
 
     ./bin/fabric-ca-client register --caname ca.${HOSTNAME}.${DOMAIN} --id.name ${HOSTNAME}admin --id.secret ${HOSTNAME}${CA_ADMINPW} --id.type admin -H ${FABRIC_CA_HOME} --tls.certfiles ${FABRIC_CA_TLS}
 

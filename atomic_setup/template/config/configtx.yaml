@@ -7,7 +7,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: ${ORG}MSP
 
-        MSPDir: ${PEER_BASE}msp
+        MSPDir: ${PEER_BASE}/msp
 
         Policies:
             Readers:

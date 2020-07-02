@@ -1,7 +1,8 @@
 #!/bin/bash
-source setup.cfg
-source setup.sh
+CONFIG=$1
+OUTPUT=$2
 
+source $CONFIG
 
 # copy templates to output
 # and replace all known variables
@@ -9,7 +10,7 @@ TMP=$(mktemp)
 for file in $(find template/ -type f -printf "%P\n"); do
 	IN=template/$file
 	ls -la  $IN
-	OUT=$CFG_CONFIG_PATH/$file
+	OUT=$OUTPUT/$file
 	cp -r $IN $TMP
 	
 	# replace all known vars
@@ -26,6 +27,7 @@ for file in $(find template/ -type f -printf "%P\n"); do
 	if grep '${' $OUT; then
 		echo "ERROR: missed template variables during replacement $IN -> $OUT";
 		#exit 1;
+		#sleep 2
 	fi;
 done;
 
