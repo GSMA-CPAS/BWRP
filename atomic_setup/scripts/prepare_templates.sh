@@ -11,6 +11,7 @@ for file in $(find template/ -type f -printf "%P\n"); do
 	IN=template/$file
 	ls -la  $IN
 	OUT=$OUTPUT/$file
+	mkdir -p $(dirname "$OUT")  
 	cp -r $IN $TMP
 	
 	# replace all known vars

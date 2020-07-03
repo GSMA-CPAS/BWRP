@@ -5,9 +5,6 @@ set -e -o pipefail
 # load config
 . setup.cfg
 
-# set up templates
-./replace_variables.sh setup.cfg ./$CFG_CONFIG_PATH/
-
 echo "> setting namespace"
 kubectl config set-context --current --namespace=$CFG_KUBENS
 kubectl create -f $CFG_CONFIG_PATH/kubernetes/namespace.yaml || echo "namespace exists, not deploying"
@@ -27,7 +24,7 @@ kubectl wait --timeout=5m --for=condition=ready pod/fabric-ca-tools
 
 
 echo "> copy CA data to PVC"
-kubectl cp $CFG_CONFIG_PATH/ca fabric-ca-tools:/mnt/data/CA
+kubectl cp $CFG_CONFIG_PATH/certs fabric-ca-tools:/mnt/data/CA
 kubectl cp $CFG_CONFIG_PATH/config/fabric-ca-server-config.yaml fabric-tools:/mnt/data/CA/
 # show data
 kubectl exec fabric-ca-tools -- ls -al /mnt/data/CA
