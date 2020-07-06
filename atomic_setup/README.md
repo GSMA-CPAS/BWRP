@@ -1,14 +1,21 @@
 # [BWRP] Atomic Setup  
-*Kubernetes - Prerequisite*
-1) Have access to a pre-configured kubernetes node.
-   You should be able to run "kubectl get nodes" showing "status" ready:
-     # kubectl get nodes
-     NAME             STATUS   ROLES    AGE    VERSION
-     XXXXXX           Ready    master   1d     v1.18.0
-2) configured DNS to your Server, eg "peer0.org1.example.com"
 
-*Prepare your Pods*
-1) edit "setup.cfg" to suit your needs:
+## Kubernetes - Prerequisite
+
+1. Have access to a pre-configured kubernetes node.
+   You should be able to run "kubectl get nodes" showing "status" ready:
+   
+    ````
+    > kubectl get nodes
+    NAME             STATUS   ROLES    AGE    VERSION
+    XXXXXX           Ready    master   1d     v1.18.0
+    ````
+    
+2. configured DNS to your Server, eg "peer0.org1.example.com"
+
+## Prepare your Pods
+
+1. edit "setup.cfg" to suit your needs:
    | Variable | Value | Description |
    |----|---|---|
    | CFG_KUBENS | gsma | Namespace used in kubernetes. Highly recommended NOT to use default |
@@ -33,7 +40,7 @@
    | CFG_PV_SIZE | 10Gi | The Kubernetes Persistence Volume size. Can be resized later. |
    | CERT_SIGNER_URL | https://hldid.org/ejbca/certreq | The URL of the certificate signing service. |
 
-2) execute "./setup.sh" and follow the instructions
+2. execute "./setup.sh" and follow the instructions
 
 
 
