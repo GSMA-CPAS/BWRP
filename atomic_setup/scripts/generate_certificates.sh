@@ -15,7 +15,7 @@ FILENAME_CERT="$CFG_CONFIG_PATH_CA/ca-cert.pem"
 
 SUBJECT="/C=${CFG_CA_C}/ST=${CFG_CA_ST}/L=${CFG_CA_L}/O=${CFG_CA_O}/OU=${CFG_CA_OU}/CN=ca.${CFG_HOSTNAME}.${CFG_DOMAIN}/2.5.4.41=${CFG_ORG}MSP"
 
-CA_CHAIN_INPUT=template/cert/ca-chain.pem
+CA_CHAIN_INPUT=certs/gsma/ca-chain.pem
 
 # make sure the output path exist
 mkdir -p $CFG_CONFIG_PATH_CA
