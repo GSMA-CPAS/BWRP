@@ -3,21 +3,21 @@ kind: Service
 metadata:
   annotations:
   labels:
-    io.kompose.service: ${MYPEER}-${MYHOST}
-  name: ${MYPEER}-${MYHOST}
+    io.kompose.service: ${PEER_NAME}
+  name: ${PEER_NAME}
   namespace: ${KUBENS}
 spec:
   externalTrafficPolicy: Cluster
   externalIPs:
-  - ${MYHOSTIP}
+  - ${PEER_EXTERNAL_IP}
   type: NodePort
   ports:
   - name: "default"
-    port: ${PORT}
+    port: ${PEER_PORT}
     protocol: TCP
-    targetPort: ${PORT}
+    targetPort: ${PEER_PORT}
     nodePort: 30758
   selector:
-    io.kompose.service: ${MYPEER}-${MYHOST}
+    io.kompose.service: ${PEER_NAME}
   sessionAffinity: None
 

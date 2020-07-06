@@ -9,11 +9,13 @@ source $CONFIG
 TMP=$(mktemp)
 for file in $(find template/ -type f -printf "%P\n"); do
 	IN=template/$file
-	ls -la  $IN
+	#ls -la  $IN
 	OUT=$OUTPUT/$file
 	mkdir -p $(dirname "$OUT")  
-	cp -r $IN $TMP
+	cp -ar $IN $TMP
 	
+	echo "> generating $OUT..."
+
 	# replace all known vars
 	while IFS='' read -r line || [[ -n "$line" ]]; do
 		for varname in ${!CFG_*}; do
@@ -27,7 +29,7 @@ for file in $(find template/ -type f -printf "%P\n"); do
 	# verify that we catched ALL variables:
 	if grep '${' $OUT; then
 		echo "ERROR: missed template variables during replacement $IN -> $OUT";
-		#exit 1;
+		exit 1;
 		#sleep 2
 	fi;
 done;

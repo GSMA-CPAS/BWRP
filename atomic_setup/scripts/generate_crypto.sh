@@ -14,39 +14,39 @@ echo "> setting namespace"
 kubectl config set-context --current --namespace=$CFG_KUBENS
 
 echo "> deploying helper script"
-kubectl cp process_pem.sh fabric-ca-tools:/opt
+kubectl cp scripts/process_pem.sh fabric-ca-tools:/opt
 
 echo "> enrolling admin user"
 kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://admin:$CFG_CA_ADMINPW@$CA_URL $CA_CLIENT_OPTS
-echo "> register peer0 user"
-kubectl exec fabric-ca-tools -- fabric-ca-client register --id.name peer0 --id.secret $CFG_CA_PEERPW --id.type peer $CA_CLIENT_OPTS | sed 's|Password: \(.*\)|Password: *** hidden ***\r|'
-echo "> enrolling peer0 user"
-kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://peer0:$CFG_CA_PEERPW@$CA_URL -M $CFG_PEER_BASE/msp --csr.hosts peer0.$CFG_HOSTNAME.$CFG_DOMAIN $CA_CLIENT_OPTS
+echo "> register $CFG_PEER_NAME user"
+kubectl exec fabric-ca-tools -- fabric-ca-client register --id.name $CFG_PEER_NAME --id.secret $CFG_CA_PEERPW --id.type peer $CA_CLIENT_OPTS | sed 's|Password: \(.*\)|Password: *** hidden ***\r|'
+echo "> enrolling $CFG_PEER_NAME user"
+kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://$CFG_PEER_NAME:$CFG_CA_PEERPW@$CA_URL -M $CFG_PEER_BASE/msp --csr.hosts $CFG_PEER_NAME.$CFG_HOSTNAME.$CFG_DOMAIN $CA_CLIENT_OPTS
 
-echo "> MSP: splitting peer0 certs"
+echo "> MSP: splitting $CFG_PEER_NAME certs"
 kubectl exec fabric-ca-tools -- /opt/process_pem.sh $CFG_PEER_BASE/msp/cacerts
 kubectl exec fabric-ca-tools -- /opt/process_pem.sh $CFG_PEER_BASE/msp/intermediatecerts
 
-echo "> MSP: moving peer0 certs and keys"
+echo "> MSP: moving $CFG_PEER_NAME certs and keys"
 kubectl exec fabric-ca-tools -- sh -c "mv $CFG_PEER_BASE/msp/keystore/* $CFG_PEER_BASE/msp/keystore/priv_sk"
-kubectl exec fabric-ca-tools -- sh -c "mv $CFG_PEER_BASE/msp/signcerts/* $CFG_PEER_BASE/msp/signcerts/peer0.$CFG_HOSTNAME.$CFG_DOMAIN-cert.pem"
+kubectl exec fabric-ca-tools -- sh -c "mv $CFG_PEER_BASE/msp/signcerts/* $CFG_PEER_BASE/msp/signcerts/$CFG_PEER_NAME.$CFG_HOSTNAME.$CFG_DOMAIN-cert.pem"
 
-echo "> MSP: copy peer0 config yaml"
+echo "> MSP: copy $CFG_PEER_NAME config yaml"
 kubectl cp $CFG_CONFIG_PATH/config/msp-config.yaml fabric-tools:$CFG_PEER_BASE/msp/config.yaml
 
-echo "> enrolling peer0 tls"
-kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://peer0:$CFG_CA_PEERPW@$CA_URL --enrollment.profile tls -M $CFG_PEER_BASE/tls --csr.hosts peer0.$CFG_HOSTNAME.$CFG_DOMAIN $CA_CLIENT_OPTS
+echo "> enrolling $CFG_PEER_NAME tls"
+kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://$CFG_PEER_NAME:$CFG_CA_PEERPW@$CA_URL --enrollment.profile tls -M $CFG_PEER_BASE/tls --csr.hosts $CFG_PEER_NAME.$CFG_HOSTNAME.$CFG_DOMAIN $CA_CLIENT_OPTS
 
-echo "> TLS: splitting peer0 certs"
+echo "> TLS: splitting $CFG_PEER_NAME certs"
 kubectl exec fabric-ca-tools -- /opt/process_pem.sh $CFG_PEER_BASE/tls/tlscacerts
 kubectl exec fabric-ca-tools -- /opt/process_pem.sh $CFG_PEER_BASE/tls/tlsintermediatecerts
 
-echo "> TLS: moving peer0 certs and keys"
+echo "> TLS: moving $CFG_PEER_NAME certs and keys"
 kubectl exec fabric-ca-tools -- cp $CFG_PEER_BASE/tls/tlsintermediatecerts/ca.$CFG_HOSTNAME.$CFG_DOMAIN-cert.pem $CFG_PEER_BASE/tls/ca.crt
 kubectl exec fabric-ca-tools -- sh -c "mv $CFG_PEER_BASE/tls/signcerts/* $CFG_PEER_BASE/tls/server.crt"
 kubectl exec fabric-ca-tools -- sh -c "mv $CFG_PEER_BASE/tls/keystore/* $CFG_PEER_BASE/tls/server.key"
 
-echo "> TLS: pushing peer0 cert to MSP"
+echo "> TLS: pushing $CFG_PEER_NAME cert to MSP"
 kubectl exec fabric-ca-tools -- mkdir -p $CFG_PEER_BASE/msp/tlscacerts
 kubectl exec fabric-ca-tools -- cp $CFG_PEER_BASE/tls/ca.crt $CFG_PEER_BASE/msp/tlscacerts/tlsca.$CFG_HOSTNAME.$CFG_DOMAIN-cert.pem
 
@@ -54,7 +54,7 @@ echo "> setting up configtxgen"
 kubectl exec fabric-tools -- mkdir -p $CFG_PEER_DIR
 kubectl cp $CFG_CONFIG_PATH/config/configtx.yaml fabric-ca-tools:/$CFG_PEER_DIR
 echo "> running configtxgen"
-kubectl exec fabric-tools -- sh -c "echo \".values += {\\\"AnchorPeers\\\":{\\\"mod_policy\\\":\\\"Admins\\\",\\\"value\\\":{\\\"anchor_peers\\\":[{\\\"host\\\":\\\"peer0.$CFG_HOSTNAME.$CFG_DOMAIN\\\",\\\"port\\\":\\\"$CFG_PEER_PORT\\\"}]},\\\"version\\\":\\\"0\\\"}}\" > $CFG_PEER_DIR/.$CFG_ORG.jq"
+kubectl exec fabric-tools -- sh -c "echo \".values += {\\\"AnchorPeers\\\":{\\\"mod_policy\\\":\\\"Admins\\\",\\\"value\\\":{\\\"anchor_peers\\\":[{\\\"host\\\":\\\"$CFG_PEER_NAME.$CFG_HOSTNAME.$CFG_DOMAIN\\\",\\\"port\\\":\\\"$CFG_PEER_PORT\\\"}]},\\\"version\\\":\\\"0\\\"}}\" > $CFG_PEER_DIR/.$CFG_ORG.jq"
 kubectl exec fabric-tools -- sh -c "FABRIC_CFG_PATH=$CFG_PEER_DIR; configtxgen -printOrg ${CFG_ORG}MSP | jq -f $CFG_PEER_DIR/.$CFG_ORG.jq > $CFG_PEER_DIR/$CFG_ORG.json"
 
 echo "> registering peer admin user $CFG_PEER_ADMIN"

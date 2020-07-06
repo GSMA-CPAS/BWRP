@@ -1,128 +1,135 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   labels:
 #    io.kompose.network/kubefile-gsmawr-msp: "true"
-    io.kompose.service: ${MYPEER}-${MYHOST}
-  name: ${MYPEER}-${MYHOST}
+    io.kompose.service: ${PEER_NAME}-${MYHOST}
+  name: ${PEER_NAME}
   namespace: ${KUBENS}
 spec:
-  containers:
-  - name: couchdb
-    image: hyperledger/fabric-couchdb
-    imagePullPolicy: IfNotPresent
-    env:
-    - name: COUCHDB_USER
-      value: dbadmin
-    - name: COUCHDB_PASSWORD
-      value: dbadminpw
-    ports:
-    - containerPort: 5984
-      protocol: TCP
+  replicas: 1
+  strategy: {}
+  selector:
+    matchLabels:
+      app: ${PEER_NAME}
+  template:
+    metadata:
+      labels:
+       app: ${PEER_NAME}
+    spec:
+      containers:
+      - name: couchdb
+        image: hyperledger/fabric-couchdb
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: COUCHDB_USER
+          value: dbadmin
+        - name: COUCHDB_PASSWORD
+          value: dbadminpw
+        ports:
+        - containerPort: 5984
+          protocol: TCP
 
 
-  - name: peer
-    image: hyperledger/fabric-peer:2.1.0
-    imagePullPolicy: IfNotPresent
-    workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
-    args:
-    - sh
-    - -c
-    - /opt/gopath/src/github.com/hyperledger/fabric/peer/peer_start.sh
-    env:
-    - name: CORE_OPERATIONS_LISTENADDRESS
-      value: 0.0.0.0:8088
-    - name: CORE_LEDGER_STATE_STATEDATABASE
-      value: CouchDB
-    - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
-      value: localhost:5984
-    - name: CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME
-      value: dbadmin
-    - name: CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
-      value: dbadminpw
-    - name: CORE_PEER_ADDRESS
-      value: ${MYPEER}.${HOSTNAME}.${DOMAIN}:${PORT}
-    - name: CORE_PEER_GOSSIP_BOOTSTRAP
-      value: ${MYPEER}.${HOSTNAME}.${DOMAIN}:${PORT}
-    - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
-      value: ${MYPEER}.${HOSTNAME}.${DOMAIN}:${PORT}
-    - name: CORE_PEER_GOSSIP_ORGLEADER
-      value: "false"
-    - name: CORE_PEER_GOSSIP_USELEADERELECTION
-      value: "true"
-    - name: CORE_PEER_ID
-      value: ${MYPEER}.${HOSTNAME}.${DOMAIN}
-    - name: CORE_PEER_LISTENADDRESS
-      value: localhost:${PORT}
-    - name: CORE_PEER_LOCALMSPID
-      value: ${ORG}MSP
-    - name: CORE_PEER_PROFILE_ENABLED
-      value: "true"
-    - name: CORE_PEER_TLS_ENABLED
-      value: "true"
-    - name: CORE_PEER_TLS_ROOTCERT_FILE
-      value: /etc/hyperledger/fabric/tls/ca.crt
-    - name: CORE_PEER_TLS_CERT_FILE
-      value: /etc/hyperledger/fabric/tls/server.crt
-    - name: CORE_PEER_TLS_KEY_FILE
-      value: /etc/hyperledger/fabric/tls/server.key
-    - name: CORE_PEER_TLS_CLIENTAUTHREQUIRED
-      value: "true"
-    - name: CORE_PEER_TLS_CLIENTROOTCAS_FILES
-      value: /etc/hyperledger/fabric/tls/ca.crt
-    - name: CORE_PEER_TLS_CLIENTCERT_FILE
-      value: /etc/hyperledger/fabric/tls/server.crt
-    - name: CORE_PEER_TLS_CLIENTKEY_FILE
-      value: /etc/hyperledger/fabric/tls/server.key
-    - name: CORE_PEER_ADDRESSAUTODETECT
-      value: "true"
-    - name: CORE_VM_ENDPOINT
-      value: tcp://0.0.0.0:2375
-    - name: FABRIC_LOGGING_SPEC
-      value: INFO
-    livenessProbe:
-      failureThreshold: 3
-      httpGet:
-        path: /healthz
-        port: 8088
-        scheme: HTTP
-      initialDelaySeconds: 120
-      periodSeconds: 30
-      successThreshold: 1
-      timeoutSeconds: 1
-    ports:
-    - containerPort: ${PORT}
-      protocol: TCP
-    volumeMounts:
-    - mountPath: /etc/hyperledger/fabric/msp
-      name: ${MYHOST}-pvc
-      subPath: peer/peers/${MYPEER}.${HOSTNAME}.${DOMAIN}/msp
-    - mountPath: /etc/hyperledger/fabric/tls
-      name: ${MYHOST}-pvc
-      subPath: peer/peers/${MYPEER}.${HOSTNAME}.${DOMAIN}/tls
-    - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer
-      name: ${MYHOST}-pvc
-      subPath: peer/home/
+      - name: peer
+        image: hyperledger/fabric-peer:2.1.0
+        imagePullPolicy: IfNotPresent
+        workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+        command: [ "/opt/gopath/src/github.com/hyperledger/fabric/peer/peer_start.sh" ]
+        env:
+        - name: CORE_OPERATIONS_LISTENADDRESS
+          value: 0.0.0.0:8088
+        - name: CORE_LEDGER_STATE_STATEDATABASE
+          value: CouchDB
+        - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
+          value: localhost:5984
+        - name: CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME
+          value: dbadmin
+        - name: CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+          value: dbadminpw
+        - name: CORE_PEER_ADDRESS
+          value: 0.0.0.0:${PEER_PORT}
+        - name: CORE_PEER_LISTENADDRESS
+          value: 0.0.0.0:${PEER_PORT}
+        - name: CORE_PEER_GOSSIP_BOOTSTRAP
+          value: ${PEER_NAME}.${HOSTNAME}.${DOMAIN}:${PEER_PORT}
+        - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
+          value: ${PEER_NAME}.${HOSTNAME}.${DOMAIN}:${PEER_PORT}
+        - name: CORE_PEER_GOSSIP_ORGLEADER
+          value: "false"
+        - name: CORE_PEER_GOSSIP_USELEADERELECTION
+          value: "true"
+        - name: CORE_PEER_ID
+          value: ${PEER_NAME}.${HOSTNAME}.${DOMAIN}
+        - name: CORE_PEER_LOCALMSPID
+          value: ${ORG}MSP
+        - name: CORE_PEER_PROFILE_ENABLED
+          value: "true"
+        - name: CORE_PEER_TLS_ENABLED
+          value: "true"
+        - name: CORE_PEER_TLS_ROOTCERT_FILE
+          value: /etc/hyperledger/fabric/tls/ca.crt
+        - name: CORE_PEER_TLS_CERT_FILE
+          value: /etc/hyperledger/fabric/tls/server.crt
+        - name: CORE_PEER_TLS_KEY_FILE
+          value: /etc/hyperledger/fabric/tls/server.key
+        - name: CORE_PEER_TLS_CLIENTAUTHREQUIRED
+          value: "true"
+        - name: CORE_PEER_TLS_CLIENTROOTCAS_FILES
+          value: /etc/hyperledger/fabric/tls/ca.crt
+        - name: CORE_PEER_TLS_CLIENTCERT_FILE
+          value: /etc/hyperledger/fabric/tls/server.crt
+        - name: CORE_PEER_TLS_CLIENTKEY_FILE
+          value: /etc/hyperledger/fabric/tls/server.key
+        - name: CORE_PEER_ADDRESSAUTODETECT
+          value: "false"
+        - name: CORE_VM_ENDPOINT
+          value: tcp://0.0.0.0:2375
+        - name: FABRIC_LOGGING_SPEC
+          value: INFO
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 8088
+            scheme: HTTP
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 1
+        ports:
+        - containerPort: ${PEER_PORT}
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /etc/hyperledger/fabric/msp
+          name: data-pvc
+          subPath: peer/peers/${PEER_NAME}.${HOSTNAME}.${DOMAIN}/msp
+        - mountPath: /etc/hyperledger/fabric/tls
+          name: data-pvc
+          subPath: peer/peers/${PEER_NAME}.${HOSTNAME}.${DOMAIN}/tls
+        - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer
+          name: data-pvc
+          subPath: peer/home/
 
 
-  - name: dind
-    image: docker:18.04-dind
-    imagePullPolicy: IfNotPresent
-    ports:
-    - containerPort: 2375
-      protocol: TCP
-    securityContext:
-      capabilities:
-        add:
-        - SYS_ADMIN
-      privileged: true
+      - name: dind
+        image: docker:18.04-dind
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 2375
+          protocol: TCP
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
+          privileged: true
 
 
-  dnsPolicy: ClusterFirst
-  enableServiceLinks: true
-  hostname: ${MYPEER}-${MYHOST}
-  restartPolicy: Never
-  volumes:
-  - name: ${MYHOST}-pvc
-    persistentVolumeClaim:
-      claimName: ${MYHOST}-pv-claim
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      hostname: ${PEER_NAME}-${MYHOST}
+      restartPolicy: Always
+      volumes:
+      - name: data-pvc
+        persistentVolumeClaim:
+          claimName: data-claim
