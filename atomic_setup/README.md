@@ -71,3 +71,5 @@ If you plan to deploy this setup in a CI/CD pipeline all you have to do is:
 
 The important steps are 3.+4. as those contain all your secrets and authorization information
 
+## TODO
+The CCP parts and the Chaincode parts are not yet transfered to the proposed scheme.
