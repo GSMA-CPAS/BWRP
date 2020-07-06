@@ -41,7 +41,33 @@
    | CERT_SIGNER_URL | https://hldid.org/ejbca/certreq | The URL of the certificate signing service. |
 
 2. execute "./setup.sh" and follow the instructions
+3. email deployment/pvc/ca/${ORG}.json to the channel admin
+4. wait for inclusion to the channel (email from admin)
+5. (optional) if you are on aws, edit and run scripts/aws_fix_eip_alloc.sh in order to fix the EIP allocation on AWS
+6. execute scripts/join_channel.sh, you should get a sucess message and the list of joined channels should include mychannel
+7. play around with scripts/remote_cli.sh peer channel list etc
 
+## Pods
+There are a various pods deployed that are needed during operation. 
+The two pods fabric-tools and fabric-ca-tools are just needed during deploymend and testing, those should be removed in a production system once installed.
 
+## Directories
+After the first run of setup.sh you will end up with the following directories:
 
+* deployment/certs -> Your signed certificats and the *private key*. Create a backup and handle those with care!
+* deployment/pvc/ca -> a backup of the PVC as deployed on your ca pod, backup this as well! This contains your HLF crypto blobs.
+* deployment/config -> various configuration files that have been generated from the templates
+* deployment/kubernetes -> kubernetes yaml files that have been generated from the templates
+* deployment/scripts.sh -> various scripts that have been generated from the templates
+
+## CI/CD
+If you plan to deploy this setup in a CI/CD pipeline all you have to do is:
+
+1. check out this source tree
+2. overlay your setup.cfg file [do not kee this in a repository as it contains secrets!]
+3. add the deployment/certs directory from your backup [contains certificates. do not check this in]
+4. add the deployment/pvc/ca directory from your backup [contains hlf crypto secrets. do not check this in]
+5. run setup.sh
+
+The important steps are 3.+4. as those contain all your secrets and authorization information
 
