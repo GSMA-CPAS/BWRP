@@ -3,9 +3,9 @@
 
 export PATH=${BASE}bin:${BASE}:$PATH
 
-export ORDERER_CA=$(pwd)/tlsca.orderer.hldid.org-cert.pem
-export ORDERER_MTLS_CRT=$(pwd)/mtls.orderer.hldid.org-cert.crt
-export ORDERER_MTLS_KEY=$(pwd)/mtls.orderer.hldid.org-key.key
+export ORDERER_CA=$(pwd)/certs/gsma/orderer/tlsca.orderer.hldid.org-cert.pem
+export ORDERER_MTLS_CRT=$(pwd)/certs/gsma/orderer/mtls.orderer.hldid.org-cert.crt
+export ORDERER_MTLS_KEY=$(pwd)/certs/gsma/orderer/mtls.orderer.hldid.org-key.key
 
 echo $CFG_CONFIG_PATH_PVC
 PEER_PATH=$(pwd)/$CFG_CONFIG_PATH_PVC/ca
