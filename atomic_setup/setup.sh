@@ -1,32 +1,38 @@
 #!/bin/bash
+# abort processing on the first error
+set -e -o pipefail
 
-#Kubernetes Namespace
-KUBENS="default"
+# load config
+. setup.cfg
 
+# process the templates:
+./scripts/prepare_templates.sh setup.cfg ./$CFG_CONFIG_PATH
 
-#apply to all
-HOSTNAME="org1"
-DOMAIN="example.com"
+# check if we need to generate certificates
+echo "> checking for ca certificates in $CFG_CONFIG_PATH_CA";
+if [ -d $CFG_CONFIG_PATH_CA ]; then
+    echo "> Existing Signed Intermediate Cert Exist."
+    echo "  If you wish to regenerate a new one, please delete $CFG_CONFIG_PATH_CA"
+else
+    echo "> Not found! will generate and sign certs now. Request Username/Password for signing by mail."
+    read -p "> Please enter Username:`echo $'\n> '`" registry_user
+    read -p "> Please enter Password:`echo $'\n> '`" registry_pass
+    ./scripts/generate_certificates.sh $registry_user $registry_pass
+fi
 
-#CA config
-CA_ADMINPW=$(uname -a | md5sum |awk '{print $1}')
-CA_PORT="7054"
-#CSR Details. C=Country, ST=State, L=Locale, O=Organizational, OU=Organizational Unit
-#cannot leave empty, or else will break file generation
-CA_C="GB"
-CA_ST="London"
-CA_L="London"
-CA_O="Org1"
-CA_OU="WholesaleRoaming"
+# deploy CA and helper pods:
+./scripts/deploy_ca.sh
 
-#peer Config
-ORG="Org1"
-PORT="7050"
+# check if the CA is already set up or wen need to register/enroll the certificates
+if [ -d $CFG_CONFIG_PATH_PVC/ca ]; then
+    echo "> Backup of ca config found"
+    ./scripts/upload_backup_to_ca.sh
+else
+    echo "> No backup of ca config found, generating crypto config"
+    ./scripts/generate_crypto.sh
+fi;
 
-#Persistent Volume Size
-PV_SIZE="10Gi"
-#Local Persistance Volume Path. Will autho generate SUB DIR of <HOSTNAME>-<DOMAIN>
-PV_PATH="/mnt/data/"
+./scripts/deploy_peer.sh
 
-
-MYHOST=${HOSTNAME}-$(echo $DOMAIN |awk '{gsub(/\./, "-");  print}')
+#prepare remote cli:
+./scripts/prepare_remote_cli.sh

@@ -1,0 +1,45 @@
+---
+name: ${ORG}-${HOSTNAME}
+version: 1.0.0
+client:
+  organization: ${ORG}
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  ${ORG}:
+    mspid: ${ORG}MSP
+    peers:
+    - ${PEER_NAME}.${HOSTNAME}.${DOMAIN}:${PEER_PORT}
+    certificateAuthorities:
+    - ca.${HOSTNAME}.${DOMAIN}
+orderer:
+  orderer.hldid.org:
+    url: grpcs://orderer.hldid.org:7050
+    tlsCACerts:
+      pem: |
+        -----BEGIN CERTIFICATE-----\nMIICOzCCAeGgAwIBAgIQRM8I5IMibNkF40PQhbjulzAKBggqhkjOPQQDAjBoMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzESMBAGA1UEChMJaGxkaWQub3JnMRgwFgYDVQQDEw90bHNjYS5obGRp\nZC5vcmcwHhcNMjAwNTEzMTIxNjAwWhcNMzAwNTExMTIxNjAwWjBoMQswCQYDVQQG\nEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNj\nbzESMBAGA1UEChMJaGxkaWQub3JnMRgwFgYDVQQDEw90bHNjYS5obGRpZC5vcmcw\nWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAATD1Dw9NNKH/spmBo33Hmmrggznw2VR\nGVIWQ3Luj3Qa26t38AA2f4oV3L6zLCTsGiOhjtlwWdG8gyRAjqm8uFE2o20wazAO\nBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8G\nA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIEm0E6MwlxJuxnNakXxpQpLsUpKuFDlT\nOiY3/boKIG4oMAoGCCqGSM49BAMCA0gAMEUCIQCZidcFGAxbhfxqbwX/KXGE8F8U\nrjmgB8DymKnis8xLmQIgCzAD2emFlG72sfm5i8MqB8D44633o9qpbiWG8KamDF0=\n-----END CERTIFICATE-----\n
+  orderer2.hldid.org:
+    url: grpcs://orderer2.hldid.org:7050
+    tlsCACerts:
+      pem: |
+        -----BEGIN CERTIFICATE-----\nMIICOzCCAeGgAwIBAgIQRM8I5IMibNkF40PQhbjulzAKBggqhkjOPQQDAjBoMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzESMBAGA1UEChMJaGxkaWQub3JnMRgwFgYDVQQDEw90bHNjYS5obGRp\nZC5vcmcwHhcNMjAwNTEzMTIxNjAwWhcNMzAwNTExMTIxNjAwWjBoMQswCQYDVQQG\nEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNj\nbzESMBAGA1UEChMJaGxkaWQub3JnMRgwFgYDVQQDEw90bHNjYS5obGRpZC5vcmcw\nWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAATD1Dw9NNKH/spmBo33Hmmrggznw2VR\nGVIWQ3Luj3Qa26t38AA2f4oV3L6zLCTsGiOhjtlwWdG8gyRAjqm8uFE2o20wazAO\nBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8G\nA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIEm0E6MwlxJuxnNakXxpQpLsUpKuFDlT\nOiY3/boKIG4oMAoGCCqGSM49BAMCA0gAMEUCIQCZidcFGAxbhfxqbwX/KXGE8F8U\nrjmgB8DymKnis8xLmQIgCzAD2emFlG72sfm5i8MqB8D44633o9qpbiWG8KamDF0=\n-----END CERTIFICATE-----\n
+peers:
+  ${PEER_NAME}.${HOSTNAME}.${DOMAIN}:${PORT}:
+    url: grpcs://localhost:${PORT}
+    tlsCACerts:
+      pem: |
+        ${PEERPEM}
+    grpcOptions:
+      ssl-target-name-override: ${PEER_NAME}.${HOSTNAME}.${DOMAIN}
+      hostnameOverride: ${PEER_NAME}.${HOSTNAME}.${DOMAIN}
+certificateAuthorities:
+  ca.${HOSTNAME}.${DOMAIN}:
+    url: https://localhost:${CA_PORT}
+    caName: ca.${HOSTNAME}.${DOMAIN}
+    tlsCACerts:
+      pem: |
+        ${CAPEM}
+    httpOptions:
+      verify: false
