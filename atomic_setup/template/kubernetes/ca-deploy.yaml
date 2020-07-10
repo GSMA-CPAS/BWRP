@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    k8s-app: ca-${MYHOST}
+    io.kompose.service: ca-${MYHOST}
+  name: ca
+  namespace: ${KUBENS}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: ca-${MYHOST}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+      labels:
+#        io.kompose.network/kubefile_gsmawr_msp: "true"
+        io.kompose.service: ca-${MYHOST}
+    spec:
+      containers:
+      - args:
+        - sh
+        - -c
+        - fabric-ca-server start -b admin:${CA_ADMINPW} -d
+        env:
+        - name: FABRIC_CA_SERVER_CSR_HOSTS
+          value: localhost,ca.${HOSTNAME}.${DOMAIN},ca-${MYHOST}.${KUBENS}
+        - name: FABRIC_CA_HOME
+          value: /etc/hyperledger/fabric-ca-server
+        - name: FABRIC_CA_SERVER_CA_NAME
+          value: ca.${HOSTNAME}.${DOMAIN}
+        - name: FABRIC_CA_SERVER_PORT
+          value: "${CA_PORT}"
+        - name: FABRIC_CA_SERVER_TLS_ENABLED
+          value: "true"
+        image: hyperledger/fabric-ca:1.4.6
+        imagePullPolicy: ""
+        name: ca-${MYHOST}
+        ports:
+        - containerPort: ${CA_PORT}
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/hyperledger/fabric-ca-server
+          name: data-pvc
+          subPath: CA
+#      hostAliases:
+#      - ip: 127.0.0.1
+#        hostnames:
+#        - ca.org3.local
+      hostname: ca-${MYHOST}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+#      serviceAccountName: "ca-${MYHOST}"
+      volumes:
+      - name: data-pvc
+        persistentVolumeClaim:
+          claimName: data-claim
