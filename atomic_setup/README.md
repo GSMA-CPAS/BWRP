@@ -44,7 +44,7 @@
 3. email deployment/pvc/ca/${ORG}.json to the channel admin
 4. wait for inclusion to the channel (email from admin)
 5. (optional) if you are on aws, edit and run scripts/aws_fix_eip_alloc.sh in order to fix the EIP allocation on AWS
-6. execute scripts/join_channel.sh, you should get a sucess message and the list of joined channels should include mychannel
+6. execute scripts/join_channel.sh mychannel, you should get a sucess message and the list of joined channels should include mychannel
 7. play around with scripts/remote_cli.sh peer channel list etc
 
 ## Pods
