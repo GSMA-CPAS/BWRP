@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ $# -ne 2 ]; then 
+    echo "> usage: $0 <setup.cfg> <output_path>"
+    exit 1
+fi
+
 CONFIG=$1
 OUTPUT=$2
 
