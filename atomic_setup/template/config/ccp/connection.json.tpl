@@ -24,7 +24,7 @@
                 "pem": "from_pem:deployment/pvc/ca/users/Admin@${HOSTNAME}.${DOMAIN}/msp/keystore/priv_sk"
             },
             "signedCert":{
-                "pem": "from_pem:deployment/pvc/ca/Admin@${HOSTNAME}.${DOMAIN}/msp/signcerts/Admin@${HOSTNAME}.${DOMAIN}-cert.pem"
+                "pem": "from_pem:deployment/pvc/ca/users/Admin@${HOSTNAME}.${DOMAIN}/msp/signcerts/Admin@${HOSTNAME}.${DOMAIN}-cert.pem"
             }
         }
     },
