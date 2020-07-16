@@ -1,0 +1,51 @@
+---
+name: ${CFG_ORG}-${CFG_HOSTNAME}
+version: 1.0.0
+client:
+  organization: ${CFG_ORG}
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  ${CFG_ORG}:
+    mspid: ${CFG_ORG}MSP
+    peers:
+    - ${CFG_PEER_NAME}.${CFG_HOSTNAME}.${CFG_DOMAIN}:${CFG_PEER_PORT}
+    certificateAuthorities:
+    - ca.${CFG_HOSTNAME}.${CFG_DOMAIN}
+    adminPrivateKey:
+      pem: |
+        from_pem:deployment/pvc/ca/users/Admin@${HOSTNAME}.${DOMAIN}/msp/keystore/priv_sk
+    signedCert:
+      pem: |
+        from_pem:deployment/pvc/ca/Admin@${HOSTNAME}.${DOMAIN}/msp/signcerts/Admin@${HOSTNAME}.${DOMAIN}-cert.pem
+orderer:
+  orderer.hldid.org:
+    url: grpcs://orderer.hldid.org:7050
+    tlsCACerts:
+      pem: |
+        from_pem:certs/gsma/orderer/tlsca.orderer.hldid.org-cert.pem
+  orderer2.hldid.org:
+    url: grpcs://orderer2.hldid.org:7050
+    tlsCACerts:
+      pem: |
+        from_pem:certs/gsma/orderer/tlsca.orderer.hldid.org-cert.pem
+peers:
+  ${CFG_PEER_NAME}.${CFG_HOSTNAME}.${CFG_DOMAIN}:${CFG_PORT}:
+    url: grpcs://localhost:${CFG_PORT}
+    tlsCACerts:
+      pem: |
+        from_pem:deployment/pvc/ca/peers/peer0.${HOSTNAME}.${DOMAIN}/msp/tlscacerts/tlsca.${HOSTNAME}.${DOMAIN}-cert.pem
+    grpcOptions:
+      ssl-target-name-override: ${CFG_PEER_NAME}.${CFG_HOSTNAME}.${CFG_DOMAIN}
+      hostnameOverride: ${CFG_PEER_NAME}.${CFG_HOSTNAME}.${CFG_DOMAIN}
+certificateAuthorities:
+  ca.${CFG_HOSTNAME}.${CFG_DOMAIN}:
+    url: https://localhost:${CFG_CA_PORT}
+    caName: ca.${CFG_HOSTNAME}.${CFG_DOMAIN}
+    tlsCACerts:
+      pem: |
+        from_pem:deployment/ca/tls-cert.pem
+    httpOptions:
+      verify: false

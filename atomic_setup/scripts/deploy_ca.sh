@@ -37,17 +37,8 @@ echo "> waiting for ca pod to be ready"
 POD=$(kubectl get pods | grep ^ca- | awk '{print $1}')
 kubectl wait --timeout=5m --for=condition=ready pod/$POD
 
-exit;
+echo "> downloading ca tls certificate"
+mkdir -p $CFG_CONFIG_PATH/ca
+kubectl cp fabric-ca-tools:/mnt/data/CA/tls-cert.pem $CFG_CONFIG_PATH/ca/tls-cert.pem
 
-echo "Please make sure pod is running."
-echo "kubectl get pods --selector=io.kompose.service=ca-$MYHOST -o=wide -n $KUBENS"
-echo
-echo "Get the 'ca' IP address and add it to your /etc/hosts as (using below cmd, labeld as 'CLUSTER-IP')"
-echo "kubectl get svc --selector=io.kompose.service=ca-$MYHOST -o=wide -n $KUBENS"
-echo "XXX.XXX.XXX.XXX	ca-$MYHOST.local"
-echo
-
-echo
-echo "Continue to execute './step2.sh' for further instructions"
-echo
-echo
+echo "> all done."
