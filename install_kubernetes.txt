@@ -13,7 +13,7 @@ apt-get update && apt-get install -y kubelet kubeadm kubectl
 #initialize Kubernetes
 #make sure docker is pre-installed.
 #change your node name and prefered local network range.
-kubeadm init --node-name my-first-node --pod-network-cidr=10.244.0.0/16
+kubeadm init --node-name <Hostname of your node> --pod-network-cidr=10.244.0.0/16
 
 #install kube-flannel
 wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
@@ -25,4 +25,4 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 #kubectl get nodes should give you 
 kubectl get nodes
 NAME             STATUS   ROLES    AGE   VERSION
-my-first-node    Ready    master   40m   v1.18.2
+<Hostname>    	 Ready    master   40m   v1.19.0

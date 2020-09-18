@@ -4,7 +4,7 @@ metadata:
   labels:
 #    io.kompose.network/kubefile-gsmawr-msp: "true"
     io.kompose.service: ${PEER_NAME}-${MYHOST}
-  name: ${PEER_NAME}
+  name: ${PEER_NAME}-${MYHOST}
   namespace: ${KUBENS}
 spec:
   replicas: 1

@@ -3,8 +3,8 @@ kind: Service
 metadata:
   annotations:
   labels:
-    io.kompose.service: ${PEER_NAME}
-  name: ${PEER_NAME}
+    io.kompose.service: ${PEER_NAME}-${MYHOST}
+  name: ${PEER_NAME}-${MYHOST}
   namespace: ${KUBENS}
 spec:
   externalTrafficPolicy: Cluster
@@ -18,6 +18,6 @@ spec:
     targetPort: ${PEER_PORT}
     nodePort: 30758
   selector:
-    io.kompose.service: ${PEER_NAME}
+    app: ${PEER_NAME}
   sessionAffinity: None
 
