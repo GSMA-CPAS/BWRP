@@ -60,8 +60,5 @@ for file in $(ls $CFG_CONFIG_PATH/config/ccp/wallet/*.tpl); do
     done < "$file"
 done
 
-kubectl cp deployment/config/ccp/${CFG_ORG}.json fabric-ca-tools-dtlab:/mnt/data/CCP
-kubectl cp deployment/config/ccp/wallet fabric-ca-tools-dtlab:/mnt/data/CCP/wallet
-
-
-#CFG_TLSCA_CERT_ORDERER=$(cat $(dirname $0)/certs/gsma/orderer/tlsca.orderer.as.nodenect.com-cert.pem | awk 1 ORS='\\n')
+kubectl cp deployment/config/ccp/${CFG_ORG}.json fabric-ca-tools:/mnt/data/CCP
+kubectl cp deployment/config/ccp/wallet fabric-ca-tools:/mnt/data/CCP/wallet

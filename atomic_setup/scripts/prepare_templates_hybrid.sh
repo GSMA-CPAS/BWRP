@@ -1,11 +1,11 @@
 #!/bin/bash
-if [ $# -ne 2 ]; then 
-    echo "> usage: $0 <setup.cfg> <output_path>"
-    exit 1
-fi
+#if [ $# -ne 2 ]; then 
+#    echo "> usage: $0 <setup.cfg> <output_path>"
+#    exit 1
+#fi
 
-CONFIG=$1
-OUTPUT=$2
+CONFIG=setup.cfg  #$1
+OUTPUT=deployment #$2
 
 source $CONFIG
 
@@ -38,4 +38,3 @@ for file in $(find template_hybrid/ -type f -printf "%P\n"); do
 		#sleep 2
 	fi;
 done;
-cp -rf  deployment/kubernetes/config/* deployment/config/

@@ -84,37 +84,34 @@ The important steps are 3.+4. as those contain all your secrets and authorizatio
 
 ## HYBRID APROACH INTEGRATION /FOR TESTING/
 
-## PREREQUISITES
+## Prerequisites
 1. Installed hybrid chaincode.
 
-## EDIT CONFIG FILE
+## Edit config file
 1. Edit setup.cfg config file sections for blockchain and offchain-db adapters
 
-## PREPARE DEPLOYMENT FILES
+## Prepare deployment files
 1. run ./scripts/prepare_templates_hybrid.sh
 
-## APPLY A SECRET TO ACCESS PRIVATE DOCKER REPO
+## Apply a secret to access private docker REPO
 1. run kubectl apply -f deploymetn/kubernetes/registry-secret.yaml
 
-## GENERATE TLS USER CERTS
+## Generate TLS user certs
 1. run ./scripts/generate_crypto_user.sh
 
-## DEPLOY THE OFFCHAIN DB AND ADAPTER
+## Deploy Offchain DB and Offchain DB Adapter
 1. run ./scripts/deploy_offchains.sh
 
-## DEPLOY THE BLOCKCHAIN ADAPTER
+## Deploy Blockchain Adapter
 1. run ./scripts/generate_ccp_hybrid.sh
 2. run ./scripts/deploy_blockchain_adapter.sh
 
-## FOR TEST
+## For testing
 1. get clusterIP of offchain-db-adapter and blockchain-adapter with kubectl get services
-
 2. add in /etc/hosts next two records
 <clusterIP> blockchain-adapter
 <clusterIP> offchain-db-adapter
-
-3. TODO: edition of test_query.sh test request scripts.
+3. TODO: prepare requests for both organisations, using test_query.sh from development-setup
 
 ## TODO
 The CCP parts and the Chaincode parts are not yet transfered to the proposed scheme.
-Edition of test_query.sh test request script.
