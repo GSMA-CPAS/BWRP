@@ -39,6 +39,13 @@
    | CFG_PV_STORAGE_CLASS | gp2 | The storage class the cluster should use ("local-storage" = local, "gp2" = aws, ...) |
    | CFG_PV_SIZE | 10Gi | The Kubernetes Persistence Volume size. Can be resized later. |
    | CERT_SIGNER_URL | https://hldid.org/ejbca/certreq | The URL of the certificate signing service. |
+   | CFG_OFFCHAIN_REST_PORT | 3333 | The offchain rest port. |
+   | CFG_OFFCHAIN_MYSQL_ROOT_PASSWORD | changeThisRootPassword | The root password for mysql. |
+   | CFG_OFFCHAIN_MYSQL_DB | odba | The offchain db name. |
+   | CFG_OFFCHAIN_MYSQL_USER | odba | The offchain db user. |
+   | CFG_OFFCHAIN_MYSQL_PASSWORD | changeThisPassword | The user password for mysql.. |
+   | CFG_MYSQL_SERVER_PORT | 3306 | Mysql port. |
+   | CFG_BLOCKCHAIN_ADAPTER_PORT | 8081 | The blockchain adapter port. |
 
 2. Execute "./setup.sh" and follow the instructions
 
@@ -75,5 +82,36 @@ If you plan to deploy this setup in a CI/CD pipeline all you have to do is:
 
 The important steps are 3.+4. as those contain all your secrets and authorization information
 
+## HYBRID APROACH INTEGRATION /FOR TESTING/
+
+## PREREQUISITES
+1. Installed hybrid chaincode.
+
+## EDIT CONFIG FILE
+1. Edit setup.cfg config file sections for blockchain and offchain-db adapters
+
+## PREPARE DEPLOYMENT FILES
+1. run ./scripts/prepare_templates_hybrid.sh
+
+## GENERATE TLS USER CERTS
+1. run ./scripts/generate_crypto_user.sh
+
+## DEPLOY THE OFFCHAIN DB AND ADAPTER
+1. run ./scripts/deploy_offchains.sh
+
+## DEPLOY THE BLOCKCHAIN ADAPTER
+1. run ./scripts/generate_ccp_hybrid.sh
+2. run ./scripts/deploy_blockchain_adapter.sh
+
+## FOR TEST
+1. get clusterIP of offchain-db-adapter and blockchain-adapter with kubectl get services
+
+2. add in /etc/hosts next two records
+<clusterIP> blockchain-adapter
+<clusterIP> offchain-db-adapter
+
+3. TODO: edition of test_query.sh test request scripts.
+
 ## TODO
 The CCP parts and the Chaincode parts are not yet transfered to the proposed scheme.
+Edition of test_query.sh test request script.
