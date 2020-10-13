@@ -93,6 +93,9 @@ The important steps are 3.+4. as those contain all your secrets and authorizatio
 ## PREPARE DEPLOYMENT FILES
 1. run ./scripts/prepare_templates_hybrid.sh
 
+## APPLY A SECRET TO ACCESS PRIVATE DOCKER REPO
+1. run kubectl apply -f deploymetn/kubernetes/registry-secret.yaml
+
 ## GENERATE TLS USER CERTS
 1. run ./scripts/generate_crypto_user.sh
 
