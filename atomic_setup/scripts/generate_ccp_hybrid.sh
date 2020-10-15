@@ -60,5 +60,3 @@ for file in $(ls $CFG_CONFIG_PATH/config/ccp/wallet/*.tpl); do
     done < "$file"
 done
 
-kubectl cp deployment/config/ccp/${CFG_ORG}.json fabric-ca-tools:/mnt/data/CCP
-kubectl cp deployment/config/ccp/wallet fabric-ca-tools:/mnt/data/CCP/wallet
