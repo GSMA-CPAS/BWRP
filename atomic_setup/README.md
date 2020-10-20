@@ -110,14 +110,14 @@ The important steps are 3.+4. as those contain all your secrets and authorizatio
 1. do next on the organisation fabric-tools pod:
 - apk update && apk add jq curl openssl
 2. upload test files for org_1 in org_1's fabric-tools (you can get the fabric-tools's pod name with the command: kubectl get po):
-- kubectl cp tests/test_setup.cfg <fabric-tools>:/opt/
-- kubectl cp tests/test_1_org_1.sh <fabric-tools>:/opt/
-- kubectl cp tests/test_3_org_1.sh <fabric-tools>:/opt/
-- kubectl cp tests/test_5_org_1.sh <fabric-tools>:/opt/
+- kubectl cp tests/test_setup.cfg fabric-tools:/opt/
+- kubectl cp tests/test_1_org_1.sh fabric-tools:/opt/
+- kubectl cp tests/test_3_org_1.sh fabric-tools:/opt/
+- kubectl cp tests/test_5_org_1.sh fabric-tools:/opt/
 3. upload test files for org_2 in org_2's fabric-tools (you can get the fabric-tools's pod name with the command: kubectl get po):
-- kubectl cp tests/test_setup.cfg <fabric-tools>:/opt/
-- kubectl cp tests/test_2_org_2.sh <fabric-tools>:/opt/
-- kubectl cp tests/test_4_org_2.sh <fabric-tools>:/opt/
+- kubectl cp tests/test_setup.cfg fabric-tools:/opt/
+- kubectl cp tests/test_2_org_2.sh fabric-tools:/opt/
+- kubectl cp tests/test_4_org_2.sh fabric-tools:/opt/
 4. Fill the org_1 and org_2 info in test_setup.cfg If it is needed, you can change the blockchain and offchain urls and/or 
 5. on org_1 fabric-tools from /opt directory run ./test_1_org_1.sh and follow the instructions at the end of the script
 6. on org1 site the scrits that have to run are:
