@@ -25,9 +25,8 @@ DOC=$DIR/DOC
 # make sure to remove temp files on exit
 trap "{ rm -fr $DIR; }" EXIT
 
-DOCUMENT64=$1
-DOCUMENT=$2
-DOCUMENT_ID=$3
+DOCUMENT=$1
+DOCUMENT_ID=$2
 
 function request {
     RET=$(curl -s -S -X $1 -H "Content-Type: application/json" -d "$2" "$3")
@@ -50,12 +49,20 @@ echo "###################################################"
 echo "> fetching $ORG_1_NAME_LOWERCASE signatures"
 SIGNATURES=$(request "GET" "" $CFG_ORG_1_BLOCKCHAIN_ADAPTER_URL/signatures/$FETCHED_ID/${ORG_1_NAME_UPPERCASE}MSP)
 ONE_SIGNATURE=$(echo $SIGNATURES | jq -r .[].signature)
-echo "> got ONE signature $ONE_SIGNATURE"
+echo "> got $ORG_1_NAME_LOWERCASE signature $ONE_SIGNATURE"
 
-#echo "> verifying signature"
-#FETCHED_DOC=$(echo $FETCHED_DOC64 | openssl base64 -d)
-#echo -n $FETCHED_DOC > $DOC
-#echo $ONE_SIGNATURE | openssl base64 -d | openssl dgst -sha256 -verify $PUB_ONE -signature /dev/stdin $DOC
+echo "> verifying $ORG_1_NAME_LOWERCASE signature"
+FETCHED_DOC=$(echo $FETCHED_DOC64 | openssl base64 -d)
+echo -n $FETCHED_DOC > $DOC
+echo $ONE_SIGNATURE | openssl base64 -d | openssl dgst -sha256 -verify p_one -signature /dev/stdin $DOC
 
-#echo "add next as args on the test_6_org_2.sh"
-#echo "$DOCUMENT64 $DOCUMENT $DOCUMENT_ID $FETCHED_ID"
+rm -rf p_one
+
+echo "###################################################"
+echo "> fetching $ORG_2_NAME_LOWERCASE signatures"
+SIGNATURES=$(request "GET" "" $CFG_ORG_1_BLOCKCHAIN_ADAPTER_URL/signatures/$FETCHED_ID/${ORG_2_NAME_UPPERCASE}MSP)
+TWO_SIGNATURE=$(echo $SIGNATURES | jq -r .[].signature)
+echo "> got $ORG_2_NAME_LOWERCASE signature $TWO_SIGNATURE"
+
+echo "add next as args on the test_6_org_2.sh"
+echo "$DOCUMENT $TWO_SIGNATURE"

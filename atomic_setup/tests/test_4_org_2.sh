@@ -11,6 +11,8 @@ ORG_2_NAME_UPPERCASE=$(echo "$ORG_NAME_2" | tr '[:lower:]' '[:upper:]')
 
 [ ! -z "$BSA_DEBUG" ] && set -e -x
 
+rm -rf p_two
+
 # SOME OPTIONS
 SIGNER_ONE="$ORG_1_NAME_LOWERCASE@CST"
 SIGNER_TWO="$ORG_2_NAME_LOWERCASE@CST"
@@ -25,9 +27,8 @@ DOC=$DIR/DOC
 # make sure to remove temp files on exit
 trap "{ rm -fr $DIR; }" EXIT
 
-DOCUMENT64=$1
-DOCUMENT=$2
-DOCUMENT_ID=$3
+DOCUMENT=$1
+DOCUMENT_ID=$2
 
 function request {
     RET=$(curl -s -S -X $1 -H "Content-Type: application/json" -d "$2" "$3")
@@ -42,10 +43,14 @@ openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:secp384r1 -nodes -keyout
 CERT=$(cat $CRT | awk 1 ORS='\\n')
 # extract public key
 openssl x509 -pubkey -in $CRT > $PUB_TWO
+
+touch p_two                                                                                                                                          
+cat $PUB_TWO > p_two
+
 # do the signing
 SIGNATURE=$(echo -ne $DOCUMENT | openssl dgst -sha256 -sign $KEY | openssl base64  | tr -d '\n')
 # call the blockchain adapter
 request "PUT" '{"algorithm": "secp384r1", "certificate" : "'"${CERT}"'", "signature" : "'$SIGNATURE'" }'  $CFG_ORG_2_BLOCKCHAIN_ADAPTER_URL/signatures/$DOCUMENT_ID
 
-echo "send to org_1 to add next as args on the test_5_org_1.sh"
-echo "$DOCUMENT64 $DOCUMENT $DOCUMENT_ID"
+echo "add next as args on the test_5_org_1.sh"
+echo "$DOCUMENT $DOCUMENT_ID"
