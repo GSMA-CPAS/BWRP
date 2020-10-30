@@ -35,6 +35,8 @@
    | CFG_PEER_NAME | peer0 | The "<peer>.CFG_HOSTNAME.CFG_DOMAIN" part |
    | CFG_PEER_PORT | 7050 | Port number Hyperledger Peer to be run on. Default is 7050 - Make sure this port is whitelisted and can be accessed from outside on your machine |
    | CFG_PEER_EXTERNAL_IP | 1.2.3.4 | An external IP that you want to asign to the kubernetes NodePort of the peer - Server IP. (Not public IP) in case AWS instance is used |
+   | CFG_PEER_TLS_USERNAME | mtlsuser | The user used for mTLS |
+   | CFG_PEER_TLS_USERPW   | ##swecret## | The password of the mTLS user |
    | CFG_PV_PATH | /mnt/data | The Kubernetes Persistence Volume size. Can be resized later. |
    | CFG_PV_STORAGE_CLASS | gp2 | The storage class the cluster should use ("local-storage" = local, "gp2" = aws, ...) |
    | CFG_PV_SIZE | 10Gi | The Kubernetes Persistence Volume size. Can be resized later. |
@@ -100,7 +102,7 @@ The important steps are 3.+4. as those contain all your secrets and authorizatio
 1. run ./scripts/generate_crypto_user.sh
 
 ## Deploy Offchain DB and Offchain DB Adapter
-1. run ./scripts/deploy_offchains.sh
+1. run ./scripts/deploy_offchain_pods.sh
 
 ## Deploy Blockchain Adapter
 1. run ./scripts/generate_ccp_hybrid.sh

@@ -9,7 +9,6 @@ echo "> setting namespace"
 kubectl config set-context --current --namespace=$CFG_KUBENS
 
 echo "> upload ccp"
-kubectl -n $CFG_KUBENS exec fabric-ca-tools -- mkdir -p /mnt/data/CCP
 kubectl -n $CFG_KUBENS exec fabric-ca-tools -- mkdir -p /mnt/data/CCP/wallet
 kubectl -n $CFG_KUBENS cp $CFG_CONFIG_PATH/config/ccp/${CFG_ORG}.json fabric-ca-tools:/mnt/data/CCP/${CFG_ORG}.json
 kubectl -n $CFG_KUBENS cp $CFG_CONFIG_PATH/config/ccp/wallet fabric-ca-tools:/mnt/data/CCP/

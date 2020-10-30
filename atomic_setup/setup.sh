@@ -7,6 +7,7 @@ set -e -o pipefail
 
 # process the templates:
 ./scripts/prepare_templates.sh setup.cfg ./$CFG_CONFIG_PATH
+exit 1
 
 # check if we need to generate certificates
 echo "> checking for ca certificates in $CFG_CONFIG_PATH_CA";
@@ -36,3 +37,10 @@ fi;
 
 #prepare remote cli:
 ./scripts/prepare_remote_cli.sh
+
+# deploy hybrid
+./scripts/deploy_roamingonblockchain_repo_secrets.sh
+./scripts/generate_crypto_user.sh
+./scripts/deploy_offchain_pods.sh
+./scripts/generate_ccp_hybrid.sh
+./scripts/deploy_blockchain_adapter.sh

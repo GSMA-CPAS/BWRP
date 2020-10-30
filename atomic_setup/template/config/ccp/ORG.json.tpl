@@ -16,7 +16,7 @@
     },
     "client": {
         "tlsEnable": true,
-        "clientTlsIdentity": "User",
+        "clientTlsIdentity": "mtls",
         "logging" : {
             "level": "debug"
         },
