@@ -94,7 +94,7 @@ The important steps are 3.+4. as those contain all your secrets and authorizatio
 1. run ./scripts/prepare_templates_hybrid.sh
 
 ## Apply a secret to access private docker REPO
-1. run kubectl apply -f deployment/kubernetes/registry-secret.yaml
+1. run ./scripts/deploy_roamingonblockchain_repo_secrets.sh
 
 ## Generate TLS user certs
 1. run ./scripts/generate_crypto_user.sh
