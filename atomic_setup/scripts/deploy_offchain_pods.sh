@@ -1,6 +1,6 @@
 #!/bin/bash
 # abort processing on the first error
-set -e -o pipefail 
+set -e -o pipefail
 
 # load config
 . setup.cfg
