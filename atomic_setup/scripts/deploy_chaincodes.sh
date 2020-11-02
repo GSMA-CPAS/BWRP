@@ -28,5 +28,5 @@ function deploy() {
     kubectl exec fabric-tools -- /opt/remote_cli.sh peer lifecycle chaincode install /opt/$CHAINCODE.tar.gz
 }
 
-#deploy counter chaincode/counter/javascript/ node counter_v1 true
+deploy counter chaincode/counter/javascript/ node counter_v1 true
 deploy hybrid  chaincode/hybrid/ golang offchainHybrid_0.1 false

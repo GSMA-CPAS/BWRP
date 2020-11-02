@@ -7,7 +7,6 @@ set -e -o pipefail
 
 # process the templates:
 ./scripts/prepare_templates.sh setup.cfg ./$CFG_CONFIG_PATH
-exit 1
 
 # check if we need to generate certificates
 echo "> checking for ca certificates in $CFG_CONFIG_PATH_CA";
@@ -31,6 +30,7 @@ if [ -d $CFG_CONFIG_PATH_PVC/ca ]; then
 else
     echo "> No backup of ca config found, generating crypto config"
     ./scripts/generate_crypto.sh
+    ./scripts/generate_crypto_mtls.sh
 fi;
 
 ./scripts/deploy_peer.sh
@@ -40,7 +40,6 @@ fi;
 
 # deploy hybrid
 ./scripts/deploy_roamingonblockchain_repo_secrets.sh
-./scripts/generate_crypto_user.sh
 ./scripts/deploy_offchain_pods.sh
 ./scripts/generate_ccp_hybrid.sh
 ./scripts/deploy_blockchain_adapter.sh

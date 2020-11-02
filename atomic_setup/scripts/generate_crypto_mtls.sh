@@ -14,6 +14,11 @@ CFG_USER_BASE="$CFG_PEER_DIR/users/$CFG_CA_PEER_TLS_USERNAME@$CFG_HOSTNAME.$CFG_
 echo "> setting namespace"
 kubectl config set-context --current --namespace=$CFG_KUBENS
 
+echo "> deploying helper script"
+kubectl cp scripts/process_pem.sh fabric-ca-tools:/opt
+
+echo "> enrolling admin user"
+kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://admin:$CFG_CA_ADMINPW@$CA_URL $CA_CLIENT_OPTS
 echo "> registering mtls user $CFG_CA_PEER_TLS_USERNAME"
 kubectl exec fabric-ca-tools -- fabric-ca-client register --id.name $CFG_CA_PEER_TLS_USERNAME --id.secret $CFG_CA_PEER_TLS_USERPW --id.type user $CA_CLIENT_OPTS | sed 's|Password: \(.*\)|Password: *** hidden ***\r|'
 echo "> enrolling mtls user $CFG_CA_PEER_TLS_USERNAME"
