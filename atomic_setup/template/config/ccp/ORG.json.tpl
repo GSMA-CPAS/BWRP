@@ -11,7 +11,7 @@
         },
         "walletPath" : "wallet/",
         "user" : "Admin",
-        "channelName": "roaming",
+        "channelName": "mychannel",
         "contractID": "hybrid"
     },
     "client": {
