@@ -56,7 +56,9 @@
 4. Wait for inclusion to the channel (email from admin)
 5. (optional) If you are on aws, edit and run "scripts/aws_fix_eip_alloc.sh" in order to fix the EIP allocation on AWS
 6. Execute "scripts/join_channel.sh mychannel" command, you should get a sucess message and the list of joined channels should include mychannel
-7. Play around with scripts/remote_cli.sh peer channel list etc
+7. Install hybrid chaincode. Edit CHAINCODE_PACKAGE, TOOLS_POD and LABEL variables in deploy_hybrid_chaincode.sh script, if it is needed.
+run ./scripts/deploy_hybrid_chaincode.sh
+8. Play around with scripts/remote_cli.sh peer channel list etc
 
 ## Pods
 There are various pods deployed that are needed during operation. 
