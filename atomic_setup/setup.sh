@@ -30,9 +30,16 @@ if [ -d $CFG_CONFIG_PATH_PVC/ca ]; then
 else
     echo "> No backup of ca config found, generating crypto config"
     ./scripts/generate_crypto.sh
+    ./scripts/generate_crypto_mtls.sh
 fi;
 
 ./scripts/deploy_peer.sh
 
 #prepare remote cli:
 ./scripts/prepare_remote_cli.sh
+
+# deploy hybrid
+./scripts/deploy_roamingonblockchain_repo_secrets.sh
+./scripts/deploy_offchain_pods.sh
+./scripts/generate_ccp_hybrid.sh
+./scripts/deploy_blockchain_adapter.sh

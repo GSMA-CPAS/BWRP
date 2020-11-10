@@ -11,12 +11,12 @@
         },
         "walletPath" : "wallet/",
         "user" : "Admin",
-        "channelName": "roaming",
+        "channelName": "mychannel",
         "contractID": "hybrid"
     },
     "client": {
         "tlsEnable": true,
-        "clientTlsIdentity": "User",
+        "clientTlsIdentity": "mtls",
         "logging" : {
             "level": "debug"
         },

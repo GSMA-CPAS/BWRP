@@ -35,6 +35,8 @@
    | CFG_PEER_NAME | peer0 | The "<peer>.CFG_HOSTNAME.CFG_DOMAIN" part |
    | CFG_PEER_PORT | 7050 | Port number Hyperledger Peer to be run on. Default is 7050 - Make sure this port is whitelisted and can be accessed from outside on your machine |
    | CFG_PEER_EXTERNAL_IP | 1.2.3.4 | An external IP that you want to asign to the kubernetes NodePort of the peer - Server IP. (Not public IP) in case AWS instance is used |
+   | CFG_PEER_TLS_USERNAME | mtlsuser | The user used for mTLS |
+   | CFG_PEER_TLS_USERPW   | ##swecret## | The password of the mTLS user |
    | CFG_PV_PATH | /mnt/data | The Kubernetes Persistence Volume size. Can be resized later. |
    | CFG_PV_STORAGE_CLASS | gp2 | The storage class the cluster should use ("local-storage" = local, "gp2" = aws, ...) |
    | CFG_PV_SIZE | 10Gi | The Kubernetes Persistence Volume size. Can be resized later. |
@@ -56,8 +58,7 @@
 4. Wait for inclusion to the channel (email from admin)
 5. (optional) If you are on aws, edit and run "scripts/aws_fix_eip_alloc.sh" in order to fix the EIP allocation on AWS
 6. Execute "scripts/join_channel.sh mychannel" command, you should get a sucess message and the list of joined channels should include mychannel
-7. Install hybrid chaincode. Edit CHAINCODE_PACKAGE, TOOLS_POD and LABEL variables in deploy_hybrid_chaincode.sh script, if it is needed.
-run ./scripts/deploy_hybrid_chaincode.sh
+7. deploy the chaincodes via scripts/deploy_chaincodes.sh
 8. Play around with scripts/remote_cli.sh peer channel list etc
 
 ## Pods
@@ -71,7 +72,7 @@ After the first run of setup.sh you will end up with the following directories:
 * deployment/pvc/ca -> a backup of the PVC as deployed on your ca pod, backup this as well! This contains your HLF crypto blobs.
 * deployment/config -> various configuration files that have been generated from the templates
 * deployment/kubernetes -> kubernetes yaml files that have been generated from the templates
-* deployment/scripts.sh -> various scripts that have been generated from the templates
+* deployment/scripts -> various scripts that have been generated from the templates
 
 ## CI/CD
 If you plan to deploy this setup in a CI/CD pipeline all you have to do is:
@@ -86,39 +87,24 @@ The important steps are 3.+4. as those contain all your secrets and authorizatio
 
 ## HYBRID APROACH INTEGRATION /FOR TESTING/
 
-## Prerequisites
-1. Installed hybrid chaincode.
+Hybrid installation has been integrated into the "Prepare your Pods" step.
+If you upgrade from a previous setup, please call scripts/generate_crypto_mtls.sh manually.
+If you start from scratch, this is not necessary as setup.sh will invoke it for you!
 
-## Edit config file
-1. Edit setup.cfg config file sections for blockchain and offchain-db adapters
+# For testing
+1. Configure the following variables in tests/test_setup.cfg:
+| Variable | Description |
+| --- | --- | 
+| ORG_NAME_1 | The name of your organization |
+| ORG_HOSTNAME_1 | The hostname of your organization |
+| ORG_NAME_2 | The name of the partner organization |
+| ORG_HOSTNAME_2 | The hostname of the partner organization |
 
-## Prepare deployment files
-1. run ./scripts/prepare_templates_hybrid.sh
-
-## Apply a secret to access private docker REPO
-1. run kubectl apply -f deployment/kubernetes/registry-secret.yaml
-
-## Generate TLS user certs
-1. run ./scripts/generate_crypto_user.sh
-
-## Deploy Offchain DB and Offchain DB Adapter
-1. run ./scripts/deploy_offchains.sh
-
-## Deploy Blockchain Adapter
-1. run ./scripts/generate_ccp_hybrid.sh
-2. run ./scripts/deploy_blockchain_adapter.sh
-
-## For testing
-1. Fill the ORG_NAME_1 and ORG_NAME_2 with lower cases in the test_setup.cfg for both organisations. If it is needed, you can change the blockchain and offchain urls and/or ports. ORG_NAME_1 and ORG_NAME_2 should be set the same in both test_setup.cfg
-2. upload test files for org_1 with next command ./scripts/deploy_tests_org_1.sh
-3. upload test files for org_2 with next command ./scripts/deploy_tests_org_2.sh
-4. on org_1 fabric-tools from /opt directory run ./test_1_org_1.sh and follow the instructions at the end of the script
-
-Info:
-- on org1 site the scrits that have to run are:
-test_1_org_1.sh, test_3_org_1.sh, test_5_org_1.sh
-- on org2 site the scrits that have to run are:
-test_2_org_2.sh, test_4_org_2.sh
+2. upload test files to your organization by using ./scripts/deploy_tests.sh
+3. upload test files for the partner organization by using ./scripts/deploy_tests.sh
+4. on your org run kubectl exec fabric-tools /opt/tests/test_1_org_1.sh and follow the instructions at the end of the script
+ - on org1 site the scrits that have to run are: test_1_org_1.sh, test_3_org_1.sh, test_5_org_1.sh
+ - on org2 site the scrits that have to run are: test_2_org_2.sh, test_4_org_2.sh
 
 
 ## TODO
