@@ -11,8 +11,8 @@
         },
         "walletPath" : "wallet/",
         "user" : "Admin",
-        "channelName": "mychannel",
-        "contractID": "hybrid"
+        "channelName": "${CFG_CHANNEL_NAME}",
+        "contractID": "${CFG_CHAINCODE_NAME}"
     },
     "client": {
         "tlsEnable": true,

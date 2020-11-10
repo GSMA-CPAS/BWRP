@@ -58,7 +58,7 @@
 4. Wait for inclusion to the channel (email from admin)
 5. (optional) If you are on aws, edit and run "scripts/aws_fix_eip_alloc.sh" in order to fix the EIP allocation on AWS
 6. Execute "scripts/join_channel.sh mychannel" command, you should get a sucess message and the list of joined channels should include mychannel
-7. deploy the chaincodes via scripts/deploy_chaincodes.sh
+7. Deploy the chaincodes via scripts/deploy_hybrid_chaincode.sh
 8. Play around with scripts/remote_cli.sh peer channel list etc
 
 ## Pods
@@ -85,10 +85,24 @@ If you plan to deploy this setup in a CI/CD pipeline all you have to do is:
 
 The important steps are 3.+4. as those contain all your secrets and authorization information
 
-## HYBRID APROACH INTEGRATION /FOR TESTING/
+## HYBRID APROACH INTEGRATION 
 
 Hybrid installation has been integrated into the "Prepare your Pods" step.
-If you upgrade from a previous setup, please call scripts/generate_crypto_mtls.sh manually.
+
+If you upgrade from a previous setup, please follow the steps:
+1. Deploy the hybrid chaincode via scripts/deploy_hybrid_chaincode.sh
+2. Edit setup.cfg config file sections for blockchain and offchain-db adapters
+3. run ./scripts/prepare_templates.sh
+4. Apply a secret to access private docker REPO
+run kubectl apply -f deployment/kubernetes/registry-secret.yaml
+5. Generate TLS user certs
+run ./scripts/generate_crypto_user.sh
+6. Deploy Offchain DB and Offchain DB Adapter
+run ./scripts/deploy_offchains.sh
+7. Deploy Blockchain Adapter
+7.1. run ./scripts/generate_ccp_hybrid.sh
+7.2. run ./scripts/deploy_blockchain_adapter.sh
+
 If you start from scratch, this is not necessary as setup.sh will invoke it for you!
 
 # For testing
@@ -109,4 +123,3 @@ If you start from scratch, this is not necessary as setup.sh will invoke it for 
 
 ## TODO
 The CCP parts and the Chaincode parts are not yet transfered to the proposed scheme.
-
