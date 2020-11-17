@@ -43,3 +43,7 @@ fi;
 ./scripts/deploy_offchain_pods.sh
 ./scripts/generate_ccp_hybrid.sh
 ./scripts/deploy_blockchain_adapter.sh
+
+# deploy frontend
+./scripts/prepare_templates_frontend.sh setup.cfg deployment
+./scripts/deploy_frontend.sh

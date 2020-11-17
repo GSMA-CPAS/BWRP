@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx-webapp-${HOSTNAME}
+  name: nginx-webapp-${HOSTNAME}
+  namespace: ${KUBENS}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-webapp-${HOSTNAME}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx-webapp-${HOSTNAME}
+    spec:
+      containers:
+        - name: nginx-webapp-${HOSTNAME}
+          image: eu.gcr.io/roamingonblockchain/nodenect-nginx-1-4-0-r:latest
+          #command: [ "/bin/sh", "-c", "--" ]
+          #args: [ "while true; do sleep 30; done;" ]
+          volumeMounts:
+            - mountPath: /home/certs
+              name: data-pvc
+              subPath: WEBAPP/nginx/certs
+            - mountPath: /etc/nginx/sites-available
+              name: data-pvc
+              subPath: WEBAPP/nginx/sites-available 
+            - mountPath: /etc/nginx/conf.d
+              name: data-pvc
+              subPath: WEBAPP/nginx/conf.d 
+          ports:
+            - containerPort: 4443
+          protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 120
+            periodSeconds: 30
+      restartPolicy: Always
+      volumes:
+      - name: data-pvc
+        persistentVolumeClaim:
+          claimName: data-claim
+status: {}

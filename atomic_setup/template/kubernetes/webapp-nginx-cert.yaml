@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx-webapp-${HOSTNAME}
+  name: nginx-webapp-${HOSTNAME}
+  namespace: ${KUBENS}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-webapp-${HOSTNAME}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx-webapp-${HOSTNAME}
+    spec:
+      containers:
+        - name: nginx-webapp-${HOSTNAME}
+          image:  eu.gcr.io/roamingonblockchain/nginx-cert:latest 
+          command: [ "/bin/sh", "-c", "--" ]
+          args: [ "while true; do sleep 30; done;" ]
+          volumeMounts:
+            - mountPath: /home/certs
+              name: data-pvc
+              subPath: WEBAPP/nginx/certs
+          ports:
+            - containerPort: 80
+          protocol: TCP
+      restartPolicy: Always
+      volumes:
+      - name: data-pvc
+        persistentVolumeClaim:
+          claimName: data-claim
+status: {}

@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: webapp-${HOSTNAME}
+  name: webapp-${HOSTNAME}
+  namespace: ${KUBENS}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp-${HOSTNAME}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: webapp-${HOSTNAME}
+    spec:
+      containers:
+        - name: webapp-db-${HOSTNAME}
+          image: mysql:5.7
+          #command: [ "/bin/sh", "-c", "--" ]
+          #args: [ "while true; do sleep 30; done;" ]
+          env:
+            - name: MYSQL_DATABASE
+              value: "${WEBAPP_MYSQL_DB}"
+            - name: MYSQL_PASSWORD
+              value: "${WEBAPP_MYSQL_PASSWORD}"
+            - name: MYSQL_ROOT_PASSWORD
+              value: "${WEBAPP_MYSQL_ROOT_PASSWORD}"
+            - name: MYSQL_USER
+              value: "${WEBAPP_MYSQL_USER}"
+          ports:
+            - containerPort: ${WEBAPP_MYSQL_SERVER_PORT}
+          volumeMounts:
+          - mountPath: /var/lib/mysql #/data
+            name: data-pvc
+            subPath: WEBAPP/DB
+          resources: {}
+        - name: webapp-${HOSTNAME}
+          image: gcr.io/roamingonblockchain/webapp-0.1:latest  # eu.gcr.io/roamingonblockchain/webapp:latest
+          #command: [ "/bin/sh", "-c", "--" ]
+          #args: [ "while true; do sleep 30; done;" ]
+          command: [ "/bin/sh", "-c", "--" ]
+          args:  ["node setup.js; node server.js;"]
+          env:
+            - name: WEBAPP_CA_ADMIN_ENROLLMENT_SECRET
+              value: "${CA_ADMINPW}"
+            - name: WEBAPP_CA_USER_ENROLLMENT_SECRET
+              value: "${CA_PEERPW}"
+            - name: WEBAPP_MYSQL_PASSWORD
+              value: "${WEBAPP_MYSQL_PASSWORD}"
+          ports:
+            - containerPort: ${WEBAPP_PORT}
+          resources: {}
+          volumeMounts:
+            - mountPath: /webapp/wallet
+              name: data-pvc
+              subPath: WEBAPP/wallet
+            - mountPath: /webapp/config
+              name: data-pvc
+              subPath: WEBAPP/config #custom-environment-variables.json production.json
+      restartPolicy: Always
+      initContainers:
+      - name: init-myservice
+        image: busybox
+        command: ['sh', '-c', 'mkdir -p var/lib/mysql/data/lost+found && rm -r var/lib/mysql/data/lost+found']
+        volumeMounts:
+        - mountPath: /var/lib/mysql/data
+          name: data-pvc
+          subPath: WEBAPP/DB
+      imagePullSecrets:
+      - name: nomad-secret
+      volumes:
+      - name: data-pvc
+        persistentVolumeClaim:
+          claimName: data-claim
+status: {}
