@@ -18,15 +18,15 @@ kubectl -n $CFG_KUBENS exec fabric-tools -- mkdir -p /mnt/data/WEBAPP/nginx/conf
 kubectl -n $CFG_KUBENS exec fabric-tools -- mkdir -p /mnt/data/WEBAPP/nginx/sites-available
 
 echo "> uploading webapp files..."
-kubectl -n $CFG_KUBENS cp deployment/webapp/config/production.json fabric-tools:/mnt/data/WEBAPP/config/
-kubectl -n $CFG_KUBENS cp deployment/webapp/config/default.json fabric-tools:/mnt/data/WEBAPP/config/
-kubectl -n $CFG_KUBENS cp deployment/webapp/config/custom-environment-variables.json fabric-tools:/mnt/data/WEBAPP/config/
+kubectl -n $CFG_KUBENS cp $CFG_CONFIG_PATH/webapp/production.json fabric-tools:/mnt/data/WEBAPP/config/
+kubectl -n $CFG_KUBENS cp $CFG_CONFIG_PATH/webapp/default.json fabric-tools:/mnt/data/WEBAPP/config/
+kubectl -n $CFG_KUBENS cp $CFG_CONFIG_PATH/webapp/custom-environment-variables.json fabric-tools:/mnt/data/WEBAPP/config/
 
 echo "> uploading nginx files..."
-kubectl -n $CFG_KUBENS cp deployment/nginx/conf.d/main_error_404.html fabric-tools:/mnt/data/WEBAPP/nginx/conf.d/
-kubectl -n $CFG_KUBENS cp deployment/nginx/conf.d/main_error_50x.html fabric-tools:/mnt/data/WEBAPP/nginx/conf.d/
-kubectl -n $CFG_KUBENS cp deployment/nginx/conf.d/nomad_nginx.conf fabric-tools:/mnt/data/WEBAPP/nginx/conf.d/
-kubectl -n $CFG_KUBENS cp deployment/nginx/conf.d/nomad_nginx.conf fabric-tools:/mnt/data/WEBAPP/nginx/sites-available/
+kubectl -n $CFG_KUBENS cp $CFG_CONFIG_PATH/nginx/conf.d/main_error_404.html fabric-tools:/mnt/data/WEBAPP/nginx/conf.d/
+kubectl -n $CFG_KUBENS cp $CFG_CONFIG_PATH/nginx/conf.d/main_error_50x.html fabric-tools:/mnt/data/WEBAPP/nginx/conf.d/
+kubectl -n $CFG_KUBENS cp $CFG_CONFIG_PATH/nginx/conf.d/nomad_nginx.conf fabric-tools:/mnt/data/WEBAPP/nginx/conf.d/
+kubectl -n $CFG_KUBENS cp $CFG_CONFIG_PATH/nginx/conf.d/nomad_nginx.conf fabric-tools:/mnt/data/WEBAPP/nginx/sites-available/
 
 echo "> deploying frontend pod and svc..."
 kubectl apply -f $CFG_CONFIG_PATH/kubernetes/webapp-svc.yaml
