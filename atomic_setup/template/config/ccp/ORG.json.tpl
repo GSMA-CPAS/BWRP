@@ -11,8 +11,8 @@
         },
         "walletPath" : "wallet/",
         "user" : "Admin",
-        "channelName": "${CFG_CHANNEL_NAME}",
-        "contractID": "${CFG_CHAINCODE_NAME}"
+        "channelName": "${CHANNEL_NAME}",
+        "contractID": "${CHAINCODE_NAME}"
     },
     "client": {
         "tlsEnable": true,
