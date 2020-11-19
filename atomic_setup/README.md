@@ -120,13 +120,13 @@ If you start from scratch, this is not necessary as setup.sh will invoke it for 
 
 # For testing
 1. Configure the following variables in tests/test_setup.cfg:
-  | Variable | Description |
+   | Variable | Description |
    |----|---|
-| ORG_NAME_1 | The name of your organization |
-| ORG_HOSTNAME_1 | The hostname of your organization |
-| ORG_NAME_2 | The name of the partner organization |
-| ORG_HOSTNAME_2 | The hostname of the partner organization |
-\
+   | ORG_NAME_1 | The name of your organization |
+   | ORG_HOSTNAME_1 | The hostname of your organization |
+   | ORG_NAME_2 | The name of the partner organization |
+   | ORG_HOSTNAME_2 | The hostname of the partner organization |
+
 2. upload test files to your organization by using ./scripts/deploy_tests.sh
 3. upload test files for the partner organization by using ./scripts/deploy_tests.sh
 4. on your org run kubectl exec fabric-tools /opt/tests/test_1_org_1.sh and follow the instructions at the end of the script
@@ -138,20 +138,20 @@ If you start from scratch, this is not necessary as setup.sh will invoke it for 
 
 If you upgrade from a previous setup, please follow the steps:
 1. Configure the following variables in setup.cfg:
-  | Variable | Value | Description |
+   | Variable | Value | Description |
    |----|---|---|
-| CFG_WEBAPP_MYSQL_ROOT_PASSWORD | changeThisRootPassword | The root password for mysql. |
-| CFG_WEBAPP_MYSQL_DB | nomad | The webapp db name. |
-| CFG_WEBAPP_MYSQL_USER | nomad | The webapp db user. |
-| CFG_WEBAPP_MYSQL_PASSWORD | changeThisPassword | The user password for mysql. |
-| CFG_WEBAPP_MYSQL_SERVER_PORT | 3306 | Mysql port. |
-| CFG_WEBAPP_PORT | 3000 | The webapp port. |
-| CFG_NGINX_HTTP2_PORT | 4443 | Nginx http 2 port. |
-| CFG_NGINX_HTTPS_PORT | 443 | Nginx https service port. |
-| CFG_NGINX_NODE_PORT | 30443 | Nginx node port. |
-| CFG_NGINX_HTTP_PORT | 80 | Nginx port for issuing certs |
-| CFG_NGINX_CERT_NODE_PORT | 30080 |  node port for issuing certs | 
-| CFG_NGINX_CERT_MAIL | setYour@mail.here | Mail used for letsencrypt cert |
+   | CFG_WEBAPP_MYSQL_ROOT_PASSWORD | changeThisRootPassword | The root password for mysql. |
+   | CFG_WEBAPP_MYSQL_DB | nomad | The webapp db name. |
+   | CFG_WEBAPP_MYSQL_USER | nomad | The webapp db user. |
+   | CFG_WEBAPP_MYSQL_PASSWORD | changeThisPassword | The user password for mysql. |
+   | CFG_WEBAPP_MYSQL_SERVER_PORT | 3306 | Mysql port. |
+   | CFG_WEBAPP_PORT | 3000 | The webapp port. |
+   | CFG_NGINX_HTTP2_PORT | 4443 | Nginx http 2 port. |
+   | CFG_NGINX_HTTPS_PORT | 443 | Nginx https service port. |
+   | CFG_NGINX_NODE_PORT | 30443 | Nginx node port. |
+   | CFG_NGINX_HTTP_PORT | 80 | Nginx port for issuing certs |
+   | CFG_NGINX_CERT_NODE_PORT | 30080 |  node port for issuing certs | 
+   | CFG_NGINX_CERT_MAIL | setYour@mail.here | Mail used for letsencrypt cert |
 
 2. Register record host_name.domain in DNS to point to pubilc IP address.
 3. run ./scripts/prepare_templates.sh setup.cfg deployment
