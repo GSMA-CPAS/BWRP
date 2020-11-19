@@ -2,6 +2,7 @@
 
 This repository contains all setup files for joining the production network.
 It is based on Kubernetes and provides scripts for generating crypto material and starting pods as well as configuration files. 
+For a general description of this project's software architechture, components and workflows, please check the [wiki page](https://github.com/GSMA-CPAS/BWRP).
 
 ## Pre-requisites
 
