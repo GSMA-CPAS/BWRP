@@ -48,6 +48,17 @@
    | CFG_OFFCHAIN_MYSQL_PASSWORD | changeThisPassword | The user password for mysql.. |
    | CFG_MYSQL_SERVER_PORT | 3306 | Mysql port. |
    | CFG_BLOCKCHAIN_ADAPTER_PORT | 8081 | The blockchain adapter port. |
+   | CFG_WEBAPP_MYSQL_ROOT_PASSWORD | changeThisRootPassword | The root password for mysql. |
+   | CFG_WEBAPP_MYSQL_DB | nomad | The webapp db name. |
+   | CFG_WEBAPP_MYSQL_USER | nomad | The webapp db user. |
+   | CFG_WEBAPP_MYSQL_PASSWORD | changeThisPassword | The user password for mysql. |
+   | CFG_WEBAPP_MYSQL_SERVER_PORT | 3306 | Mysql port. |
+   | CFG_WEBAPP_PORT | 3000 | The webapp port. |
+   | CFG_NGINX_HTTP2_PORT | 4443 | Nginx http 2 port. |
+   | CFG_NGINX_HTTPS_PORT | 443 | Nginx https service port. |
+   | CFG_NGINX_NODE_PORT | 30443 | Nginx node port. |
+   | CFG_NGINX_HTTP_PORT | 80 | Nginx port for issuing certs |
+   | CFG_NGINX_CERT_NODE_PORT | 30080 |  node port for issuing certs |
 
 2. Register your host_name.domain in DNS to point to pubilc IP address.
 
@@ -61,7 +72,7 @@
 6. (optional) If you are on aws, edit and run "scripts/aws_fix_eip_alloc.sh" in order to fix the EIP allocation on AWS
 7. Execute "scripts/join_channel.sh mychannel" command, you should get a sucess message and the list of joined channels should include mychannel
 8. Deploy the chaincodes via scripts/deploy_hybrid_chaincode.sh
-9. Play around with scripts/remote_cli.sh peer channel list etc
+9. Enter webapp at https://host_name.domain with username: password  admin:admin.
 
 ## Pods
 There are various pods deployed that are needed during operation. 
@@ -109,13 +120,13 @@ If you start from scratch, this is not necessary as setup.sh will invoke it for 
 
 # For testing
 1. Configure the following variables in tests/test_setup.cfg:
-| Variable | Description |
-| --- | --- | 
+  | Variable | Description |
+   |----|---|
 | ORG_NAME_1 | The name of your organization |
 | ORG_HOSTNAME_1 | The hostname of your organization |
 | ORG_NAME_2 | The name of the partner organization |
 | ORG_HOSTNAME_2 | The hostname of the partner organization |
-
+\
 2. upload test files to your organization by using ./scripts/deploy_tests.sh
 3. upload test files for the partner organization by using ./scripts/deploy_tests.sh
 4. on your org run kubectl exec fabric-tools /opt/tests/test_1_org_1.sh and follow the instructions at the end of the script
@@ -127,6 +138,8 @@ If you start from scratch, this is not necessary as setup.sh will invoke it for 
 
 If you upgrade from a previous setup, please follow the steps:
 1. Configure the following variables in setup.cfg:
+  | Variable | Value | Description |
+   |----|---|---|
 | CFG_WEBAPP_MYSQL_ROOT_PASSWORD | changeThisRootPassword | The root password for mysql. |
 | CFG_WEBAPP_MYSQL_DB | nomad | The webapp db name. |
 | CFG_WEBAPP_MYSQL_USER | nomad | The webapp db user. |

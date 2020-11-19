@@ -4,16 +4,10 @@
     "title": "${HOSTNAME} webapp"
   },
 
-  "session": {
-    "cookie": {
-      "secure": false
-    }
-  },
-
   "database": {
     "connection": {
       "host": "127.0.0.1",
-      "port": ${WEBAPP_MYSQL_SERVER_PORT},
+      "port": "${WEBAPP_MYSQL_SERVER_PORT}",
       "user": "${WEBAPP_MYSQL_USER}",
       "password": "${WEBAPP_MYSQL_PASSWORD}",
       "database": "${WEBAPP_MYSQL_DB}"
@@ -28,12 +22,6 @@
       "displayName": "Roaming",
       "config": {
       }
-    }
-  },
-
-  "services": {
-    "SwaggerService": {
-      "enabled": false
     }
   },
 
