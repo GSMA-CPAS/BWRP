@@ -61,6 +61,11 @@ kubectl exec $POD -- cp /etc/letsencrypt/live/${CFG_HOSTNAME}.${CFG_DOMAIN}/priv
 
 sleep 2
 
+# deleting cert bot pod 
+kubectl delete -f $CFG_CONFIG_PATH/kubernetes/webapp-nginx-cert.yaml
+
+sleep 20
+
 echo "> deploying nginx pod..."
 kubectl apply -f $CFG_CONFIG_PATH/kubernetes/webapp-nginx-pod.yaml
 
