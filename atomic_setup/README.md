@@ -138,10 +138,10 @@ If you upgrade from a previous setup, please follow the steps:
 | CFG_NGINX_NODE_PORT | 30443 | Nginx node port. |
 | CFG_NGINX_HTTP_PORT | 80 | Nginx port for issuing certs |
 | CFG_NGINX_CERT_NODE_PORT | 30080 |  node port for issuing certs | 
+| CFG_NGINX_CERT_MAIL | setYour@mail.here | Mail used for letsencrypt cert |
 
 2. Register your host_name.domain in DNS to point to pubilc IP address.
-3. run ./scripts/prepare_templates_frontend_deployment.sh setup.cfg deployment
-4. run ./scripts/prepare_templates_frontend.sh
+3. run ./scripts/prepare_templates.sh setup.cfg deployment
 5. run ./scripts/deploy_frontend.sh
 6. Enter webapp at https://host_name.domain with username: password  admin:admin.
 

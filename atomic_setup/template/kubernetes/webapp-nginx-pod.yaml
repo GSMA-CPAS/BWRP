@@ -36,7 +36,7 @@ spec:
               subPath: WEBAPP/nginx/conf.d 
           ports:
             - containerPort: 4443
-          protocol: TCP
+              protocol: TCP
           livenessProbe:
             httpGet:
               path: /health

@@ -45,5 +45,4 @@ fi;
 ./scripts/deploy_blockchain_adapter.sh
 
 # deploy frontend
-./scripts/prepare_templates_frontend.sh setup.cfg deployment
 ./scripts/deploy_frontend.sh

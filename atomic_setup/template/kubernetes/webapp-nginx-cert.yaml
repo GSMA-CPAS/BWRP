@@ -30,7 +30,7 @@ spec:
               subPath: WEBAPP/nginx/certs
           ports:
             - containerPort: 80
-          protocol: TCP
+              protocol: TCP
       restartPolicy: Always
       volumes:
       - name: data-pvc
