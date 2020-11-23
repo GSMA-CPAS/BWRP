@@ -71,7 +71,7 @@
 5. Wait for inclusion to the channel (email from admin)
 6. (optional) If you are on aws, edit and run "scripts/aws_fix_eip_alloc.sh" in order to fix the EIP allocation on AWS
 7. Execute "scripts/join_channel.sh mychannel" command, you should get a sucess message and the list of joined channels should include mychannel
-8. Deploy the chaincodes via scripts/deploy_hybrid_chaincode.sh
+8. Deploy the chaincodes via scripts/deploy_chaincodes.sh
 9. Enter webapp at https://host_name.domain with username: password  admin:admin.
 
 ## Pods
@@ -103,7 +103,7 @@ The important steps are 3.+4. as those contain all your secrets and authorizatio
 Hybrid installation has been integrated into the "Prepare your Pods" step.
 
 If you upgrade from a previous setup, please follow the steps:
-1. Deploy the hybrid chaincode via scripts/deploy_hybrid_chaincode.sh
+1. Deploy the hybrid chaincode via scripts/deploy_chaincodes.sh
 2. Edit setup.cfg config file sections for blockchain and offchain-db adapters
 3. run ./scripts/prepare_templates.sh
 4. Apply a secret to access private docker REPO
