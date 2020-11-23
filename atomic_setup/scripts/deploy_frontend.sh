@@ -19,7 +19,6 @@ kubectl exec fabric-tools -- mkdir -p /mnt/data/WEBAPP/nginx/sites-available
 
 echo "> uploading webapp files..."
 kubectl cp $CFG_CONFIG_PATH/config/webapp/production.json fabric-tools:/mnt/data/WEBAPP/config/
-kubectl cp $CFG_CONFIG_PATH/config/webapp/default.json fabric-tools:/mnt/data/WEBAPP/config/
 kubectl cp $CFG_CONFIG_PATH/config/webapp/custom-environment-variables.json fabric-tools:/mnt/data/WEBAPP/config/
 
 echo "> uploading nginx files..."

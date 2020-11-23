@@ -60,9 +60,12 @@ spec:
             - mountPath: /webapp/wallet
               name: data-pvc
               subPath: WEBAPP/wallet
-            - mountPath: /webapp/config
+            - mountPath: /webapp/config/production.json
               name: data-pvc
-              subPath: WEBAPP/config #custom-environment-variables.json production.json
+              subPath: WEBAPP/config/production.json
+            - mountPath: /webapp/config/custom-environment-variables.json
+              name: data-pvc
+              subPath: WEBAPP/config/custom-environment-variables.json
       restartPolicy: Always
       initContainers:
       - name: init-myservice
