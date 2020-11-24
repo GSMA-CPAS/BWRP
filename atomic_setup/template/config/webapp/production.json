@@ -4,6 +4,10 @@
     "title": "${HOSTNAME} webapp"
   },
 
+  "session": {
+    "secret": "ChangeSecret123"
+  },
+
   "database": {
     "connection": {
       "host": "127.0.0.1",

@@ -155,9 +155,12 @@ If you upgrade from a previous setup, please follow the steps:
 
 2. Register record host_name.domain in DNS to point to pubilc IP address.
 3. run ./scripts/prepare_templates.sh setup.cfg deployment
-5. run ./scripts/deploy_frontend.sh
-6. Enter webapp at https://host_name.domain with username: password  admin:admin.
-
+4. run ./scripts/deploy_frontend_certbot.sh
+5. run ./scripts/deploy_frontend_webapp.sh
+6. run ./scripts/deploy_frontend_nginx.sh
+7. Enter webapp at https://host_name.domain with username: password  admin:admin.
+8. To renew certs for Nginx:
+   run ./scripts/renew_nginx_certs.sh
 
 ## TODO
 The CCP parts and the Chaincode parts are not yet transfered to the proposed scheme.

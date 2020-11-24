@@ -45,4 +45,6 @@ fi;
 ./scripts/deploy_blockchain_adapter.sh
 
 # deploy frontend
-./scripts/deploy_frontend.sh
+./scripts/deploy_frontend_certbot.sh
+./scripts/deploy_frontend_webapp.sh
+./scripts/deploy_frontend_nginx.sh
