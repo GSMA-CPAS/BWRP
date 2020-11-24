@@ -155,11 +155,12 @@ If you upgrade from a previous setup, please follow the steps:
 
 2. Register record host_name.domain in DNS to point to pubilc IP address.
 3. run ./scripts/prepare_templates.sh setup.cfg deployment
-4. run ./scripts/deploy_frontend_certbot.sh
-5. run ./scripts/deploy_frontend_webapp.sh
-6. run ./scripts/deploy_frontend_nginx.sh
-7. Enter webapp at https://host_name.domain with username: password  admin:admin.
-8. To renew certs for Nginx:
+4. run ./scripts/prepare_webapp_config.sh
+5. run ./scripts/deploy_frontend_certbot.sh
+6. run ./scripts/deploy_frontend_webapp.sh
+7. run ./scripts/deploy_frontend_nginx.sh
+8. Enter webapp at https://host_name.domain with username: password  admin:admin.
+9. To renew certs for Nginx:
    run ./scripts/renew_nginx_certs.sh
 
 ## TODO
