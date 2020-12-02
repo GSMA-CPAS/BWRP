@@ -109,7 +109,7 @@ If you upgrade from a previous setup, please follow the steps:
 4. Apply a secret to access private docker REPO
 run kubectl apply -f deployment/kubernetes/registry-secret.yaml
 5. Generate TLS user certs
-run ./scripts/generate_crypto_user.sh
+run ./scripts/generate_crypto_mtls.sh
 6. Deploy Offchain DB and Offchain DB Adapter
 run ./scripts/deploy_offchains.sh
 7. Deploy Blockchain Adapter
