@@ -1,0 +1,56 @@
+{
+  "organization": {
+    "mspid": "${ORG}MSP",
+    "title": "${HOSTNAME} webapp"
+  },
+
+  "session": {
+    "secret": "ChangeSecret123"
+  },
+
+  "database": {
+    "connection": {
+      "host": "127.0.0.1",
+      "port": "${WEBAPP_MYSQL_SERVER_PORT}",
+      "user": "${WEBAPP_MYSQL_USER}",
+      "password": "${WEBAPP_MYSQL_PASSWORD}",
+      "database": "${WEBAPP_MYSQL_DB}"
+    }
+  },
+
+  "apps": {
+    "roaming": {
+      "name": "roaming",
+      "enabled": true,
+      "packageName": "app-roaming",
+      "displayName": "Roaming",
+      "config": {
+      }
+    }
+  },
+
+  "backendAdapters": {
+    "CertAuthAdapter": {
+      "config": {
+        "url": "https://ca-${HOSTNAME}:${CA_PORT}",
+        "caName": "ca.${HOSTNAME}.${DOMAIN}",
+        "adminEnrollmentId": "admin",
+        "adminEnrollmentSecret": "${CA_ADMINPW}",
+        "userEnrollmentSecret": "${CA_PEERPW}",
+        "tlsOptions": {
+          "trustedRoots": ["from_ca_tls"],
+          "verify": false
+        }
+      }
+    },
+    "BlockchainAdapter": {
+      "config": {
+        "url": "http://blockchain-adapter-${HOSTNAME}:${BLOCKCHAIN_ADAPTER_PORT}",
+        "webhooks": [
+          {"eventName": "STORE:DOCUMENTHASH", "callbackUrl": "http://webapp-${HOSTNAME}:${WEBAPP_PORT}/api/v1/documents/event"},
+          {"eventName": "STORE:SIGNATURE", "callbackUrl": "http://webapp-${HOSTNAME}:${WEBAPP_PORT}/api/v1/signatures/event"}
+        ]
+      }
+    }
+  }
+}
