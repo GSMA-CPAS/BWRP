@@ -40,7 +40,7 @@ fi;
 
 # deploy hybrid
 ./scripts/deploy_roamingonblockchain_repo_secrets.sh
-./scripts/deploy_offchain_pods.sh
+./scripts/deploy_offchain_couchdb.sh
 ./scripts/generate_ccp_hybrid.sh
 ./scripts/deploy_blockchain_adapter.sh
 

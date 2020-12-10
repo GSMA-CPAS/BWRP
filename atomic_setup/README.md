@@ -110,8 +110,8 @@ If you upgrade from a previous setup, please follow the steps:
 run kubectl apply -f deployment/kubernetes/registry-secret.yaml
 5. Generate TLS user certs
 run ./scripts/generate_crypto_mtls.sh
-6. Deploy Offchain DB and Offchain DB Adapter
-run ./scripts/deploy_offchains.sh
+6. Deploy Offchain DB
+run ./scripts/deploy_offchain_couchdb.sh
 7. Deploy Blockchain Adapter
 7.1. run ./scripts/generate_ccp_hybrid.sh
 7.2. run ./scripts/deploy_blockchain_adapter.sh

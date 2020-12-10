@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    io.kompose.service: offchain-couchdb-${HOSTNAME}
+  name: offchain-couchdb-${HOSTNAME}
+  namespace: ${KUBENS}
+spec:
+  ports:
+  - name: "offchain-couchdb-${HOSTNAME}"
+    port: ${OFFCHAIN_COUCHDB_TARGET_PORT}
+    targetPort: ${OFFCHAIN_COUCHDB_TARGET_PORT}
+  selector:
+    io.kompose.service: offchain-couchdb-${HOSTNAME}
