@@ -25,8 +25,8 @@ POD=$(kubectl -n $CFG_KUBENS get pods | grep ^blockchain-adapter- | awk '{print 
 kubectl wait --timeout=5m --for=condition=ready pod/$POD
 
 echo "setup offchain endpoint"
-kubectl exec fabric-tools -- apt update
-kubectl exec fabric-tools -- apt install curl -y
+kubectl exec fabric-tools -- apk update
+kubectl exec fabric-tools -- apk add curl -y
 kubectl exec fabric-tools -- bash /opt/setup_offchain_endpoint.sh
 
 echo "> all done."

@@ -21,7 +21,7 @@ spec:
         io.kompose.service: offchain-couchdb-${HOSTNAME}
     spec:
       containers:
-      - image: hyperledger/fabric-couchdb
+      - image: hyperledger/fabric-couchdb:0.4
         name: offchain-couchdb-${HOSTNAME}
         env:
         - name: COUCHDB_USER
