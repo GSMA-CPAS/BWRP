@@ -26,7 +26,7 @@ kubectl wait --timeout=5m --for=condition=ready pod/$POD
 
 echo "setup offchain endpoint"
 kubectl exec fabric-tools -- apk update
-kubectl exec fabric-tools -- apk add curl -y
+kubectl exec fabric-tools -- apk add curl
 kubectl exec fabric-tools -- bash /opt/setup_offchain_endpoint.sh
 
 echo "> all done."
