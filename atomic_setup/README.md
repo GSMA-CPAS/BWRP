@@ -72,7 +72,7 @@
 6. (optional) If you are on aws, edit and run "scripts/aws_fix_eip_alloc.sh" in order to fix the EIP allocation on AWS
 7. Execute "scripts/join_channel.sh mychannel" command, you should get a sucess message and the list of joined channels should include mychannel
 8. Deploy the chaincodes via scripts/deploy_chaincodes.sh
-9. Enter webapp at https://host_name.domain with username: password  admin:admin.
+
 
 ## Pods
 There are various pods deployed that are needed during operation. 

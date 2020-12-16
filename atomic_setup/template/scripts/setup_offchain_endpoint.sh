@@ -1,6 +1,7 @@
 #!/bin/bash
 
-  curl -X PUT http://${OFFCHAIN_COUCHDB_USER}:${OFFCHAIN_COUCHDB_PASSWORD}@offchain-couchdb-${HOSTNAME}:${OFFCHAIN_COUCHDB_TARGET_PORT}
+  curl -X PUT http://${OFFCHAIN_COUCHDB_USER}:${OFFCHAIN_COUCHDB_PASSWORD}@offchain-couchdb-${HOSTNAME}:${OFFCHAIN_COUCHDB_TARGET_PORT}/_users
+  curl -X PUT http://${OFFCHAIN_COUCHDB_USER}:${OFFCHAIN_COUCHDB_PASSWORD}@offchain-couchdb-${HOSTNAME}:${OFFCHAIN_COUCHDB_TARGET_PORT}/offchain_data
 
   for value in {1..5}
   do

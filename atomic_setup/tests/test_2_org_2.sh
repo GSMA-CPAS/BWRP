@@ -35,8 +35,8 @@ function request {
 }  
 
 echo "###################################################"
-echo "> setting rest uri on $ORG_2_NAME_LOWERCASE"
-request "PUT" '{"restURI": "'$CFG_ORG_2_OFFCHAIN_URL'"}' $CFG_ORG_2_BLOCKCHAIN_ADAPTER_URL/config/offchain-db-adapter
+# echo "> setting rest uri on $ORG_2_NAME_LOWERCASE"
+# request "PUT" '{"restURI": "'$CFG_ORG_2_OFFCHAIN_URL'"}' $CFG_ORG_2_BLOCKCHAIN_ADAPTER_URL/config/offchain-db-adapter
 
 echo "send to org_1 to add next as args on the test_3_org_1.sh"
 echo $DOCUMENT64 $DOCUMENT
