@@ -1,6 +1,6 @@
 #!/bin/bash
 
-  curl -X PUT http://${OFFCHAIN_COUCHDB_USER}:${OFFCHAIN_COUCHDB_PASSWORD}@offchain-couchdb-${HOSTNAME}:${OFFCHAIN_COUCHDB_TARGET_PORT}
+  curl -X PUT http://${OFFCHAIN_COUCHDB_USER}:${OFFCHAIN_COUCHDB_PASSWORD}@offchain-couchdb-${HOSTNAME}:${OFFCHAIN_COUCHDB_TARGET_PORT}/_users
 
   for value in {1..5}
   do
@@ -10,12 +10,12 @@
     RESPONSE=$(curl -s http://blockchain-adapter-${HOSTNAME}:${BLOCKCHAIN_ADAPTER_PORT}/config/offchain-db)
     echo ""
     if echo $RESPONSE | grep -i "error"
-    then 
+    then
       echo "Error: failed to set endpoint, retrying..."
     else
       echo "Sucess"
-      return
-    fi 
+      exit 0
+    fi
     echo "will retry in 5s"
     sleep 5
   done
