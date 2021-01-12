@@ -35,7 +35,7 @@ fi;
 
 ./scripts/deploy_peer.sh
 
-#prepare remote cli:
+# prepare remote cli:
 ./scripts/prepare_remote_cli.sh
 
 # deploy hybrid
@@ -49,3 +49,6 @@ fi;
 ./scripts/deploy_frontend_certbot.sh
 ./scripts/deploy_frontend_webapp.sh
 ./scripts/deploy_frontend_nginx.sh
+
+# deploy common-adapter
+./scripts/deploy_common_adapter.sh

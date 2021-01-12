@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    io.kompose.service: common-adapter-${HOSTNAME}
+  name: common-adapter-${HOSTNAME}
+  namespace: ${KUBENS}
+spec:
+# enable external access
+#  externalTrafficPolicy: Cluster
+#  externalIPs:
+#  - ${PEER_EXTERNAL_IP}
+#  type: NodePort
+  ports:
+  - name: "common-adapter-${HOSTNAME}"
+    port: ${COMMON_ADAPTER_PORT}
+    targetPort: ${COMMON_ADAPTER_PORT}
+  selector:
+    io.kompose.service: common-adapter-${HOSTNAME}
+    
