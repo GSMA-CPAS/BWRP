@@ -74,7 +74,8 @@ spec:
         ports:
         - containerPort: ${COMMON_ADAPTER_PORT}
           protocol: TCP
-
+      imagePullSecrets:
+      - name: nomad-secret
       hostname: common-adapter-${HOSTNAME}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
