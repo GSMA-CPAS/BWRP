@@ -163,6 +163,8 @@ If you upgrade from a previous setup, please follow the steps:
 9. To renew certs for Nginx:
    run ./scripts/renew_nginx_certs.sh
 
+To upgrade to frontend version v0.0.4, working with common-adapter, please deploy common-adapter first and then execute steps: 3, 4 and 6, from current section.
+
 ## COMMON-ADAPTER
 If you start from scratch, this is not necessary as setup.sh will invoke it for you!
 
