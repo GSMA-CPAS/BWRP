@@ -41,7 +41,7 @@ spec:
             subPath: WEBAPP/DB
           resources: {}
         - name: webapp-${HOSTNAME}
-          image: gcr.io/roamingonblockchain/webapp:0.0.3 # gcr.io/roamingonblockchain/webapp-0.1:latest
+          image: gcr.io/roamingonblockchain/webapp:0.0.4 # gcr.io/roamingonblockchain/webapp-0.1:latest
           #command: [ "/bin/sh", "-c", "--" ]
           #args: [ "while true; do sleep 30; done;" ]
           command: [ "/bin/sh", "-c", "--" ]

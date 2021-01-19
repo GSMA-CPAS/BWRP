@@ -72,7 +72,7 @@ spec:
         - name: BLOCKCHAIN_ADAPTER_WEBHOOK_EVENTS
           value: '["STORE:DOCUMENTHASH", "STORE:SIGNATURE"]'
         ports:
-        - containerPort: ${COMMON_ADAPTER_PORT}
+        - containerPort: 3000
           protocol: TCP
       imagePullSecrets:
       - name: nomad-secret

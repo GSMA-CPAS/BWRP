@@ -15,7 +15,7 @@ spec:
   ports:
   - name: "common-adapter-${HOSTNAME}"
     port: ${COMMON_ADAPTER_PORT}
-    targetPort: ${COMMON_ADAPTER_PORT}
+    targetPort: 3000
   selector:
     io.kompose.service: common-adapter-${HOSTNAME}
     
