@@ -16,7 +16,7 @@ spec:
       #the fabvric-ca-tools container is outdated (2y)... use fabric ca image instead
       image: hyperledger/fabric-ca:1.4.7 
       imagePullPolicy: Always
-      command: ["sh", "-c", "sleep 48h"]
+      command: ["sh", "-c", "sleep infinity"]
       env:
       - name: TZ
         value: "UTC"
