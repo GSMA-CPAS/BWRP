@@ -15,7 +15,7 @@ spec:
     - name: fabric-tools
       image: hyperledger/fabric-tools:amd64-2.1.1
       imagePullPolicy: Always
-      command: ["sh", "-c", "sleep 48h"]
+      command: ["sh", "-c", "sleep infinity"]
       env:
       - name: TZ
         value: "UTC"
