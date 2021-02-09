@@ -19,8 +19,8 @@ spec:
       labels:
         app: webapp-${HOSTNAME}
     spec:
-      securityContext:
-        fsGroup: 101
+      securityContext: 
+        fsGroup: 101 
       containers:
         - name: webapp-db-${HOSTNAME}
           image: mysql:5.7
