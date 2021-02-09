@@ -29,7 +29,10 @@ spec:
         ports:
         - containerPort: 5984
           protocol: TCP
-
+        volumeMounts:
+        - name: data-pvc
+          subPath: hyperledger-db
+          mountPath: /opt/couchdb/data
 
       - name: peer
         image: hyperledger/fabric-peer:2.1.0
