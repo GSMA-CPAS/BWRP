@@ -43,13 +43,9 @@
         }
       }
     },
-    "BlockchainAdapter": {
+    "CommonAdapter": {
       "config": {
-        "url": "http://blockchain-adapter-${HOSTNAME}:${BLOCKCHAIN_ADAPTER_PORT}",
-        "webhooks": [
-          {"eventName": "STORE:DOCUMENTHASH", "callbackUrl": "http://webapp-${HOSTNAME}:${WEBAPP_PORT}/api/v1/documents/event"},
-          {"eventName": "STORE:SIGNATURE", "callbackUrl": "http://webapp-${HOSTNAME}:${WEBAPP_PORT}/api/v1/signatures/event"}
-        ]
+        "url": "http://common-adapter-${HOSTNAME}:${COMMON_ADAPTER_PORT}"
       }
     }
   }

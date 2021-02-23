@@ -35,12 +35,12 @@ fi;
 
 ./scripts/deploy_peer.sh
 
-#prepare remote cli:
+# prepare remote cli:
 ./scripts/prepare_remote_cli.sh
 
 # deploy hybrid
 ./scripts/deploy_roamingonblockchain_repo_secrets.sh
-./scripts/deploy_offchain_pods.sh
+./scripts/deploy_offchain_couchdb.sh
 ./scripts/generate_ccp_hybrid.sh
 ./scripts/deploy_blockchain_adapter.sh
 
@@ -49,3 +49,6 @@ fi;
 ./scripts/deploy_frontend_certbot.sh
 ./scripts/deploy_frontend_webapp.sh
 ./scripts/deploy_frontend_nginx.sh
+
+# deploy common-adapter
+./scripts/deploy_common_adapter.sh

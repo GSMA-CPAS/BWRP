@@ -1,0 +1,46 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    k8s-app: offchain-couchdb-${HOSTNAME}
+    io.kompose.service: offchain-couchdb-${HOSTNAME}
+  name: offchain-couchdb-${HOSTNAME}
+  namespace: ${KUBENS}
+spec:
+  selector:
+    matchLabels:
+      app: offchain-couchdb-${HOSTNAME}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+      labels:
+        app: offchain-couchdb-${HOSTNAME}
+        io.kompose.service: offchain-couchdb-${HOSTNAME}
+    spec:
+      containers:
+      - image: hyperledger/fabric-couchdb:0.4
+        name: offchain-couchdb-${HOSTNAME}
+        env:
+        - name: COUCHDB_USER
+          value: ${OFFCHAIN_COUCHDB_USER}
+        - name: COUCHDB_PASSWORD
+          value: "${OFFCHAIN_COUCHDB_PASSWORD}"
+        ports:
+        - containerPort: ${OFFCHAIN_COUCHDB_TARGET_PORT}
+          name: odb-${HOSTNAME}
+        volumeMounts:
+        - mountPath: /opt/couchdb/data
+          name: data-pvc
+          subPath: offchain-storage          
+      # imagePullSecrets:
+      # - name: nomad-secret
+      hostname: offchain-couchdb-${HOSTNAME}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - name: data-pvc
+        persistentVolumeClaim:
+          claimName: data-claim

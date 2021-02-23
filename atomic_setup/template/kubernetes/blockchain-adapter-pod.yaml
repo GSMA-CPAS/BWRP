@@ -22,13 +22,15 @@ spec:
         app: blockchain-adapter-${HOSTNAME}
     spec:
       containers:
-      - image: gcr.io/roamingonblockchain/blockchain-adapter:0.1.1
+      - image: gcr.io/roamingonblockchain/blockchain-adapter:0.1.2 # gcr.io/roamingonblockchain/blockchain-adapter:0.1.1
         name: blockchain-adapter-${HOSTNAME}
         env:
         - name: BSA_PORT
           value: "${BLOCKCHAIN_ADAPTER_PORT}"
         - name: BSA_CCP
           value: ./ccp/${ORG}.json
+        - name: BSA_CONFIG_DIR
+          value: /app/config/
         ports:
         - containerPort: ${BLOCKCHAIN_ADAPTER_PORT}
           name: bap-${HOSTNAME}

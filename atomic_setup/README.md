@@ -67,12 +67,12 @@
    NOTE:- You will be asked for Username and Password. Request channel administrator to provide the same. These credentials are required to get Certificates
    signed by CERT_SIGNER_URL authority
 
-4. After successful executiong of the script, Email deployment/pvc/ca/${ORG}.json to the channel admin
+4. After successful execution of the script, Email deployment/pvc/ca/${ORG}.json to the channel admin
 5. Wait for inclusion to the channel (email from admin)
 6. (optional) If you are on aws, edit and run "scripts/aws_fix_eip_alloc.sh" in order to fix the EIP allocation on AWS
 7. Execute "scripts/join_channel.sh mychannel" command, you should get a sucess message and the list of joined channels should include mychannel
 8. Deploy the chaincodes via scripts/deploy_chaincodes.sh
-9. Enter webapp at https://host_name.domain with username: password  admin:admin.
+
 
 ## Pods
 There are various pods deployed that are needed during operation. 
@@ -110,8 +110,8 @@ If you upgrade from a previous setup, please follow the steps:
 run kubectl apply -f deployment/kubernetes/registry-secret.yaml
 5. Generate TLS user certs
 run ./scripts/generate_crypto_mtls.sh
-6. Deploy Offchain DB and Offchain DB Adapter
-run ./scripts/deploy_offchains.sh
+6. Deploy Offchain DB
+run ./scripts/deploy_offchain_couchdb.sh
 7. Deploy Blockchain Adapter
 7.1. run ./scripts/generate_ccp_hybrid.sh
 7.2. run ./scripts/deploy_blockchain_adapter.sh
@@ -159,9 +159,29 @@ If you upgrade from a previous setup, please follow the steps:
 5. run ./scripts/deploy_frontend_certbot.sh
 6. run ./scripts/deploy_frontend_webapp.sh
 7. run ./scripts/deploy_frontend_nginx.sh
-8. Enter webapp at https://host_name.domain with username: password  admin:admin.
+8. Enter webapp at https://host_name.domain with username:password  admin:admin.
 9. To renew certs for Nginx:
    run ./scripts/renew_nginx_certs.sh
+
+To upgrade to frontend version v0.0.4, working with common-adapter, please deploy common-adapter first and then execute steps: 3, 4 and 6, from current section.
+
+## COMMON-ADAPTER
+If you start from scratch, this is not necessary as setup.sh will invoke it for you!
+
+If you upgrade from a previous setup, please follow the steps:
+1. Configure the following variables in setup.cfg:
+   | Variable | Value | Description |
+   |----|---|---|
+   | CFG_MONGO_ROOTPW | rootpw | The root password for MongoDB. |
+   | CFG_MONGO_USERPW | userpw | The MongoDB user password. |
+   | CFG_COMMON_ADAPTER_PORT | 3030 | The common-adapter port. |
+   
+2. run ./scripts/prepare_templates.sh setup.cfg deployment
+3. run ./scripts/deploy_common_adapter.sh to deploy pod and servic of common-adapter.
+4. You can access swagger demo service of common adapter by redirecting port with kubectl command:
+
+kubectl port-forward pod/<COMMON-ADAPTER-POD> 8080:<COMMON_ADAPTER_PORT>
+and access it at:  http://localhost:8080/api-docs/
 
 ## TODO
 The CCP parts and the Chaincode parts are not yet transfered to the proposed scheme.

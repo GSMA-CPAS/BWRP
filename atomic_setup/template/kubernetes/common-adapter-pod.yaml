@@ -1,0 +1,85 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    k8s-app: common-adapter-${HOSTNAME}
+    io.kompose.service: common-adapter-${HOSTNAME}
+  name: common-adapter
+  namespace: ${KUBENS}
+spec:
+  selector:
+    matchLabels:
+      app: common-adapter-${HOSTNAME}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+      labels:
+#        io.kompose.network/kubefile_gsmawr_msp: "true"
+        io.kompose.service: common-adapter-${HOSTNAME}
+        app: common-adapter-${HOSTNAME}
+    spec:
+      initContainers:
+      - name: initdb
+        image: alpine:3.9
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: INIT
+          value: "db.createUser({user: \"${MONGO_USER}\",pwd: \"${MONGO_USERPW}\",roles: [{role: \"readWrite\",db: \"commondb\"}]}); db.contracts.createIndex({id: 1}, {unique: true}); db.contracts.createIndex({referenceId: 1}, {unique: true, partialFilterExpression: {referenceId: {$type: \"string\"}}});"
+        command: [ "sh" ]
+        args: [ "-c", "echo $INIT > /docker-entrypoint-initdb.d/mongo-init.js" ]
+        volumeMounts:
+        - mountPath: /docker-entrypoint-initdb.d/
+          name: data-pvc
+          subPath: peer/cadb/init/
+
+      containers:
+      - name: cadb
+        image: mongo:4.4-bionic
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: '${MONGO_ROOT}'
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: '${MONGO_ROOTPW}'
+        - name: MONGO_INITDB_DATABASE
+          value: 'commondb'
+        ports:
+        - containerPort: 27017
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /data/db
+          name: data-pvc
+          subPath: peer/cadb/
+        - mountPath: /docker-entrypoint-initdb.d/
+          name: data-pvc
+          subPath: peer/cadb/init/
+
+      - name: common-adapter
+        image: gcr.io/roamingonblockchain/common-adapter:0.0.1 # common-adapter:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: LOG_LEVEL
+          value: 'info'
+        - name: DB_URL
+          value: 'mongodb://${MONGO_USER}:${MONGO_USERPW}@common-adapter-${HOSTNAME}:27017/commondb?authSource=commondb'
+        - name: BLOCKCHAIN_ADAPTER_URL
+          value: 'http://blockchain-adapter-${HOSTNAME}:${BLOCKCHAIN_ADAPTER_PORT}'
+        - name: SELF_HOST
+          value: 'http://common-adapter-${HOSTNAME}:${COMMON_ADAPTER_PORT}'
+        - name: BLOCKCHAIN_ADAPTER_WEBHOOK_EVENTS
+          value: '["STORE:DOCUMENTHASH", "STORE:SIGNATURE"]'
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+      imagePullSecrets:
+      - name: nomad-secret
+      hostname: common-adapter-${HOSTNAME}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - name: data-pvc
+        persistentVolumeClaim:
+          claimName: data-claim
