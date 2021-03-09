@@ -172,8 +172,8 @@ If you upgrade from a previous setup, please follow the steps:
 1. Configure the following variables in setup.cfg:
    | Variable | Value | Description |
    |----|---|---|
-   | CFG_MONGO_ROOTPW | rootpw | The root password for MongoDB. |
-   | CFG_MONGO_USERPW | userpw | The MongoDB user password. |
+   | CFG_COMMON_ADAPTER_MONGO_ROOTPW | rootpw | The root password for MongoDB. |
+   | CFG_COMMON_ADAPTER_MONGO_USERPW | userpw | The MongoDB user password. |
    | CFG_COMMON_ADAPTER_PORT | 3030 | The common-adapter port. |
    
 2. run ./scripts/prepare_templates.sh setup.cfg deployment

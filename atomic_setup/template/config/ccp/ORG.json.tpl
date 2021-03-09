@@ -12,7 +12,7 @@
         "walletPath" : "wallet/",
         "user" : "Admin",
         "channelName": "${CHANNEL_NAME}",
-        "contractID": "${CHAINCODE_NAME}"
+        "contractID": "${CHAINCODE_NAME_ONCHANNEL}"
     },
     "client": {
         "tlsEnable": true,

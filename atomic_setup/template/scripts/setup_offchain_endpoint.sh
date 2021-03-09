@@ -10,7 +10,7 @@
     # read back to verify
     RESPONSE=$(curl -s http://blockchain-adapter-${HOSTNAME}:${BLOCKCHAIN_ADAPTER_PORT}/config/offchain-db)
     echo ""
-    if echo $RESPONSE | grep -i "error"
+    if echo $RESPONSE | grep -i "error" || [ -z "$RESPONSE" ]
     then
       echo "Error: failed to set endpoint, retrying..."
     else

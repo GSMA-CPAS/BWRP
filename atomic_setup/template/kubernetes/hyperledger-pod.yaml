@@ -113,7 +113,9 @@ spec:
         - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer
           name: data-pvc
           subPath: peer/home/
-
+        - mountPath: /var/hyperledger/production
+          name: data-pvc
+          subPath: peer/production/
 
       - name: dind
         image: docker:18.04-dind
