@@ -41,13 +41,13 @@
    | CFG_PV_STORAGE_CLASS | gp2 | The storage class the cluster should use ("local-storage" = local, "gp2" = aws, ...) |
    | CFG_PV_SIZE | 10Gi | The Kubernetes Persistence Volume size. Can be resized later. |
    | CERT_SIGNER_URL | https://hldid.org/ejbca/certreq | The URL of the certificate signing service. |
-   | CFG_OFFCHAIN_REST_PORT | 3333 | The offchain rest port. |
-   | CFG_OFFCHAIN_MYSQL_ROOT_PASSWORD | changeThisRootPassword | The root password for mysql. |
-   | CFG_OFFCHAIN_MYSQL_DB | odba | The offchain db name. |
-   | CFG_OFFCHAIN_MYSQL_USER | odba | The offchain db user. |
-   | CFG_OFFCHAIN_MYSQL_PASSWORD | changeThisPassword | The user password for mysql.. |
-   | CFG_MYSQL_SERVER_PORT | 3306 | Mysql port. |
+   | CFG_OFFCHAIN_COUCHDB_USER | offchainuser | The offchain db user. |
+   | CFG_OFFCHAIN_COUCHDB_PASSWORD | changeThisPassword | The password for offchain db user. |
+   | CFG_OFFCHAIN_COUCHDB_TARGET_PORT | 5984 | The offchain db port. |
    | CFG_BLOCKCHAIN_ADAPTER_PORT | 8081 | The blockchain adapter port. |
+   | CFG_CHAINCODE_NAME | hybrid | The name of the chaincode in repopsitory. |
+   | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid_v03 | The name of chaincode, approved on the channel. |
+   | CFG_CHANNEL_NAME | atomic | The name of the channel. |
    | CFG_WEBAPP_MYSQL_ROOT_PASSWORD | changeThisRootPassword | The root password for mysql. |
    | CFG_WEBAPP_MYSQL_DB | nomad | The webapp db name. |
    | CFG_WEBAPP_MYSQL_USER | nomad | The webapp db user. |
