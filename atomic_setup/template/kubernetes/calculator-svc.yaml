@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    io.kompose.service: calculator-${HOSTNAME}
+  name: calculator-${HOSTNAME}
+  namespace: ${KUBENS}
+spec:
+# enable external access
+#  externalTrafficPolicy: Cluster
+#  externalIPs:
+#  - MYHOSTIP
+#  type: NodePort
+  ports:
+  - name: "calculator-${HOSTNAME}"
+    port: ${CALCULATOR_PORT}
+    targetPort: ${CALCULATOR_PORT}
+  selector:
+    io.kompose.service: calculator-${HOSTNAME}

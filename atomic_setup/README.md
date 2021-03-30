@@ -59,6 +59,11 @@
    | CFG_NGINX_NODE_PORT | 30443 | Nginx node port. |
    | CFG_NGINX_HTTP_PORT | 80 | Nginx port for issuing certs |
    | CFG_NGINX_CERT_NODE_PORT | 30080 |  node port for issuing certs |
+   | CFG_COMMON_ADAPTER_MONGO_ROOTPW | rootpw | The root password for MongoDB. |
+   | CFG_COMMON_ADAPTER_MONGO_USERPW | userpw | The MongoDB user password. |
+   | CFG_COMMON_ADAPTER_PORT | 3030 | The common-adapter port. |
+   | CFG_CALCULATOR_PORT | 8080 | The calculator-service port. |
+
 
 2. Register record host_name.domain in DNS to point to pubilc IP address.
 
