@@ -1,0 +1,3 @@
+[submodule "atomic_setup/chaincode"]
+	path = atomic_setup/chaincode
+	url = https://github.com/GSMA-CPAS/BWRP-chaincode.git
