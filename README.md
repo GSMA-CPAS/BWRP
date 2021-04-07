@@ -1,7 +1,10 @@
-# BWRP
-Blockchain Wholesale Roaming Project
+# BWRP - Blockchain Wholesale Roaming Project
 
-Pre-requisites -
+This repository contains all setup files for joining the production network.
+It is based on Kubernetes and provides scripts for generating crypto material and starting pods as well as configuration files. 
+For a general description of this project's software architechture, components and workflows, please check the [wiki page](https://github.com/GSMA-CPAS/BWRP).
+
+## Pre-requisites
 
 Ubuntu Linux LTS 16.04 and Above
 2 CPU Machine and Above
@@ -15,4 +18,4 @@ Update the Hostname of the machine by updating below files -
 - /etc/hostname
 
 Make sure you "reboot" the instance to bring hostname changes into effect.
-And use this new hostname in furthe "docker" and "kubernetes" installation processes.
+And use this new hostname in further "docker" and "kubernetes" installation processes.
