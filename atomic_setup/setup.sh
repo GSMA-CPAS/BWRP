@@ -50,5 +50,9 @@ fi;
 ./scripts/deploy_frontend_webapp.sh
 ./scripts/deploy_frontend_nginx.sh
 
+# deploy services (calculator and discrepancy services)
+./scripts/deploy_calculator.sh
+./scripts/deploy_discrepancy_service.sh
+
 # deploy common-adapter
 ./scripts/deploy_common_adapter.sh

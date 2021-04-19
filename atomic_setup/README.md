@@ -63,7 +63,9 @@
    | CFG_COMMON_ADAPTER_MONGO_USERPW | userpw | The MongoDB user password. |
    | CFG_COMMON_ADAPTER_PORT | 3030 | The common-adapter port. |
    | CFG_CALCULATOR_PORT | 8080 | The calculator-service port. |
-
+   | CFG_DSDB_USER | root | The user name for discrepancy-service MongoDB. |
+   | CFG_DSDB_USERPW | root | The discrepancy-service MongoDB user password. |
+   | CFG_DISCREPANCY_SERVICE_PORT | 8082 | The discrepancy-service port. |
 
 2. Register record host_name.domain in DNS to point to pubilc IP address.
 
@@ -120,6 +122,10 @@ run ./scripts/deploy_offchain_couchdb.sh
 7. Deploy Blockchain Adapter
 7.1. run ./scripts/generate_ccp_hybrid.sh
 7.2. run ./scripts/deploy_blockchain_adapter.sh
+8. Deploy calculator-service
+run ./scripts/deploy_calculator.sh
+9. Deploy discrepancy-service
+run ./scripts/deploy_discrepancy-service.sh
 
 If you start from scratch, this is not necessary as setup.sh will invoke it for you!
 

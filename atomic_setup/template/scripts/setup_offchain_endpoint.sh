@@ -14,7 +14,7 @@
     then
       echo "Error: failed to set endpoint, retrying..."
     else
-      echo "Sucess"
+      echo "Success"
       exit 0
     fi
     echo "will retry in 5s"

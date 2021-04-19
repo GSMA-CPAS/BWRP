@@ -58,7 +58,7 @@ spec:
           subPath: peer/cadb/init/
 
       - name: common-adapter
-        image: gcr.io/roamingonblockchain/common-adapter:0.4
+        image: gcr.io/roamingonblockchain/common-adapter:0.5
         imagePullPolicy: IfNotPresent
         env:
         - name: COMMON_ADAPTER_LOG_LEVEL
@@ -73,6 +73,8 @@ spec:
           value: '["STORE:PAYLOADLINK", "STORE:SIGNATURE"]'
         - name: COMMON_ADAPTER_CALCULATION_SERVICE_URL
           value: 'http://calculator-${HOSTNAME}:${CALCULATOR_PORT}'
+        - name: COMMON_ADAPTER_DISCREPANCY_SERVICE_URL
+          value: 'http://discrepancy-${HOSTNAME}:${DISCREPANCY_SERVICE_PORT}'
         ports:
         - containerPort: 3000
           protocol: TCP

@@ -22,11 +22,11 @@ spec:
         app: calculator-${HOSTNAME}
     spec:
       containers:
-      - image: gcr.io/roamingonblockchain/calculator:0.1 
+      - image: gcr.io/roamingonblockchain/calculator:0.4.2 
         name: calculator-${HOSTNAME}
         ports:
-        - containerPort: ${CALCULATOR_PORT}
-          name: calculator-${HOSTNAME}
+        - containerPort: 8080
+          name: calculator
       imagePullSecrets:
       - name: nomad-secret
       hostname: calculator-${HOSTNAME}
