@@ -16,11 +16,11 @@ spec:
     name: https
     targetPort: ${NGINX_HTTP2_PORT}
     nodePort: ${NGINX_NODE_PORT}
-  - port: ${NGINX_HTTP_PORT}
-    protocol: TCP
-    name: http
-    targetPort: ${NGINX_HTTP_PORT}
-    nodePort: ${NGINX_CERT_NODE_PORT}
+#  - port: ${NGINX_HTTP_PORT}
+#    protocol: TCP
+#    name: http
+#    targetPort: ${NGINX_HTTP_PORT}
+#    nodePort: ${NGINX_CERT_NODE_PORT}
   selector:
     app: nginx-webapp-${HOSTNAME}
   sessionAffinity: None

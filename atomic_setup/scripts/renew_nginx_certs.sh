@@ -12,16 +12,21 @@ echo "> deploying certbot pod and svc..."
 kubectl apply -f $CFG_CONFIG_PATH/kubernetes/webapp-certbot-svc.yaml
 kubectl apply -f $CFG_CONFIG_PATH/kubernetes/webapp-certbot-pod.yaml
 
-echo "> waiting for webapp pod to be ready"
+echo "> waiting for certbot pod to be ready"
 POD=$(kubectl -n $CFG_KUBENS get pods | grep ^nginx-certbot- | awk '{print $1}')
 kubectl wait --timeout=5m --for=condition=ready pod/$POD
 
 sleep 2
 
-echo "> renew ssl certificates for ${CFG_HOSTNAME}.${CFG_DOMAIN}..."
-kubectl -n $CFG_KUBENS exec $POD -- certbot renew
+echo "> issuing ssl certificates for ${CFG_HOSTNAME}.${CFG_DOMAIN}..."
+kubectl -n $CFG_KUBENS exec $POD -- certbot certonly --standalone  -n --agree-tos --email ${CFG_NGINX_CERT_MAIL} -d ${CFG_HOSTNAME}.${CFG_DOMAIN}
 
-sleep 30
+while [ -z "$(kubectl -n $CFG_KUBENS exec $POD -- ls -A /etc/letsencrypt/live/${CFG_HOSTNAME}.${CFG_DOMAIN} 2> /dev/null))" ] 
+do       
+  sleep 2
+done
+
+sleep 2
 
 kubectl -n $CFG_KUBENS exec $POD -- cp /etc/letsencrypt/live/${CFG_HOSTNAME}.${CFG_DOMAIN}/fullchain.pem /home/certs/cert.crt
 kubectl -n $CFG_KUBENS exec $POD -- cp /etc/letsencrypt/live/${CFG_HOSTNAME}.${CFG_DOMAIN}/privkey.pem /home/certs/cert.key
