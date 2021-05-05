@@ -41,7 +41,7 @@ spec:
           subPath: peer/dsdb/
 
       - name: discrepancy-service
-        image: gcr.io/roamingonblockchain/discrepancy-service:0.4.3
+        image: gcr.io/roamingonblockchain/discrepancy-service:0.4.4
         imagePullPolicy: IfNotPresent
         env:
         - name: MONGO_CONN_URL
