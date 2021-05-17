@@ -13,7 +13,7 @@ spec:
       path: /var/run/docker.sock
   containers:
     - name: fabric-tools
-      image: hyperledger/fabric-tools:amd64-2.1.1
+      image: ${IMAGE_FABRIC_TOOLS}
       imagePullPolicy: Always
       command: ["sh", "-c", "sleep infinity"]
       env:

@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: dsdb
-        image: mongo:4.4-bionic
+        image: ${IMAGE_MONGO}
         imagePullPolicy: IfNotPresent
         env:
         - name: MONGO_INITDB_ROOT_USERNAME
@@ -41,7 +41,7 @@ spec:
           subPath: peer/dsdb/
 
       - name: discrepancy-service
-        image: gcr.io/roamingonblockchain/discrepancy-service:0.4.5
+        image: ${IMAGE_DISCREPANCY_SERVICE}
         imagePullPolicy: IfNotPresent
         env:
         - name: DB_USER
