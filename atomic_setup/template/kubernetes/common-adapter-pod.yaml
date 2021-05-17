@@ -23,7 +23,7 @@ spec:
     spec:
       initContainers:
       - name: initdb
-        image: alpine:3.9
+        image: ${IMAGE_ALPINE}
         imagePullPolicy: IfNotPresent
         env:
         - name: INIT
@@ -37,7 +37,7 @@ spec:
 
       containers:
       - name: cadb
-        image: mongo:4.4-bionic
+        image: ${IMAGE_MONGO}
         imagePullPolicy: IfNotPresent
         env:
         - name: MONGO_INITDB_ROOT_USERNAME
