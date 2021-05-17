@@ -37,7 +37,7 @@ spec:
           value: "${CA_PORT}"
         - name: FABRIC_CA_SERVER_TLS_ENABLED
           value: "true"
-        image: hyperledger/fabric-ca:1.4.6
+        image: ${IMAGE_FABRIC_CA}
         imagePullPolicy: ""
         name: ca-${MYHOST}
         ports:
