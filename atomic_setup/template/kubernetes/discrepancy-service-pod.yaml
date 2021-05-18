@@ -41,9 +41,13 @@ spec:
           subPath: peer/dsdb/
 
       - name: discrepancy-service
-        image: gcr.io/roamingonblockchain/discrepancy-service:0.4.4
+        image: gcr.io/roamingonblockchain/discrepancy-service:0.4.5
         imagePullPolicy: IfNotPresent
         env:
+        - name: DB_USER
+          value: '${DSDB_USER}'
+        - name: DB_PASSWD
+          value: '${DSDB_USERPW}'          
         - name: MONGO_CONN_URL
           value: 'mongodb://discrepancy-${HOSTNAME}:27017'
         ports:
