@@ -10,8 +10,6 @@ kubectl config set-context --current --namespace=$CFG_KUBENS
 
 echo "> creating dirs..."
 kubectl -n $CFG_KUBENS exec fabric-tools -- mkdir -p /mnt/data/WEBAPP/nginx/certs
-kubectl -n $CFG_KUBENS exec fabric-tools -- mkdir -p /mnt/data/WEBAPP/nginx/conf.d
-kubectl -n $CFG_KUBENS exec fabric-tools -- mkdir -p /mnt/data/WEBAPP/nginx/sites-available
 
 echo "> deploying certbot pod and svc..."
 kubectl apply -f $CFG_CONFIG_PATH/kubernetes/webapp-certbot-svc.yaml

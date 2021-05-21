@@ -41,13 +41,13 @@
    | CFG_PV_STORAGE_CLASS | gp2 | The storage class the cluster should use ("local-storage" = local, "gp2" = aws, ...) |
    | CFG_PV_SIZE | 10Gi | The Kubernetes Persistence Volume size. Can be resized later. |
    | CERT_SIGNER_URL | https://hldid.org/ejbca/certreq | The URL of the certificate signing service. |
-   | CFG_OFFCHAIN_REST_PORT | 3333 | The offchain rest port. |
-   | CFG_OFFCHAIN_MYSQL_ROOT_PASSWORD | changeThisRootPassword | The root password for mysql. |
-   | CFG_OFFCHAIN_MYSQL_DB | odba | The offchain db name. |
-   | CFG_OFFCHAIN_MYSQL_USER | odba | The offchain db user. |
-   | CFG_OFFCHAIN_MYSQL_PASSWORD | changeThisPassword | The user password for mysql.. |
-   | CFG_MYSQL_SERVER_PORT | 3306 | Mysql port. |
+   | CFG_OFFCHAIN_COUCHDB_USER | offchainuser | The offchain db user. |
+   | CFG_OFFCHAIN_COUCHDB_PASSWORD | changeThisPassword | The password for offchain db user. |
+   | CFG_OFFCHAIN_COUCHDB_TARGET_PORT | 5984 | The offchain db port. |
    | CFG_BLOCKCHAIN_ADAPTER_PORT | 8081 | The blockchain adapter port. |
+   | CFG_CHAINCODE_NAME | hybrid | The name of the chaincode in repository. |
+   | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid_v03 | The name of chaincode, approved on the channel. |
+   | CFG_CHANNEL_NAME | atomic | The name of the channel. |
    | CFG_WEBAPP_MYSQL_ROOT_PASSWORD | changeThisRootPassword | The root password for mysql. |
    | CFG_WEBAPP_MYSQL_DB | nomad | The webapp db name. |
    | CFG_WEBAPP_MYSQL_USER | nomad | The webapp db user. |
@@ -59,6 +59,13 @@
    | CFG_NGINX_NODE_PORT | 30443 | Nginx node port. |
    | CFG_NGINX_HTTP_PORT | 80 | Nginx port for issuing certs |
    | CFG_NGINX_CERT_NODE_PORT | 30080 |  node port for issuing certs |
+   | CFG_COMMON_ADAPTER_MONGO_ROOTPW | rootpw | The root password for MongoDB. |
+   | CFG_COMMON_ADAPTER_MONGO_USERPW | userpw | The MongoDB user password. |
+   | CFG_COMMON_ADAPTER_PORT | 3030 | The common-adapter port. |
+   | CFG_CALCULATOR_PORT | 8080 | The calculator-service port. |
+   | CFG_DSDB_USER | root | The user name for discrepancy-service MongoDB. |
+   | CFG_DSDB_USERPW | root | The discrepancy-service MongoDB user password. |
+   | CFG_DISCREPANCY_SERVICE_PORT | 8082 | The discrepancy-service port. |
 
 2. Register record host_name.domain in DNS to point to pubilc IP address.
 
@@ -115,6 +122,10 @@ run ./scripts/deploy_offchain_couchdb.sh
 7. Deploy Blockchain Adapter
 7.1. run ./scripts/generate_ccp_hybrid.sh
 7.2. run ./scripts/deploy_blockchain_adapter.sh
+8. Deploy calculator-service
+run ./scripts/deploy_calculator.sh
+9. Deploy discrepancy-service
+run ./scripts/deploy_discrepancy-service.sh
 
 If you start from scratch, this is not necessary as setup.sh will invoke it for you!
 

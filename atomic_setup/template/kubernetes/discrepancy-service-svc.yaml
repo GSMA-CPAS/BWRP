@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    io.kompose.service: discrepancy-${HOSTNAME}
+  name: discrepancy-${HOSTNAME}
+  namespace: ${KUBENS}
+spec:
+# enable external access
+#  externalTrafficPolicy: Cluster
+#  externalIPs:
+#  - ${PEER_EXTERNAL_IP}
+#  type: NodePort
+  ports:
+  - name: "discrepancy-${HOSTNAME}"
+    port: ${DISCREPANCY_SERVICE_PORT}
+    targetPort: 8080
+  selector:
+    io.kompose.service: discrepancy-${HOSTNAME}
+    

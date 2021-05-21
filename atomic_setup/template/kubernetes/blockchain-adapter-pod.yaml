@@ -22,7 +22,7 @@ spec:
         app: blockchain-adapter-${HOSTNAME}
     spec:
       containers:
-      - image: gcr.io/roamingonblockchain/blockchain-adapter:0.3 # gcr.io/roamingonblockchain/blockchain-adapter:0.1.2
+      - image: gcr.io/roamingonblockchain/blockchain-adapter:0.4.1
         name: blockchain-adapter-${HOSTNAME}
         env:
         - name: BSA_PORT
