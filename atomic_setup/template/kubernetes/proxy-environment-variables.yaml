@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+   name: proxy-environment-variables
+   namespace: ${KUBENS}
+data:
+   HTTP_PROXY: ${HTTP_PROXY_URL}
+   HTTPS_PROXY: ${HTTPS_PROXY_URL}
+   NO_PROXY: ${NO_PROXY_URL}
+   http_proxy: ${HTTP_PROXY_URL}
+   https_proxy: ${HTTPS_PROXY_URL}
+   no_proxy: ${NO_PROXY_URL}
