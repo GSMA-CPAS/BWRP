@@ -21,6 +21,9 @@ spec:
       - name: couchdb
         image: ${IMAGE_COUCHDB}
         imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+          name: proxy-environment-variables
         env:
         - name: COUCHDB_USER
           value: dbadmin
@@ -39,6 +42,9 @@ spec:
         imagePullPolicy: IfNotPresent
         workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
         command: [ "/opt/gopath/src/github.com/hyperledger/fabric/peer/peer_start.sh" ]
+        envFrom:
+        - configMapRef:
+          name: proxy-environment-variables
         env:
         - name: CORE_OPERATIONS_LISTENADDRESS
           value: 0.0.0.0:8088
@@ -120,6 +126,9 @@ spec:
       - name: dind
         image: ${IMAGE_DIND}
         imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+          name: proxy-environment-variables        
         ports:
         - containerPort: 2375
           protocol: TCP
