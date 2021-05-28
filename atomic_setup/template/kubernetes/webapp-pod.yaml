@@ -26,6 +26,9 @@ spec:
           image: ${IMAGE_MYSQL}
           #command: [ "/bin/sh", "-c", "--" ]
           #args: [ "while true; do sleep 30; done;" ]
+          envFrom:
+          - configMapRef:
+              name: proxy-environment-variables
           env:
             - name: MYSQL_DATABASE
               value: "${WEBAPP_MYSQL_DB}"
@@ -48,6 +51,9 @@ spec:
           #args: [ "while true; do sleep 30; done;" ]
           command: [ "/bin/sh", "-c", "--" ]
           args:  ["node setup.js; node server.js;"]
+          envFrom:
+            - configMapRef:
+                name: proxy-environment-variables
           env:
             - name: WEBAPP_CA_ADMIN_ENROLLMENT_SECRET
               value: "${CA_ADMINPW}"
