@@ -22,6 +22,9 @@ spec:
       containers:
         - name: nginx-webapp-${HOSTNAME}
           image: ${IMAGE_NGINX}
+          envFrom:
+            - configMapRef:
+                name: proxy-environment-variables
           #command: [ "/bin/sh", "-c", "--" ]
           #args: [ "while true; do sleep 30; done;" ]
           volumeMounts:
