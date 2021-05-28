@@ -24,6 +24,9 @@ spec:
       containers:
       - image: ${IMAGE_BLOCKCHAIN_ADAPTER}
         name: blockchain-adapter-${HOSTNAME}
+        envFrom:
+          - configMapRef:
+              name: proxy-environment-variables
         env:
         - name: BSA_PORT
           value: "${BLOCKCHAIN_ADAPTER_PORT}"

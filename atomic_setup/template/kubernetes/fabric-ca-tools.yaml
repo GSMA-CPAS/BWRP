@@ -17,6 +17,9 @@ spec:
       image: ${IMAGE_FABRIC_CA}
       imagePullPolicy: Always
       command: ["sh", "-c", "sleep infinity"]
+      envFrom:
+        - configMapRef:
+            name: proxy-environment-variables
       env:
       - name: TZ
         value: "UTC"

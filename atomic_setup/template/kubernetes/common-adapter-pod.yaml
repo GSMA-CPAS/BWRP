@@ -25,6 +25,9 @@ spec:
       - name: initdb
         image: ${IMAGE_ALPINE}
         imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: proxy-environment-variables
         env:
         - name: INIT
           value: "db.createUser({user: \"${COMMON_ADAPTER_MONGO_USER}\",pwd: \"${COMMON_ADAPTER_MONGO_USERPW}\",roles: [{role: \"readWrite\",db: \"commondb\"}]}); db.contracts.createIndex({id: 1}, {unique: true}); db.contracts.createIndex({referenceId: 1}, {unique: true, partialFilterExpression: {referenceId: {$type: \"string\"}}});"
