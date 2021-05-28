@@ -25,6 +25,9 @@ spec:
       - name: dsdb
         image: ${IMAGE_MONGO}
         imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: proxy-environment-variables
         env:
         - name: MONGO_INITDB_ROOT_USERNAME
           value: '${DSDB_USER}'
@@ -43,6 +46,9 @@ spec:
       - name: discrepancy-service
         image: ${IMAGE_DISCREPANCY_SERVICE}
         imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: proxy-environment-variables
         env:
         - name: DB_USER
           value: '${DSDB_USER}'
