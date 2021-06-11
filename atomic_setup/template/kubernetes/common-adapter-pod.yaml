@@ -61,7 +61,7 @@ spec:
           subPath: peer/cadb/init/
 
       - name: common-adapter
-        image: gcr.io/roamingonblockchain/common-adapter:0.5
+        image: ${IMAGE_COMMON_ADAPTER}
         imagePullPolicy: IfNotPresent
         env:
         - name: COMMON_ADAPTER_LOG_LEVEL
