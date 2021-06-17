@@ -20,8 +20,8 @@
    | Variable | Value | Description |
    |----|---|---|
    | CFG_KUBENS | gsma | Namespace to be used in kubernetes. Highly recommended NOT to use default |
-   | CFG_HOSTNAME | bwrp | E.g., The "CFG_PEER_NAME.<hostname>.CFG_DOMAIN" part. Hostname of the kubernetes cluster master machine |
-   | CFG_DOMAIN | subdomain.yourdomain.com | The "CFG_PEER_NAME.CFG_HOSTNAME.<domain>" part |
+   | CFG_HOSTNAME | bwrp | E.g., The "CFG_PEER_NAME.\<hostname\>.CFG_DOMAIN" part. Hostname of the kubernetes cluster master machine |
+   | CFG_DOMAIN | subdomain.yourdomain.com | The "CFG_PEER_NAME.CFG_HOSTNAME.\<domain\>" part |
    | CFG_HTTP_PROXY_URL |  "" | forward http proxy to be used |
    | CFG_HTTPS_PROXY_URL | "" | forward https proxy to be used |
    | CFG_NO_PROXY_URL | "" | URLs that shall be used without using a proxy |
@@ -35,7 +35,7 @@
    | CFG_CA_O | Org1 | O = Organization Name (4 Character length) |
    | CFG_CA_OU | WholesaleRoaming | OU = Organizational Unit |
    | CFG_ORG | Org1 | Name of your organization in the HLF network (4 Character length. Can be same as CFG_CA_O) |
-   | CFG_PEER_NAME | peer0 | The "<peer>.CFG_HOSTNAME.CFG_DOMAIN" part |
+   | CFG_PEER_NAME | peer0 | The "\<peer\>.CFG_HOSTNAME.CFG_DOMAIN" part |
    | CFG_PEER_PORT | 7050 | Port number Hyperledger Peer to be run on. Default is 7050 - Make sure this port is whitelisted and can be accessed from outside on your machine |
    | CFG_PEER_EXTERNAL_IP | 1.2.3.4 | An external IP that you want to asign to the kubernetes NodePort of the peer - Server IP. (Not public IP) in case AWS instance is used |
    | CFG_PEER_TLS_USERNAME | mtlsuser | The user used for mTLS |
