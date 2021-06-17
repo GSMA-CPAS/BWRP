@@ -70,6 +70,28 @@
    | CFG_DSDB_USERPW | root | The discrepancy-service MongoDB user password. |
    | CFG_DISCREPANCY_SERVICE_PORT | 8082 | The discrepancy-service port. |
 
+   The images are configured with the following parameters:
+   
+   | Variable | Value | Description |
+   |----|---|---|
+   | CFG_IMAGE_ALPINE | =alpine:3.9 | Image for Alpine |
+   | CFG_IMAGE_BUSYBOX | =busybox:latest | Image for busybox |
+   | CFG_IMAGE_DIND=docker:18.04-dind | Image for docker in docker |
+   | CFG_IMAGE_NGINX | eu.gcr.io/roamingonblockchain/nodenect-nginx-1-4-0-r:latest | Image for nginx |
+   | CFG_IMAGE_CALCULATOR | gcr.io/roamingonblockchain/calculator:0.4.3 | Image for BWRP calculator |
+   | CFG_IMAGE_COMMON_ADAPTER | gcr.io/roamingonblockchain/common-adapter:0.5 | Image for BWRP common adapter |
+   | CFG_IMAGE_NGINX_CERT | eu.gcr.io/roamingonblockchain/nginx-cert:latest | Image for nginx cert |
+   | CFG_IMAGE_WEBAPP | gcr.io/roamingonblockchain/webapp:0.5.4.1 | Image for Webapp |
+   | CFG_IMAGE_BLOCKCHAIN_ADAPTER | gcr.io/roamingonblockchain/blockchain-adapter:0.4.1 | Image for BWRP blockchain adapter |
+   | CFG_IMAGE_EXPLORER | hyperledger/explorer:1.1.2 | image for hyperledger explorer |
+   | CFG_IMAGE_FABRIC_CA | fabric-ca:1.4.7 | image for fabric-ca|
+   | CFG_IMAGE_FABRIC_PEER | fabric-peer:1.4.6-h | Image for fabric peer |
+   | CFG_IMAGE_FABRIC_TOOLS | hyperledger/fabric-tools:amd64-2.1.1 | Image for fabric tools |
+   | CFG_IMAGE_DISCREPANCY_SERVICE | gcr.io/roamingonblockchain/discrepancy-service:0.4.4 | Image for discrepancy service |
+   | CFG_IMAGE_COUCHDB | fabric-couchdb:0.4.18-h | Image for couchdb |
+   | CFG_IMAGE_MONGO | mongo:4.4-bionic | Image for mongo db |
+   | CFG_IMAGE_MYSQL | nodenect-mysql-5-7-h-new:latest | Image for mysql |
+
 2. Register record host_name.domain in DNS to point to pubilc IP address.
 
 3. Execute "./setup.sh" and follow the instructions
