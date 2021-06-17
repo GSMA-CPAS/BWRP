@@ -22,6 +22,9 @@
    | CFG_KUBENS | gsma | Namespace to be used in kubernetes. Highly recommended NOT to use default |
    | CFG_HOSTNAME | bwrp | E.g., The "CFG_PEER_NAME.<hostname>.CFG_DOMAIN" part. Hostname of the kubernetes cluster master machine |
    | CFG_DOMAIN | subdomain.yourdomain.com | The "CFG_PEER_NAME.CFG_HOSTNAME.<domain>" part |
+   | CFG_HTTP_PROXY_URL |  "" | forward http proxy to be used |
+   | CFG_HTTPS_PROXY_URL | "" | forward https proxy to be used |
+   | CFG_NO_PROXY_URL | "" | URLs that shall be used without using a proxy |
    | CFG_CA_ADMINPW | ##secret## | The CA Admin pw. Generate e.g. via openssl rand -base64 32 (Make sure password is URL safe) |
    | CFG_CA_PEERPW | ##secret## | The CA peer user pw. Also generate e.g. via openssl rand -base64 32 (Make sure password is URL safe) |
    | CFG_CA_PEERADMINPW | ##secret## | The CA peer admin pw. Also generate e.g. via openssl rand -base64 32 (Make sure password is URL safe) |
@@ -37,9 +40,6 @@
    | CFG_PEER_EXTERNAL_IP | 1.2.3.4 | An external IP that you want to asign to the kubernetes NodePort of the peer - Server IP. (Not public IP) in case AWS instance is used |
    | CFG_PEER_TLS_USERNAME | mtlsuser | The user used for mTLS |
    | CFG_PEER_TLS_USERPW   | ##swecret## | The password of the mTLS user |
-   | CFG_HTTP_PROXY_URL |  "" | forward http proxy to be used |
-   | CFG_HTTPS_PROXY_URL | "" | forward https proxy to be used |
-   | CFG_NO_PROXY_URL | "" | URLs that shall be used without using a proxy |
    | CFG_PV_PATH | /mnt/data | The Kubernetes Persistence Volume size. Can be resized later. |
    | CFG_PV_STORAGE_CLASS | gp2 | The storage class the cluster should use ("local-storage" = local, "gp2" = aws, ...) |
    | CFG_PV_SIZE | 10Gi | The Kubernetes Persistence Volume size. Can be resized later. |
