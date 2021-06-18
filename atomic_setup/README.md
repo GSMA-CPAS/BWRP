@@ -85,7 +85,7 @@
    | CFG_IMAGE_BLOCKCHAIN_ADAPTER | gcr.io/roamingonblockchain/blockchain-adapter:0.4.1 | Image for BWRP blockchain adapter |
    | CFG_IMAGE_EXPLORER | hyperledger/explorer:1.1.2 | image for hyperledger explorer |
    | CFG_IMAGE_FABRIC_CA | hyperledger/fabric-ca:1.4.7 | image for fabric-ca|
-   | CFG_IMAGE_FABRIC_PEER | hyperledger/fabric-peer:2.1.0 | Image for fabric peer |
+   | CFG_IMAGE_FABRIC_PEER | hyperledger/fabric-peer:2.2.1 | Image for fabric peer |
    | CFG_IMAGE_FABRIC_TOOLS | hyperledger/fabric-tools:amd64-2.1.1 | Image for fabric tools |
    | CFG_IMAGE_DISCREPANCY_SERVICE | gcr.io/roamingonblockchain/discrepancy-service:0.4.6 | Image for discrepancy service |
    | CFG_IMAGE_COUCHDB | hyperledger/fabric-couchdb | Image for couchdb |
