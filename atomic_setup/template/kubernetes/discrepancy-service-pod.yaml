@@ -41,7 +41,7 @@ spec:
           subPath: peer/dsdb/
 
       - name: discrepancy-service
-        image: gcr.io/roamingonblockchain/discrepancy-service:0.4.5
+        image: gcr.io/roamingonblockchain/discrepancy-service:0.4.6
         imagePullPolicy: IfNotPresent
         env:
         - name: DB_USER
