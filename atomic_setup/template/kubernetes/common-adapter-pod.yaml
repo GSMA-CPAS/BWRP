@@ -67,7 +67,7 @@ spec:
         - name: COMMON_ADAPTER_LOG_LEVEL
           value: 'info'
         - name: COMMON_ADAPTER_DB_URL
-          value: 'mongodb://${COMMON_ADAPTER_MONGO_USER}:${COMMON_ADAPTER_MONGO_USERPW}@common-adapter-${HOSTNAME}.${KUBENS}.svc.cluster.local:27017/commondb?authSource=commondb'
+          value: 'mongodb://${COMMON_ADAPTER_MONGO_USER}:${COMMON_ADAPTER_MONGO_USERPW}@common-adapter-${HOSTNAME}:27017/commondb?authSource=commondb'
         - name: COMMON_ADAPTER_BLOCKCHAIN_ADAPTER_URL
           value: 'http://blockchain-adapter-${HOSTNAME}.${KUBENS}.svc.cluster.local:${BLOCKCHAIN_ADAPTER_PORT}'
         - name: COMMON_ADAPTER_SELF_HOST
