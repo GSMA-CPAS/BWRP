@@ -55,7 +55,7 @@ spec:
         - name: DB_PASSWD
           value: '${DSDB_USERPW}'          
         - name: MONGO_CONN_URL
-          value: 'mongodb://discrepancy-${HOSTNAME}:27017'
+          value: 'mongodb://discrepancy-db-${HOSTNAME}.${KUBENS}.svc.cluster.local:{DSDB_PORT}'
         ports:
         - containerPort: 8080
           protocol: TCP
