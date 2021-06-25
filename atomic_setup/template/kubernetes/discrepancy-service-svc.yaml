@@ -31,7 +31,7 @@ spec:
   ports:
   - name: "discrepancy-db-${HOSTNAME}"
     port: ${DSDB_PORT}
-    targetPort: 21017
+    targetPort: 27017
   selector:
     io.kompose.service: discrepancy-${HOSTNAME}
     
