@@ -46,7 +46,7 @@
    | CFG_OFFCHAIN_COUCHDB_TARGET_PORT | 5984 | The offchain db port. |
    | CFG_BLOCKCHAIN_ADAPTER_PORT | 8081 | The blockchain adapter port. |
    | CFG_CHAINCODE_NAME | hybrid | The name of the chaincode in repository. |
-   | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid_v03 | The name of chaincode, approved on the channel. |
+   | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid_v04 | The name of chaincode, approved on the channel. |
    | CFG_CHANNEL_NAME | atomic | The name of the channel. |
    | CFG_WEBAPP_MYSQL_ROOT_PASSWORD | changeThisRootPassword | The root password for mysql. |
    | CFG_WEBAPP_MYSQL_DB | nomad | The webapp db name. |
