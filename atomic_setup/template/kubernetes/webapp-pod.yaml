@@ -50,7 +50,7 @@ spec:
           #command: [ "/bin/sh", "-c", "--" ]
           #args: [ "while true; do sleep 30; done;" ]
           command: [ "/bin/sh", "-c", "--" ]
-          args:  ["node setup.js; node server.js;"]
+          args:  ["sleep 60"; "node setup.js; node server.js;"]
           envFrom:
             - configMapRef:
                 name: proxy-environment-variables
