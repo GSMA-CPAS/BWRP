@@ -20,6 +20,9 @@ else
     ./scripts/generate_certificates.sh $registry_user $registry_pass
 fi
 
+# deploy proxy configmap
+./scripts/deploy_proxy_configmap.sh
+
 # deploy CA and helper pods:
 ./scripts/deploy_ca.sh
 

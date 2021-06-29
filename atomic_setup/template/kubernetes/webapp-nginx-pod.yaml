@@ -21,7 +21,10 @@ spec:
     spec:
       containers:
         - name: nginx-webapp-${HOSTNAME}
-          image: eu.gcr.io/roamingonblockchain/nodenect-nginx-1-4-0-r:latest
+          image: ${IMAGE_NGINX}
+          envFrom:
+            - configMapRef:
+                name: proxy-environment-variables
           #command: [ "/bin/sh", "-c", "--" ]
           #args: [ "while true; do sleep 30; done;" ]
           volumeMounts:

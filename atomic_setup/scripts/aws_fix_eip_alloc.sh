@@ -11,7 +11,7 @@ echo "> fetching peer pod name"
 POD=$(kubectl get po | grep ^${CFG_PEER_NAME}- | awk '{print $1}')
 
 echo "> fetching internal ip of pod $POD"
-INT_IP=$(kubectl -n gsma exec $POD -c peer -- hostname -i)
+INT_IP=$(kubectl -n $CFG_KUBENS exec $POD -c peer -- hostname -i)
 echo "> got $INT_IP"
 
 echo "> fetching network interface id"

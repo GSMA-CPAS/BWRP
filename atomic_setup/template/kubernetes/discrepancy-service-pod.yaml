@@ -23,8 +23,11 @@ spec:
     spec:
       containers:
       - name: dsdb
-        image: mongo:4.4-bionic
+        image: ${IMAGE_MONGO}
         imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: proxy-environment-variables
         env:
         - name: MONGO_INITDB_ROOT_USERNAME
           value: '${DSDB_USER}'
@@ -41,15 +44,18 @@ spec:
           subPath: peer/dsdb/
 
       - name: discrepancy-service
-        image: gcr.io/roamingonblockchain/discrepancy-service:0.4.6
+        image: ${IMAGE_DISCREPANCY_SERVICE}
         imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: proxy-environment-variables
         env:
         - name: DB_USER
           value: '${DSDB_USER}'
         - name: DB_PASSWD
           value: '${DSDB_USERPW}'          
         - name: MONGO_CONN_URL
-          value: 'mongodb://discrepancy-${HOSTNAME}:27017'
+          value: 'mongodb://discrepancy-db-${HOSTNAME}.${KUBENS}.svc.cluster.local:${DSDB_PORT}'
         ports:
         - containerPort: 8080
           protocol: TCP
