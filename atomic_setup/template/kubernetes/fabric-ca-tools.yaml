@@ -8,9 +8,6 @@ spec:
   - name: data-mount
     persistentVolumeClaim:
       claimName: data-claim
-  - name: dockersocket
-    hostPath:
-      path: /var/run/docker.sock
   containers:
     - name: fabric-ca-tools
       #the fabvric-ca-tools container is outdated (2y)... use fabric ca image instead
@@ -26,5 +23,3 @@ spec:
       volumeMounts:
         - mountPath: ${PV_PATH}
           name: data-mount
-        - mountPath: /host/var/run/docker.sock
-          name: dockersocket
