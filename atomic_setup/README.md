@@ -219,5 +219,10 @@ If you upgrade from a previous setup, please follow the steps:
 kubectl port-forward pod/<COMMON-ADAPTER-POD> 8080:<COMMON_ADAPTER_PORT>
 and access it at:  http://localhost:8080/api-docs/
 
+## RENEW PEER AND USERS ADMIN/MTLS CERTIFICATES
+When MSP and TLS certificates expired, you have to renew and deploy new certs.
+To renew certs for HLF network:
+   run ./scripts/renew_expired_certs.sh
+
 ## TODO
 The CCP parts and the Chaincode parts are not yet transfered to the proposed scheme.
