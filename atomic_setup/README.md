@@ -20,8 +20,11 @@
    | Variable | Value | Description |
    |----|---|---|
    | CFG_KUBENS | gsma | Namespace to be used in kubernetes. Highly recommended NOT to use default |
-   | CFG_HOSTNAME | bwrp | E.g., The "CFG_PEER_NAME.<hostname>.CFG_DOMAIN" part. Hostname of the kubernetes cluster master machine |
-   | CFG_DOMAIN | subdomain.yourdomain.com | The "CFG_PEER_NAME.CFG_HOSTNAME.<domain>" part |
+   | CFG_HOSTNAME | bwrp | E.g., The "CFG_PEER_NAME.\<hostname\>.CFG_DOMAIN" part. Hostname of the kubernetes cluster master machine |
+   | CFG_DOMAIN | subdomain.yourdomain.com | The "CFG_PEER_NAME.CFG_HOSTNAME.\<domain\>" part |
+   | CFG_HTTP_PROXY_URL |  "" | forward http proxy to be used. Format: "http://HOST:PORT" Empty string (default) means "do not use http proxy". |
+   | CFG_HTTPS_PROXY_URL | "" | forward https proxy to be used. Format: "https://HOST:PORT" Empty string (default) means "do not use https proxy". |
+   | CFG_NO_PROXY_URL | "" | URLs that shall be used without using a proxy |
    | CFG_CA_ADMINPW | ##secret## | The CA Admin pw. Generate e.g. via openssl rand -base64 32 (Make sure password is URL safe) |
    | CFG_CA_PEERPW | ##secret## | The CA peer user pw. Also generate e.g. via openssl rand -base64 32 (Make sure password is URL safe) |
    | CFG_CA_PEERADMINPW | ##secret## | The CA peer admin pw. Also generate e.g. via openssl rand -base64 32 (Make sure password is URL safe) |
@@ -32,7 +35,7 @@
    | CFG_CA_O | Org1 | O = Organization Name (4 Character length) |
    | CFG_CA_OU | WholesaleRoaming | OU = Organizational Unit |
    | CFG_ORG | Org1 | Name of your organization in the HLF network (4 Character length. Can be same as CFG_CA_O) |
-   | CFG_PEER_NAME | peer0 | The "<peer>.CFG_HOSTNAME.CFG_DOMAIN" part |
+   | CFG_PEER_NAME | peer0 | The "\<peer\>.CFG_HOSTNAME.CFG_DOMAIN" part |
    | CFG_PEER_PORT | 7050 | Port number Hyperledger Peer to be run on. Default is 7050 - Make sure this port is whitelisted and can be accessed from outside on your machine |
    | CFG_PEER_EXTERNAL_IP | 1.2.3.4 | An external IP that you want to asign to the kubernetes NodePort of the peer - Server IP. (Not public IP) in case AWS instance is used |
    | CFG_PEER_TLS_USERNAME | mtlsuser | The user used for mTLS |
@@ -66,6 +69,28 @@
    | CFG_DSDB_USER | root | The user name for discrepancy-service MongoDB. |
    | CFG_DSDB_USERPW | root | The discrepancy-service MongoDB user password. |
    | CFG_DISCREPANCY_SERVICE_PORT | 8082 | The discrepancy-service port. |
+
+   The images are configured with the following parameters:
+   
+   | Variable | Value | Description |
+   |----|---|---|
+   | CFG_IMAGE_ALPINE | alpine:3.9 | Image for Alpine |
+   | CFG_IMAGE_BUSYBOX | busybox:latest | Image for busybox |
+   | CFG_IMAGE_DIND | docker:18.04-dind | Image for docker in docker |
+   | CFG_IMAGE_NGINX | eu.gcr.io/roamingonblockchain/nodenect-nginx-1-4-0-r:latest | Image for nginx |
+   | CFG_IMAGE_CALCULATOR | gcr.io/roamingonblockchain/calculator:0.4.4 | Image for BWRP calculator |
+   | CFG_IMAGE_COMMON_ADAPTER | gcr.io/roamingonblockchain/common-adapter:0.5.2 | Image for BWRP common adapter |
+   | CFG_IMAGE_NGINX_CERT | eu.gcr.io/roamingonblockchain/nginx-cert:latest | Image for nginx cert |
+   | CFG_IMAGE_WEBAPP | gcr.io/roamingonblockchain/webapp:0.6.0 | Image for Webapp |
+   | CFG_IMAGE_BLOCKCHAIN_ADAPTER | gcr.io/roamingonblockchain/blockchain-adapter:0.4.1 | Image for BWRP blockchain adapter |
+   | CFG_IMAGE_EXPLORER | hyperledger/explorer:1.1.2 | image for hyperledger explorer |
+   | CFG_IMAGE_FABRIC_CA | hyperledger/fabric-ca:1.4.7 | image for fabric-ca|
+   | CFG_IMAGE_FABRIC_PEER | hyperledger/fabric-peer:2.2.1 | Image for fabric peer |
+   | CFG_IMAGE_FABRIC_TOOLS | hyperledger/fabric-tools:amd64-2.1.1 | Image for fabric tools |
+   | CFG_IMAGE_DISCREPANCY_SERVICE | gcr.io/roamingonblockchain/discrepancy-service:0.4.6 | Image for discrepancy service |
+   | CFG_IMAGE_COUCHDB | hyperledger/fabric-couchdb | Image for couchdb |
+   | CFG_IMAGE_MONGO | mongo:4.4-bionic | Image for mongo db |
+   | CFG_IMAGE_MYSQL | nodenect-mysql-5-7-h-new:latest | Image for mysql |
 
 2. Register record host_name.domain in DNS to point to pubilc IP address.
 

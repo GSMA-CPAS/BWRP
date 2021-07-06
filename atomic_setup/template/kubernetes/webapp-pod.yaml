@@ -23,9 +23,12 @@ spec:
         fsGroup: 101 
       containers:
         - name: webapp-db-${HOSTNAME}
-          image: mysql:5.7
+          image: ${IMAGE_MYSQL}
           #command: [ "/bin/sh", "-c", "--" ]
           #args: [ "while true; do sleep 30; done;" ]
+          envFrom:
+          - configMapRef:
+              name: proxy-environment-variables
           env:
             - name: MYSQL_DATABASE
               value: "${WEBAPP_MYSQL_DB}"
@@ -43,11 +46,14 @@ spec:
             subPath: WEBAPP/DB
           resources: {}
         - name: webapp-${HOSTNAME}
-          image: gcr.io/roamingonblockchain/webapp:0.6.1 # gcr.io/roamingonblockchain/webapp:0.5.4.1
+          image: ${IMAGE_WEBAPP}
           #command: [ "/bin/sh", "-c", "--" ]
           #args: [ "while true; do sleep 30; done;" ]
           command: [ "/bin/sh", "-c", "--" ]
-          args:  ["node setup.js; node server.js;"]
+          args:  [ "sleep 60; node setup.js; node server.js;" ]
+          envFrom:
+            - configMapRef:
+                name: proxy-environment-variables
           env:
             - name: WEBAPP_CA_ADMIN_ENROLLMENT_SECRET
               value: "${CA_ADMINPW}"
@@ -71,7 +77,7 @@ spec:
       restartPolicy: Always
       initContainers:
       - name: init-myservice
-        image: busybox
+        image: ${IMAGE_BUSYBOX}
         command: ['sh', '-c', 'mkdir -p var/lib/mysql/data/lost+found && rm -r var/lib/mysql/data/lost+found']
         volumeMounts:
         - mountPath: /var/lib/mysql/data

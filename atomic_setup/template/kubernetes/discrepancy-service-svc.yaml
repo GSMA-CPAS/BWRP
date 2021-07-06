@@ -18,4 +18,20 @@ spec:
     targetPort: 8080
   selector:
     io.kompose.service: discrepancy-${HOSTNAME}
+---    
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    io.kompose.service: discrepancy-${HOSTNAME}
+  name: discrepancy-db-${HOSTNAME}
+  namespace: ${KUBENS}
+spec:
+  ports:
+  - name: "discrepancy-db-${HOSTNAME}"
+    port: ${DSDB_PORT}
+    targetPort: 27017
+  selector:
+    io.kompose.service: discrepancy-${HOSTNAME}
     

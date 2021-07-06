@@ -26,6 +26,9 @@ spec:
         - sh
         - -c
         - fabric-ca-server start -b admin:${CA_ADMINPW} -d
+        envFrom:
+          - configMapRef:
+              name: proxy-environment-variables
         env:
         - name: FABRIC_CA_SERVER_CSR_HOSTS
           value: localhost,ca.${HOSTNAME}.${DOMAIN},ca-${MYHOST}.${KUBENS}
@@ -37,7 +40,7 @@ spec:
           value: "${CA_PORT}"
         - name: FABRIC_CA_SERVER_TLS_ENABLED
           value: "true"
-        image: hyperledger/fabric-ca:1.4.6
+        image: ${IMAGE_FABRIC_CA}
         imagePullPolicy: ""
         name: ca-${MYHOST}
         ports:

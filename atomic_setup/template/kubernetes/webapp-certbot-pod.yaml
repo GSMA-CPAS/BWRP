@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: nginx-certbot-${HOSTNAME}
-          image:  eu.gcr.io/roamingonblockchain/nginx-cert:latest 
+          image:  ${IMAGE_NGINX_CERT}
           command: [ "/bin/sh", "-c", "--" ]
           args: [ "while true; do sleep 30; done;" ]
           volumeMounts:
