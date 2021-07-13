@@ -51,6 +51,7 @@
    | CFG_CHAINCODE_NAME | hybrid | The name of the chaincode in repository. |
    | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid_v04 | The name of chaincode, approved on the channel. |
    | CFG_CHANNEL_NAME | atomic | The name of the channel. |
+   | CFG_CHAINCODE_PORT | 7052 | The port of chaincode service to connect to chaincode container . |
    | CFG_WEBAPP_MYSQL_ROOT_PASSWORD | changeThisRootPassword | The root password for mysql. |
    | CFG_WEBAPP_MYSQL_DB | nomad | The webapp db name. |
    | CFG_WEBAPP_MYSQL_USER | nomad | The webapp db user. |
@@ -223,6 +224,19 @@ and access it at:  http://localhost:8080/api-docs/
 When MSP and TLS certificates expired, you have to renew and deploy new certs.
 To renew certs for HLF network:
    run ./scripts/renew_expired_certs.sh
+
+## TO USE CHAINCODE AS EXTERNAL SERVICE
+If you want to deploy and use chaincode as external service, in different pod and stop using DinD in peer pod.
+Follow next steps:
+1. Configure the following variables in setup.cfg:
+   | Variable | Value | Description |
+   |----|---|---|
+   | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid_v05 | The name of new chaincode, approved on the channel. |
+   | CFG_CHAINCODE_PORT | 7052 | The port of chaincode service to connect to chaincode container . |
+
+2. run ./scripts/prepare_templates.sh setup.cfg deployment
+3. run ./scripts/deploy_peer.sh
+4. run ./scripts/deploy_chaincodes_external.sh
 
 ## TODO
 The CCP parts and the Chaincode parts are not yet transfered to the proposed scheme.

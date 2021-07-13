@@ -8,6 +8,11 @@ set -e -o pipefail
 echo "> setting namespace"
 kubectl config set-context --current --namespace=$CFG_KUBENS
 
+echo "> copy external builders scripts and config to pvc"
+kubectl exec fabric-ca-tools -- mkdir -p /mnt/data/peer/builders/external
+kubectl cp scripts/builders/bin fabric-ca-tools:/mnt/data/peer/builders/external/
+kubectl cp $CFG_CONFIG_PATH/config/core.yaml fabric-ca-tools:/mnt/data/peer/
+
 echo "> copy peer script to pvc"
 chmod +x $CFG_CONFIG_PATH/scripts/peer_start.sh
 kubectl exec fabric-ca-tools -- mkdir -p /mnt/data/peer/home
