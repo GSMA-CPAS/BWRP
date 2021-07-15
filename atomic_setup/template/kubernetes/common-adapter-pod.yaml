@@ -36,7 +36,7 @@ spec:
         volumeMounts:
         - mountPath: /docker-entrypoint-initdb.d/
           name: data-pvc
-          subPath: peer/cadb/init/
+          subPath: common-adapter/cadb/init/
 
       containers:
       - name: cadb
@@ -55,10 +55,10 @@ spec:
         volumeMounts:
         - mountPath: /data/db
           name: data-pvc
-          subPath: peer/cadb/
+          subPath: -common-adapter/cadb/
         - mountPath: /docker-entrypoint-initdb.d/
           name: data-pvc
-          subPath: peer/cadb/init/
+          subPath: common-adapter/cadb/init/
 
       - name: common-adapter
         image: ${IMAGE_COMMON_ADAPTER}
