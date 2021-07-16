@@ -55,7 +55,7 @@ spec:
         volumeMounts:
         - mountPath: /data/db
           name: data-pvc
-          subPath: -common-adapter/cadb/
+          subPath: common-adapter/cadb/
         - mountPath: /docker-entrypoint-initdb.d/
           name: data-pvc
           subPath: common-adapter/cadb/init/
