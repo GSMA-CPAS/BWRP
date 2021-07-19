@@ -17,6 +17,9 @@
 ## Prepare your Pods
 
 1. edit "setup.cfg" to suit your needs:
+
+It is recommended to generate URL-safe passwords with: `openssl rand -base64 64 | tr -d "=+/" | cut -c1-32`
+
    | Variable | Value | Description |
    |----|---|---|
    | CFG_KUBENS | gsma | Namespace to be used in kubernetes. Highly recommended NOT to use default |
@@ -25,9 +28,9 @@
    | CFG_HTTP_PROXY_URL |  "" | forward http proxy to be used. Format: "http://HOST:PORT" Empty string (default) means "do not use http proxy". |
    | CFG_HTTPS_PROXY_URL | "" | forward https proxy to be used. Format: "https://HOST:PORT" Empty string (default) means "do not use https proxy". |
    | CFG_NO_PROXY_URL | "" | URLs that shall be used without using a proxy |
-   | CFG_CA_ADMINPW | ##secret## | The CA Admin pw. Generate e.g. via openssl rand -base64 32 (Make sure password is URL safe) |
-   | CFG_CA_PEERPW | ##secret## | The CA peer user pw. Also generate e.g. via openssl rand -base64 32 (Make sure password is URL safe) |
-   | CFG_CA_PEERADMINPW | ##secret## | The CA peer admin pw. Also generate e.g. via openssl rand -base64 32 (Make sure password is URL safe) |
+   | CFG_CA_ADMINPW | ##secret## | The CA Admin pw. Generate URL-safe password. |
+   | CFG_CA_PEERPW | ##secret## | The CA peer user pw. Generate URL-safe password. |
+   | CFG_CA_PEERADMINPW | ##secret## | The CA peer admin pw. Generate URL-safe password. |
    | CFG_CA_PORT | 7054 | Port number CA to be run on. Default is 7054 |
    | CFG_CA_C | GB | C = Country of organization |
    | CFG_CA_ST | London | ST = StateOrProvinceName of organization |
@@ -39,7 +42,7 @@
    | CFG_PEER_PORT | 7050 | Port number Hyperledger Peer to be run on. Default is 7050 - Make sure this port is whitelisted and can be accessed from outside on your machine |
    | CFG_PEER_EXTERNAL_IP | 1.2.3.4 | An external IP that you want to asign to the kubernetes NodePort of the peer - Server IP. (Not public IP) in case AWS instance is used |
    | CFG_PEER_TLS_USERNAME | mtlsuser | The user used for mTLS |
-   | CFG_PEER_TLS_USERPW   | ##swecret## | The password of the mTLS user |
+   | CFG_PEER_TLS_USERPW   | ##secret## | The password of the mTLS user. Generate URL-safe password. |
    | CFG_PV_PATH | /mnt/data | The Kubernetes Persistence Volume size. Can be resized later. |
    | CFG_PV_STORAGE_CLASS | gp2 | The storage class the cluster should use ("local-storage" = local, "gp2" = aws, ...) |
    | CFG_PV_SIZE | 10Gi | The Kubernetes Persistence Volume size. Can be resized later. |
@@ -62,12 +65,12 @@
    | CFG_NGINX_NODE_PORT | 30443 | Nginx node port. |
    | CFG_NGINX_HTTP_PORT | 80 | Nginx port for issuing certs |
    | CFG_NGINX_CERT_NODE_PORT | 30080 |  node port for issuing certs |
-   | CFG_COMMON_ADAPTER_MONGO_ROOTPW | rootpw | The root password for MongoDB. |
-   | CFG_COMMON_ADAPTER_MONGO_USERPW | userpw | The MongoDB user password. |
+   | CFG_COMMON_ADAPTER_MONGO_ROOTPW | ##secret## | The root password for MongoDB. Generate URL-safe password. |
+   | CFG_COMMON_ADAPTER_MONGO_USERPW | ##secret## | The MongoDB user password. Generate URL-safe password. |
    | CFG_COMMON_ADAPTER_PORT | 3030 | The common-adapter port. |
    | CFG_CALCULATOR_PORT | 8080 | The calculator-service port. |
    | CFG_DSDB_USER | root | The user name for discrepancy-service MongoDB. |
-   | CFG_DSDB_USERPW | root | The discrepancy-service MongoDB user password. |
+   | CFG_DSDB_USERPW | ##secret## | The dsdb password. Generate URL-safe password. |
    | CFG_DISCREPANCY_SERVICE_PORT | 8082 | The discrepancy-service port. |
 
    The images are configured with the following parameters:
