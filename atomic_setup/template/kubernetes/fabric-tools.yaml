@@ -8,9 +8,6 @@ spec:
   - name: data-mount
     persistentVolumeClaim:
       claimName: data-claim
-  - name: dockersocket
-    hostPath:
-      path: /var/run/docker.sock
   containers:
     - name: fabric-tools
       image: ${IMAGE_FABRIC_TOOLS}
@@ -25,5 +22,3 @@ spec:
       volumeMounts:
         - mountPath: ${PV_PATH}
           name: data-mount
-        - mountPath: /host/var/run/docker.sock
-          name: dockersocket
