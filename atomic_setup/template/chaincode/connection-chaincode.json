@@ -1,7 +1,7 @@
 {
     "address": "chaincode-${HOSTNAME}:${CHAINCODE_PORT}",
     "dial_timeout": "10s",
-    "tls_required": true,
+    "tls_required": false,
     "client_auth_required": true,
     "client_key": "from_pem:deployment/pvc/ca/users/${CA_PEER_TLS_USERNAME}@${HOSTNAME}.${DOMAIN}/tls/server.key",
     "client_cert": "from_pem:deployment/pvc/ca/users/${CA_PEER_TLS_USERNAME}@${HOSTNAME}.${DOMAIN}/tls/server.crt",
