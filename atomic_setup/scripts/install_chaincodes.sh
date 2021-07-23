@@ -27,10 +27,10 @@ function deploy() {
     fi
 
     echo "> installing chaincode "
-    kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode queryinstalled
+    echo $(kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode queryinstalled)
     #if [ $(kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode)]
     kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode install /opt/$CHAINCODE.tar.gz
-    kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode queryinstalled
+    echo $(kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode queryinstalled)
 }
 
 deploy $CFG_CHAINCODE_NAME chaincode/$CFG_CHAINCODE_NAME/ golang $LABEL false
