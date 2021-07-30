@@ -26,7 +26,6 @@ function deploy() {
         kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode package /opt/$CHAINCODE.tar.gz --path $CHAINCODE_DIR --lang $CHAINCODE_LAN --label $CHAINCODE_LABEL
     fi
 
-    echo "> installing chaincode "
     if [ $(kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode queryinstalled|grep "Label: $LABEL"|wc -l) -eq 0 ]; then
         echo "> installing chaincode "
         kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode install /opt/$CHAINCODE.tar.gz
