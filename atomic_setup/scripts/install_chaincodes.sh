@@ -27,7 +27,7 @@ function deploy() {
     fi
 
     echo "> installing chaincode "
-    if [ $(kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode queryinstalled|grep "Package ID"|wc -l) -eq 0 ]; then
+    if [ $(kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode queryinstalled|grep "Label: $LABEL"|wc -l) -eq 0 ]; then
         kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode install /opt/$CHAINCODE.tar.gz
     fi 
     echo "> chaincode installed: " $(kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode queryinstalled)
