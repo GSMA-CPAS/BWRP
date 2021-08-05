@@ -13,4 +13,6 @@ kubectl cp certs/gsma/orderer/tlsca.orderer.hldid.org-cert.pem fabric-tools:/opt
 
 echo "> copying remote_cli script to pod"
 chmod +x $CFG_CONFIG_PATH/scripts/remote_cli.sh
+chmod +x $CFG_CONFIG_PATH/scripts/remote_discovery.sh
 kubectl cp $CFG_CONFIG_PATH/scripts/remote_cli.sh fabric-tools:/opt/remote_cli.sh
+kubectl cp $CFG_CONFIG_PATH/scripts/remote_discovery.sh fabric-tools:/opt/remote_discovery.sh
