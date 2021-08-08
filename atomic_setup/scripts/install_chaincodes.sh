@@ -26,8 +26,13 @@ function deploy() {
         kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode package /opt/$CHAINCODE.tar.gz --path $CHAINCODE_DIR --lang $CHAINCODE_LAN --label $CHAINCODE_LABEL
     fi
 
-    echo "> installing chaincode "
-    kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode install /opt/$CHAINCODE.tar.gz
+    if [ $(kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode queryinstalled|grep "Label: $LABEL"|wc -l) -eq 0 ]; then
+        echo "> installing chaincode "
+        kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode install /opt/$CHAINCODE.tar.gz
+    else
+        echo "> chaincode was already installed"
+    fi 
+    echo "> chaincode installed: " $(kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode queryinstalled)
 }
 
 deploy $CFG_CHAINCODE_NAME chaincode/$CFG_CHAINCODE_NAME/ golang $LABEL false
