@@ -541,9 +541,14 @@ chaincode:
     externalBuilders: 
         - path: /builders/external
           name: external-builder
-          environmentWhitelist:
-             - ENVVAR_NAME_TO_PROPAGATE_FROM_PEER
-             - GOPROXY
+          propagateEnvironment:                                            
+             - GOPROXY                                                         
+             - GONOPROXY                                                      
+             - GOSUMDB         
+             - GONOSUMDB            
+             - CORE_PEER_TLS_CLIENTROOTCAS_FILES                              
+             - CORE_PEER_TLS_CLIENTCERT_FILE     
+             - CORE_PEER_TLS_CLIENTKEY_FILE      
 
     # The maximum duration to wait for the chaincode build and install process
     # to complete.

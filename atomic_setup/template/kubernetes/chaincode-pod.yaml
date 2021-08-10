@@ -32,11 +32,27 @@ spec:
             value: ${CHAINCODE_SELF_ADDRESS}
           - name: CORE_PEER_LOCALMSPID
             value: ${ORG}MSP
+          - name: CORE_CHAINCODE_TLS_DISABLED
+            value: "false"            
+          - name: CORE_CHAINCODE_TLS_CERT_FILE
+            value: /etc/hyperledger/fabric/tls/server.crt
+          - name: CORE_CHAINCODE_TLS_KEY_FILE
+            value: /etc/hyperledger/fabric/tls/server.key
+          - name: CORE_CHAINCODE_TLS_CLIENT_CACERT_FILE
+            value: /etc/hyperledger/fabric/tls/ca.crt
         ports:
         - containerPort: 7052
-          name: chaincode-
+          name: chaincode
+        volumeMounts:
+        - mountPath: /etc/hyperledger/fabric/tls
+          name: data-pvc
+          subPath: peer/peers/${PEER_NAME}.${HOSTNAME}.${DOMAIN}/tls-cc  
       imagePullSecrets:
       - name: nomad-secret
       hostname: chaincode-${HOSTNAME}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
+      volumes:
+      - name: data-pvc
+        persistentVolumeClaim:
+          claimName: data-claim      

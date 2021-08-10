@@ -1,9 +1,9 @@
 {
     "address": "chaincode-${HOSTNAME}:${CHAINCODE_PORT}",
     "dial_timeout": "10s",
-    "tls_required": false,
+    "tls_required": true,
     "client_auth_required": true,
-    "client_key": "from_pem:deployment/pvc/ca/users/${CA_PEER_TLS_USERNAME}@${HOSTNAME}.${DOMAIN}/tls/server.key",
-    "client_cert": "from_pem:deployment/pvc/ca/users/${CA_PEER_TLS_USERNAME}@${HOSTNAME}.${DOMAIN}/tls/server.crt",
-    "root_cert": "from_pem:deployment/pvc/ca/peers/peer0.${HOSTNAME}.${DOMAIN}/msp/tlscacerts/tlsca.${HOSTNAME}.${DOMAIN}-cert.pem"
+    "client_key": "CORE_PEER_TLS_CLIENTKEY_FILE",
+    "client_cert": "CORE_PEER_TLS_CLIENTCERT_FILE",
+    "root_cert": "CORE_PEER_TLS_CLIENTROOTCAS_FILES"
 }

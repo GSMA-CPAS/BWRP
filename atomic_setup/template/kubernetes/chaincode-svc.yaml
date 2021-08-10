@@ -7,11 +7,6 @@ metadata:
   name: chaincode-${HOSTNAME}
   namespace: ${KUBENS}
 spec:
-# enable external access
-#  externalTrafficPolicy: Cluster
-#  externalIPs:
-#  - MYHOSTIP
-#  type: NodePort
   ports:
   - name: "chaincode-${HOSTNAME}"
     port: ${CHAINCODE_PORT}
