@@ -225,7 +225,7 @@ When MSP and TLS certificates expired, you have to renew and deploy new certs.
 To renew certs for HLF network:
    run ./scripts/renew_expired_certs.sh
 
-## TO DEPLOY CHAINCODE AS EXTERNAL SERVICE
+## DEPLOY CHAINCODE AS EXTERNAL SERVICE
 If you want to deploy and use chaincode as external service, in different pod and stop using DinD in peer pod.
 Follow next steps:
 1. Configure the following variables in setup.cfg:
@@ -239,10 +239,8 @@ Follow next steps:
 4. run ./scripts/deploy_peer.sh
 5. run ./scripts/deploy_chaincodes_external.sh
 6. Configure Blockchain Adapter
-6.1. Stop blockchain_adapter:
-kubectl delete -f deployment/kubernetes/blockchain-adapter-pod.yaml
-6.2. run ./scripts/generate_ccp_hybrid.sh
-6.3. run ./scripts/deploy_blockchain_adapter.sh
+6.1. run ./scripts/generate_ccp_hybrid.sh
+6.2. run ./scripts/update_blockchain_adapter
 
 ## TODO
 The CCP parts and the Chaincode parts are not yet transfered to the proposed scheme.
