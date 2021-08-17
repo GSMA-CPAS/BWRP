@@ -96,6 +96,10 @@ spec:
           value: tcp://0.0.0.0:2375
         - name: FABRIC_LOGGING_SPEC
           value: INFO
+        - name: CORE_PEER_GOSSIP_PVTDATA_PULLRETRYTHRESHOLD
+          value: 3s
+        - name: CORE_PEER_GOSSIP_PVTDATA_RECONCILESLEEPINTERVAL
+          value: 5m
         livenessProbe:
           failureThreshold: 3
           httpGet:
