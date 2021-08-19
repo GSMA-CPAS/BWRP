@@ -36,10 +36,14 @@ else
     ./scripts/generate_crypto_mtls.sh
 fi;
 
+# deploy the peer
 ./scripts/deploy_peer.sh
 
 # prepare remote cli:
 ./scripts/prepare_remote_cli.sh
+
+# check peer synced
+./scripts/wait_peer_synced.sh
 
 # deploy hybrid
 ./scripts/deploy_roamingonblockchain_repo_secrets.sh
