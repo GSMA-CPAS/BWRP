@@ -43,6 +43,8 @@ It is recommended to generate URL-safe passwords with: `openssl rand -base64 64 
    | CFG_PEER_EXTERNAL_IP | 1.2.3.4 | An external IP that you want to asign to the kubernetes NodePort of the peer - Server IP. (Not public IP) in case AWS instance is used |
    | CFG_PEER_TLS_USERNAME | mtlsuser | The user used for mTLS |
    | CFG_PEER_TLS_USERPW   | ##secret## | The password of the mTLS user. Generate URL-safe password. |
+   | CFG_CC_NAME   | chaincode-${CFG_HOSTNAME} | Endpoint of chaincode service to be used in cert CN attribute. |
+   | CFG_CA_CC_TLS_USERPW   | ##secret## | The password of the chaincode user. Generate URL-safe password. |
    | CFG_PV_PATH | /mnt/data | The Kubernetes Persistence Volume size. Can be resized later. |
    | CFG_PV_STORAGE_CLASS | gp2 | The storage class the cluster should use ("local-storage" = local, "gp2" = aws, ...) |
    | CFG_PV_SIZE | 10Gi | The Kubernetes Persistence Volume size. Can be resized later. |
@@ -54,6 +56,8 @@ It is recommended to generate URL-safe passwords with: `openssl rand -base64 64 
    | CFG_CHAINCODE_NAME | hybrid | The name of the chaincode in repository. |
    | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid_v04 | The name of chaincode, approved on the channel. |
    | CFG_CHANNEL_NAME | atomic | The name of the channel. |
+   | CFG_CHAINCODE_SELF | "0.0.0.0:7052" | Chaincode URL to listen to. |
+   | CFG_CHAINCODE_CCID | "CCID_chaincode_example" | Chaincode CCID will be setted up automaticali by script on deployment. |
    | CFG_CHAINCODE_PORT | 7052 | The port of chaincode service to connect to chaincode container . |
    | CFG_WEBAPP_MYSQL_ROOT_PASSWORD | changeThisRootPassword | The root password for mysql. |
    | CFG_WEBAPP_MYSQL_DB | nomad | The webapp db name. |

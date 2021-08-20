@@ -10,6 +10,10 @@
 # populated by the build program and should be treated as read only input. 
 # RELEASE_OUTPUT_DIR is the directory where release must place artifacts to be consumed by the peer.
 
+function one_line_pem {
+    echo "`awk 'NF {sub(/\\n/, ""); printf "%s\\\\\\\n",$0;}' $1`"
+}
+
 set -euo pipefail
 
 BUILD_OUTPUT_DIR="$1"
