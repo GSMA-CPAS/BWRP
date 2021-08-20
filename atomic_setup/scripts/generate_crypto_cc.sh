@@ -19,7 +19,7 @@ kubectl cp scripts/process_pem.sh fabric-ca-tools:/opt
 echo "> enrolling admin user"
 kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://admin:$CFG_CA_ADMINPW@$CA_URL $CA_CLIENT_OPTS
 echo "> register $CFG_CC_NAME user"
-kubectl exec fabric-ca-tools -- fabric-ca-client register --id.name $CFG_CC_NAME --id.secret $CFG_CA_CC_TLS_USERPW --id.type peer $CA_CLIENT_OPTS | sed 's|Password: \(.*\)|Password: *** hidden ***\r|'
+kubectl exec fabric-ca-tools -- fabric-ca-client register --id.name $CFG_CC_NAME --id.secret $CFG_CA_CC_TLS_USERPW --id.type peer $CA_CLIENT_OPTS | sed 's|Password: \(.*\)|Password: *** hidden ***\r|' || echo "user already registered"
 
 echo "> enrolling $CFG_CC_NAME tls"
 kubectl exec fabric-ca-tools -- fabric-ca-client enroll -u https://$CFG_CC_NAME:$CFG_CA_CC_TLS_USERPW@$CA_URL --enrollment.profile tls -M $CFG_PEER_BASE/tls-cc --csr.hosts $CFG_CC_NAME $CA_CLIENT_OPTS

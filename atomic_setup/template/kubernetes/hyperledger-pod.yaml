@@ -126,7 +126,7 @@ spec:
         - mountPath: /var/hyperledger/production
           name: data-pvc
           subPath: peer/production/
-        - mountPath: /builders/external
+        - mountPath: /builders/
           name: data-pvc
           subPath: peer/builders/
         - mountPath: /etc/hyperledger/fabric/core.yaml
