@@ -15,6 +15,10 @@ set -euo pipefail
 BUILD_OUTPUT_DIR="$1"
 RELEASE_OUTPUT_DIR="$2"
 
+function one_line_pem {
+    echo "`awk 'NF {sub(/\\n/, ""); printf "%s\\\\\\\n",$0;}' $1`"
+}
+
 # copy indexes from metadata/* to the output directory
 if [ -d "$BUILD_OUTPUT_DIR/metadata" ] ; then
    cp -a "$BUILD_OUTPUT_DIR/metadata/"* "$RELEASE_OUTPUT_DIR/"
