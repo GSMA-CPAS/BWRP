@@ -100,6 +100,8 @@ spec:
           value: 3s
         - name: CORE_PEER_GOSSIP_PVTDATA_RECONCILESLEEPINTERVAL
           value: 5m
+        - name: CORE_METRICS_PROVIDER
+          value: prometheus
         livenessProbe:
           failureThreshold: 3
           httpGet:
