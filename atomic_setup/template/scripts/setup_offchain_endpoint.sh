@@ -5,7 +5,7 @@
 
   for value in {1..5}
   do
-    echo "try $value of 5: seting couchdb config:"
+    echo "try $value of 5: setting couchdb config:"
     curl -s -X PUT http://blockchain-adapter-${HOSTNAME}.${KUBENS}.svc.cluster.local:${BLOCKCHAIN_ADAPTER_PORT}/config/offchain-db -d "{\"URI\": \"http://${OFFCHAIN_COUCHDB_USER}:${OFFCHAIN_COUCHDB_PASSWORD}@offchain-couchdb-${HOSTNAME}.${KUBENS}.svc.cluster.local:${OFFCHAIN_COUCHDB_TARGET_PORT}\"}" -H "Content-Type: application/json"
     # read back to verify
     RESPONSE=$(curl -s http://blockchain-adapter-${HOSTNAME}.${KUBENS}.svc.cluster.local:${BLOCKCHAIN_ADAPTER_PORT}/config/offchain-db)
