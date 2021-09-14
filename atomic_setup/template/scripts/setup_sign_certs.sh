@@ -8,7 +8,7 @@ function request {
 
 function setupSignCerts() {
   echo "> storing root cert on DTAG"
-  request PUT "[\"$(cat ${PV_PATH}CA/ca-cert.pem | awk 1 ORS='\\n' )\"]" http://blockchain-adapter-${HOSTNAME}.${KUBENS}.svc.cluster.local:${BLOCKCHAIN_ADAPTER_PORT}/config/certificates/root
+  request PUT "[\"$(cat ${PV_PATH}/CA/ca-cert.pem | awk 1 ORS='\\n' )\"]" http://blockchain-adapter-${HOSTNAME}.${KUBENS}.svc.cluster.local:${BLOCKCHAIN_ADAPTER_PORT}/config/certificates/root
 }
 
 setupSignCerts
