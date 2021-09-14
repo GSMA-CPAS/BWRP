@@ -5,10 +5,6 @@ set -e -o pipefail
 # load config
 . setup.cfg
 
-echo "> setting namespace"
-kubectl config set-context --current --namespace=$CFG_KUBENS
-kubectl create -f $CFG_CONFIG_PATH/kubernetes/namespace.yaml || echo "namespace exists, not deploying"
-
 echo "> deploying persistant volume"
 kubectl apply -f $CFG_CONFIG_PATH/kubernetes/data-storage-pv.yaml
 

@@ -54,7 +54,7 @@ It is recommended to generate URL-safe passwords with: `openssl rand -base64 64 
    | CFG_OFFCHAIN_COUCHDB_TARGET_PORT | 5984 | The offchain db port. |
    | CFG_BLOCKCHAIN_ADAPTER_PORT | 8081 | The blockchain adapter port. |
    | CFG_CHAINCODE_NAME | hybrid | The name of the chaincode in repository. |
-   | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid_v04 | The name of chaincode, approved on the channel. |
+   | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid | The name of chaincode, approved on the channel. |
    | CFG_CHANNEL_NAME | atomic | The name of the channel. |
    | CFG_CHAINCODE_SELF | "0.0.0.0:7052" | Chaincode URL to listen to. |
    | CFG_CHAINCODE_CCID | "CCID_chaincode_example" | Chaincode CCID will be setted up automaticali by script on deployment. |
@@ -238,7 +238,7 @@ Follow next steps:
 1. Configure the following variables in setup.cfg:
    | Variable | Value | Description |
    |----|---|---|
-   | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid_v05 | The name of new chaincode, approved on the channel. |
+   | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid | The name of new chaincode, approved on the channel. |
    | CFG_CHAINCODE_PORT | 7052 | The port of chaincode service to connect to chaincode container . |
 2. Issue certs for external chaincode tls communication (executed once when CC is deployed for first time as external service):
    run ./scripts/generate_crypto_cc.sh
