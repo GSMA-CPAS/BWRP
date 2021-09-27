@@ -32,3 +32,5 @@ echo "> TLS: moving $CFG_CC_NAME certs and keys"
 kubectl exec fabric-ca-tools -- cp $CFG_PEER_BASE/tls-cc/tlsintermediatecerts/ca.$CFG_HOSTNAME.$CFG_DOMAIN-cert.pem $CFG_PEER_BASE/tls-cc/ca.crt
 kubectl exec fabric-ca-tools -- sh -c "mv $CFG_PEER_BASE/tls-cc/signcerts/* $CFG_PEER_BASE/tls-cc/server.crt"
 kubectl exec fabric-ca-tools -- sh -c "mv $CFG_PEER_BASE/tls-cc/keystore/* $CFG_PEER_BASE/tls-cc/server.key"
+kubectl exec fabric-ca-tools -- sh -c "chmod a+rx $CFG_PEER_BASE/tls-cc/keystore/* $CFG_PEER_BASE/tls-cc"
+kubectl exec fabric-ca-tools -- sh -c "chmod a+r $CFG_PEER_BASE/tls-cc/keystore/* $CFG_PEER_BASE/tls-cc/*"
