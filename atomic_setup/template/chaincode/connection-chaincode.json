@@ -1,5 +1,5 @@
 {
-    "address": "chaincode-${HOSTNAME}:${CHAINCODE_PORT}",
+    "address": "chaincode-${HOSTNAME}.{KUBENS}.svc.cluster.local:${CHAINCODE_PORT}",
     "dial_timeout": "10s",
     "tls_required": true,
     "client_auth_required": true,
