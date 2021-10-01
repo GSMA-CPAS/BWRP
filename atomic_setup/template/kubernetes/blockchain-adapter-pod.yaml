@@ -41,6 +41,9 @@ spec:
         - mountPath: /app/ccp
           name: data-pvc
           subPath: CCP
+        - mountPath: /app/config
+          name: data-pvc
+          subPath: BCACONFIG
       imagePullSecrets:
       - name: nomad-secret
       hostname: blockchain-adapter-${HOSTNAME}
