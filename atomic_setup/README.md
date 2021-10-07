@@ -43,6 +43,8 @@ It is recommended to generate URL-safe passwords with: `openssl rand -base64 64 
    | CFG_PEER_EXTERNAL_IP | 1.2.3.4 | An external IP that you want to asign to the kubernetes NodePort of the peer - Server IP. (Not public IP) in case AWS instance is used |
    | CFG_PEER_TLS_USERNAME | mtlsuser | The user used for mTLS |
    | CFG_PEER_TLS_USERPW   | ##secret## | The password of the mTLS user. Generate URL-safe password. |
+   | CFG_CC_NAME   | chaincode-${CFG_HOSTNAME} | Endpoint of chaincode service to be used in cert CN attribute. |
+   | CFG_CA_CC_TLS_USERPW   | ##secret## | The password of the chaincode user. Generate URL-safe password. |
    | CFG_PV_PATH | /mnt/data | The Kubernetes Persistence Volume size. Can be resized later. |
    | CFG_PV_STORAGE_CLASS | gp2 | The storage class the cluster should use ("local-storage" = local, "gp2" = aws, ...) |
    | CFG_PV_SIZE | 10Gi | The Kubernetes Persistence Volume size. Can be resized later. |
@@ -52,8 +54,11 @@ It is recommended to generate URL-safe passwords with: `openssl rand -base64 64 
    | CFG_OFFCHAIN_COUCHDB_TARGET_PORT | 5984 | The offchain db port. |
    | CFG_BLOCKCHAIN_ADAPTER_PORT | 8081 | The blockchain adapter port. |
    | CFG_CHAINCODE_NAME | hybrid | The name of the chaincode in repository. |
-   | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid_v04 | The name of chaincode, approved on the channel. |
+   | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid | The name of chaincode, approved on the channel. |
    | CFG_CHANNEL_NAME | atomic | The name of the channel. |
+   | CFG_CHAINCODE_SELF | "0.0.0.0:7052" | Chaincode URL to listen to. |
+   | CFG_CHAINCODE_CCID | "CCID_chaincode_example" | Chaincode CCID will be setted up automaticali by script on deployment. |
+   | CFG_CHAINCODE_PORT | 7052 | The port of chaincode service to connect to chaincode container . |
    | CFG_WEBAPP_MYSQL_ROOT_PASSWORD | changeThisRootPassword | The root password for mysql. |
    | CFG_WEBAPP_MYSQL_DB | nomad | The webapp db name. |
    | CFG_WEBAPP_MYSQL_USER | nomad | The webapp db user. |
@@ -221,6 +226,28 @@ If you upgrade from a previous setup, please follow the steps:
 
 kubectl port-forward pod/<COMMON-ADAPTER-POD> 8080:<COMMON_ADAPTER_PORT>
 and access it at:  http://localhost:8080/api-docs/
+
+## RENEW PEER AND USERS ADMIN/MTLS CERTIFICATES
+When MSP and TLS certificates expired, you have to renew and deploy new certs.
+To renew certs for HLF network:
+   run ./scripts/renew_expired_certs.sh
+
+## DEPLOY CHAINCODE AS EXTERNAL SERVICE
+If you want to deploy and use chaincode as external service, in different pod and stop using DinD in peer pod.
+Follow next steps:
+1. Configure the following variables in setup.cfg:
+   | Variable | Value | Description |
+   |----|---|---|
+   | CFG_CHAINCODE_NAME_ONCHANNEL | hybrid | The name of new chaincode, approved on the channel. |
+   | CFG_CHAINCODE_PORT | 7052 | The port of chaincode service to connect to chaincode container . |
+2. Issue certs for external chaincode tls communication (executed once when CC is deployed for first time as external service):
+   run ./scripts/generate_crypto_cc.sh
+3. run ./scripts/prepare_templates.sh setup.cfg deployment
+4. run ./scripts/deploy_peer.sh
+5. run ./scripts/deploy_chaincodes_external.sh
+6. Configure Blockchain Adapter
+6.1. run ./scripts/generate_ccp_hybrid.sh
+6.2. run ./scripts/update_blockchain_adapter
 
 ## TODO
 The CCP parts and the Chaincode parts are not yet transfered to the proposed scheme.

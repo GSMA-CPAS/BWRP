@@ -1,0 +1,9 @@
+{
+    "address": "chaincode-${HOSTNAME}.${KUBENS}.svc.cluster.local:${CHAINCODE_PORT}",
+    "dial_timeout": "10s",
+    "tls_required": true,
+    "client_auth_required": true,
+    "client_key": "CORE_PEER_TLS_CLIENTKEY_FILE",
+    "client_cert": "CORE_PEER_TLS_CLIENTCERT_FILE",
+    "root_cert": "CORE_PEER_TLS_CLIENTROOTCAS_FILES"
+}

@@ -126,7 +126,12 @@ spec:
         - mountPath: /var/hyperledger/production
           name: data-pvc
           subPath: peer/production/
-
+        - mountPath: /builders/
+          name: data-pvc
+          subPath: peer/builders/
+        - mountPath: /etc/hyperledger/fabric/core.yaml
+          name: data-pvc
+          subPath: peer/core.yaml
       - name: dind
         image: ${IMAGE_DIND}
         imagePullPolicy: IfNotPresent

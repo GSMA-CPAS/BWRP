@@ -1,0 +1,58 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    k8s-app: chaincode-${HOSTNAME}
+    io.kompose.service: chaincode-${HOSTNAME}
+  name: chaincode
+  namespace: ${KUBENS}
+spec:
+  selector:
+    matchLabels:
+      app: chaincode-${HOSTNAME}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+      labels:
+#        io.kompose.network/kubefile_gsmawr_msp: "true"
+        io.kompose.service: chaincode-${HOSTNAME}
+        app: chaincode-${HOSTNAME}
+    spec:
+      containers:
+      - image: ${IMAGE_CHAINCODE}
+        name: chaincode-${HOSTNAME}
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: CHAINCODE_CCID
+            value: "${CHAINCODE_CCID}"
+          - name: CHAINCODE_ADDRESS
+            value: ${CHAINCODE_SELF_ADDRESS}
+          - name: CORE_PEER_LOCALMSPID
+            value: ${ORG}MSP
+          - name: CORE_CHAINCODE_TLS_DISABLED
+            value: "false"            
+          - name: CORE_CHAINCODE_TLS_CERT_FILE
+            value: /etc/hyperledger/fabric/tls/server.crt
+          - name: CORE_CHAINCODE_TLS_KEY_FILE
+            value: /etc/hyperledger/fabric/tls/server.key
+          - name: CORE_CHAINCODE_TLS_CLIENT_CACERT_FILE
+            value: /etc/hyperledger/fabric/tls/ca.crt
+        ports:
+        - containerPort: 7052
+          name: chaincode
+        volumeMounts:
+        - mountPath: /etc/hyperledger/fabric/tls
+          name: data-pvc
+          subPath: peer/peers/${PEER_NAME}.${HOSTNAME}.${DOMAIN}/tls-cc  
+      imagePullSecrets:
+      - name: nomad-secret
+      hostname: chaincode-${HOSTNAME}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - name: data-pvc
+        persistentVolumeClaim:
+          claimName: data-claim      
