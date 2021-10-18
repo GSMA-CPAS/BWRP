@@ -19,7 +19,7 @@ while true; do
     DIFF=$(($MAX_LEDGERHEIGHT - $OUR_LEDGERHEIGHT))
     echo "> Ledger is at: $MAX_LEDGERHEIGHT , our peer has $OUR_LEDGERHEIGHT, so $DIFF to go"
 
-    if [ "$DIFF" -le "1" ] 
+    if [ "$DIFF" -le "1" ] && [ "$DIFF" -ge "0" ]
         then
         echo "> synced"
         exit 0
