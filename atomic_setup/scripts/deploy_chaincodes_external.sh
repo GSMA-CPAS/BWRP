@@ -35,12 +35,18 @@ function approve(){
 
     VERSION=$(echo $INFO | jq -r '.version' )
     SEQUENCE=$(echo $INFO | jq '.sequence' )
+    APPROVED=$(echo $INFO | jq .approvals.${CFG_ORG}MSP)
 
     echo "> got package id $PACKAGE_ID"
     echo "> got version $VERSION, sequence $SEQUENCE"
+    echo "> got approval $APPROVED"
 
-    echo "> approving chaincode "
-    kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode approveformyorg --channelID ${CFG_CHANNEL_NAME} --name ${CFG_CHAINCODE_NAME_ONCHANNEL} --version $VERSION --package-id $PACKAGE_ID --sequence $SEQUENCE -o orderer.hldid.org:7050 --tls --cafile /opt/certs/tlsca.orderer.hldid.org-cert.pem --clientauth --keyfile /mnt/data/peer/peers/${CFG_PEER_NAME}.${CFG_HOSTNAME}.${CFG_DOMAIN}/tls/server.key --certfile /mnt/data/peer/peers/${CFG_PEER_NAME}.${CFG_HOSTNAME}.${CFG_DOMAIN}/tls/server.crt
+    if ! $APPROVED; then 
+        echo "> approving chaincode "
+        kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode approveformyorg --channelID ${CFG_CHANNEL_NAME} --name ${CFG_CHAINCODE_NAME_ONCHANNEL} --version $VERSION --package-id $PACKAGE_ID --sequence $SEQUENCE -o orderer.hldid.org:7050 --tls --cafile /opt/certs/tlsca.orderer.hldid.org-cert.pem --clientauth --keyfile /mnt/data/peer/peers/${CFG_PEER_NAME}.${CFG_HOSTNAME}.${CFG_DOMAIN}/tls/server.key --certfile /mnt/data/peer/peers/${CFG_PEER_NAME}.${CFG_HOSTNAME}.${CFG_DOMAIN}/tls/server.crt
+    else 
+        echo "> already approved, skipping"
+    fi
 }
 
 function deploy_chaincode_pod(){
