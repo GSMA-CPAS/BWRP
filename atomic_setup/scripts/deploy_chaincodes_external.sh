@@ -14,12 +14,9 @@ function deploy() {
     cp deployment/chaincode/connection-chaincode.json $file
  
     # reset timestamps to achive reproducible ccids
-    touch -a -m -t 197001010000 $file
     cd ${CFG_CONFIG_PATH}/chaincode/
-    tar cfz code.tar.gz connection.json
-    touch -a -m -t 197001010000 metadata.json
-    touch -a -m -t 197001010000 code.tar.gz
-    tar cfz $CHAINCODE.tgz code.tar.gz metadata.json
+    tar -c -z --mtime='UTC 2019-01-01' -f code.tar.gz connection.json
+    tar -c -z --mtime='UTC 2019-01-01' -f $CHAINCODE.tgz code.tar.gz metadata.json
     cd ../..
     kubectl cp ${CFG_CONFIG_PATH}/chaincode/$CHAINCODE.tgz $POD:/opt
 
