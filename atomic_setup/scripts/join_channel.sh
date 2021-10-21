@@ -17,7 +17,7 @@ echo "> fetching joined channels: "
 JOINED_CHANNELS=$(kubectl exec fabric-tools -- /opt/remote_cli.sh peer channel list | awk '{if(found) print} /Channels peers has joined/{found=1}' | xargs)
 echo "> currently joined: [$JOINED_CHANNELS]"
 
-if [ $(echo $JOINED_CHANNELS | grep $CHANNEL) ]; then 
+if [ $(echo $JOINED_CHANNELS | grep -wc $CHANNEL) -ge 1 ]; then
     echo "> already joined to channel, not joining again...";
     exit 0
 fi;
