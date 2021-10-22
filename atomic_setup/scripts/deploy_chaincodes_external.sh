@@ -21,7 +21,17 @@ function deploy() {
     kubectl cp ${CFG_CONFIG_PATH}/chaincode/$CHAINCODE.tgz $POD:/opt
 
     echo "> installing chaincode "
-    kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode install /opt/$CHAINCODE.tgz
+    INSTALL_RESULT=$(kubectl exec $POD -- /opt/remote_cli.sh peer lifecycle chaincode install /opt/$CHAINCODE.tgz 2>&1 || true)
+    echo $INSTALL_RESULT
+
+    if [ $(echo $INSTALL_RESULT | grep -ic "Error") -ge 1 ]; then
+        if [ $(echo $INSTALL_RESULT | grep -c "successfully") -ge 1  ]; then
+            echo "> all good"
+        else
+            echo "> something went wrong during installation."
+            exit 1
+        fi
+    fi
 }
 
 function approve(){
