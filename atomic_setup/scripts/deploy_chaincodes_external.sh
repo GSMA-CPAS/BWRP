@@ -15,8 +15,8 @@ function deploy() {
  
     # reset timestamps to achive reproducible ccids
     cd ${CFG_CONFIG_PATH}/chaincode/
-    tar -c -z --mtime='UTC 2019-01-01' -f code.tar.gz connection.json
-    tar -c -z --mtime='UTC 2019-01-01' -f $CHAINCODE.tgz code.tar.gz metadata.json
+    tar --sort=name --owner=0 --group=0 --numeric-owner -c --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime --mtime='UTC 2019-01-01' -- connection.json | gzip -n >code.tar.gz
+    tar --sort=name --owner=0 --group=0 --numeric-owner -c --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime --mtime='UTC 2019-01-01' -- code.tar.gz metadata.json | gzip -n >$CHAINCODE.tgz
     cd ../..
     kubectl cp ${CFG_CONFIG_PATH}/chaincode/$CHAINCODE.tgz $POD:/opt
 
