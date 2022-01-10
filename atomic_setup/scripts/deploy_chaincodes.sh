@@ -3,7 +3,7 @@ set -e -o pipefail
 . setup.cfg 
 
 POD=fabric-tools
-LABEL=hybrid_v0.3
+LABEL=hybrid_v06
 
 echo "> setting namespace"
 kubectl config set-context --current --namespace=$CFG_KUBENS
