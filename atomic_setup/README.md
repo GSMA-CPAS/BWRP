@@ -1,4 +1,4 @@
-# [BWRP] Atomic Setup  
+# [BWRP] Atomic Setup
 
 ## Kubernetes - Prerequisite
 

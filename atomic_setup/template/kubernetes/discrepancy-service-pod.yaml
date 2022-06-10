@@ -50,6 +50,8 @@ spec:
           - configMapRef:
               name: proxy-environment-variables
         env:
+        - name: DS_LOGGING_LEVEL
+          value: 'info'
         - name: DB_USER
           value: '${DSDB_USER}'
         - name: DB_PASSWD
